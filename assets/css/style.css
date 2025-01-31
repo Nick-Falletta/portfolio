@@ -1,6 +1,6 @@
 .profile-pic {
   position: relative;
-  max-width:130px;
+  width:100px;
   max-height:130px;
   width: auto;
   height: auto;
@@ -493,6 +493,8 @@ a.hoverline:hover {
   text-align: center;
   vertical-align: middle;
   display: table-cell;
+
+  border-radius: 10px;
 }
 
 .card.large .card-content p {
