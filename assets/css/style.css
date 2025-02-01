@@ -436,6 +436,7 @@ h3 {
 }
 
 .card ul li {
+  font-size: 14px;
   line-height: 200%;
   list-style-type: disc;
   margin-left: 24px;
@@ -443,7 +444,6 @@ h3 {
 
 .card ul li li {
   color: #666;
-  font-size: 13px;
 }
 
 .card .card-title {
@@ -576,7 +576,7 @@ small {
 
 @media (max-width: 1360px) {
   .card ul li {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 200%;
     margin-left: 20px;
   }
@@ -592,6 +592,9 @@ small {
   main {
     padding-left: 0px;
     padding-top: 64px;
+  }
+  .card ul li {
+    font-size: 14px;
   }
   ul.side-nav a {
     line-height: 100%;
