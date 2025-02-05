@@ -7,7 +7,7 @@
 
 - 🤝 My favorite project is [NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/https://github.com/PSU-IST-CIL/NaviGPT/)
 
-- 👨‍💻 All of my projects are available at [nick-falletta.github.io/portfolio](nick-falletta.github.io/portfolio)
+- 👨‍💻 All of my projects are available at [nick-falletta.github.io/portfolio](https://nick-falletta.github.io/portfolio/)
 
 - 💬 Ask me about **React.js, Flutter, Java**
 
