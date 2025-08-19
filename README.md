@@ -1,8 +1,8 @@
 # Nicholas Falletta — Software Developer
 
-I am a **Software Design and Development student** at **The Pennsylvania State University**, graduating **Spring 2025**. My work bridges **product design and engineering**, with a focus on **intuitive user experiences, accessibility-first development, and scalable solutions**.
+I am a **Human Centered Design and Development Graduate** from **The Pennsylvania State University**. My work bridges **product design and engineering**, with a focus on **intuitive user experiences, accessibility-first development, and scalable solutions**.
 
-I’ve built and shipped applications across **iOS, Android, and Web**, leveraging modern frameworks and tools such as **React.js, React Native, Flutter, Swift, Java, and Python**. With nearly a year of professional experience and multiple research collaborations, I bring both **technical depth** and **product sense** to the teams I work with.
+I’ve built and shipped applications across **iOS, Android, and Web**, leveraging modern frameworks and tools such as **React.js, React Native, Flutter, Swift, Java, and Python**. With many year of professional experience and multiple research collaborations, I bring both **technical depth** and **product sense** to the teams I work with.
 
 ---
 
