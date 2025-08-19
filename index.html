@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+  <!-- ============================= -->
+  <!--       Document Metadata       -->
+  <!-- ============================= -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,9 +16,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/img/og-cover.png" />
   <meta name="theme-color" content="#0f766e" />
+
+  <!-- ============================= -->
+  <!--              CSS              -->
+  <!-- ============================= -->
   <style>
     /* ---------------------- 
-       Design System
+       Design System (colors, shadows)
        ---------------------- */
     :root {
       --bg: #0b0f10;           /* canvas */
@@ -28,7 +35,6 @@
       --code: #0b1a1f;
       --shadow: 0 8px 30px rgba(0,0,0,.35);
     }
-
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #f8faf9;
@@ -43,7 +49,9 @@
       }
     }
 
-    /* Reset-ish */
+    /* ---------------------- 
+       Base / Reset
+       ---------------------- */
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     html:focus-within { scroll-behavior: smooth; }
@@ -54,11 +62,15 @@
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     .container { width: min(1100px, 92%); margin-inline: auto; }
 
-    /* Skip link */
+    /* ---------------------- 
+       Accessibility: Skip Link
+       ---------------------- */
     .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
     .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: .6rem 1rem; background: var(--brand); color: white; border-radius: .6rem; z-index: 1000; }
 
-    /* Header / Nav */
+    /* ---------------------- 
+       Header / Navigation (desktop + mobile)
+       ---------------------- */
     header { position: sticky; top: 0; z-index: 1000; backdrop-filter: saturate(180%) blur(8px); background: color-mix(in hsl, var(--bg) 75%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); }
     .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 64px; }
     .brand { display: flex; align-items: center; gap: .8rem; font-weight: 700; letter-spacing: .2px; color: var(--text); text-decoration: none; }
@@ -68,79 +80,122 @@
     .nav a.link[aria-current="true"], .nav a.link:hover { background: color-mix(in hsl, var(--brand) 18%, transparent); }
     .nav-cta { display: flex; align-items: center; gap: .6rem; }
 
+    /* Buttons */
     .btn, button.btn { background: var(--brand); color: white; padding: .52rem .9rem; border-radius: .6rem; border: none; cursor: pointer; box-shadow: var(--shadow); transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease, color .2s ease, border-color .2s ease; }
     .btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); box-shadow: none; transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
     .btn:hover { filter: brightness(1.03);}
 
-    /* sectionHeader */
-    .sectionHeader {
+    /* Section Header scaffold (left for future customization) */
+    .sectionHeader { }
 
-    }
-
-    /* Burger menu */
+    /* ---------------------- 
+       Burger Menu (icon) 
+       ---------------------- */
     .menu-toggle { display:flex; flex-direction:column; justify-content:space-between; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; transition:transform .3s ease; }  
     .menu-toggle .bar { height:3px; width:100%; background:var(--text); border-radius:3px; transition:all .3s ease; }  
     .menu-toggle.active .bar:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }  
     .menu-toggle.active .bar:nth-child(2) { opacity:0; }  
     .menu-toggle.active .bar:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }  
-    #menu { display:none; flex-direction:column; margin-top: 1px; opacity:0; transform:translateY(-10px); transition:opacity .3s ease, transform .3s ease; }  
-    #menu.show { display:flex; opacity:1; transform:translateY(0); }  
 
+    /* ---------------------- 
+       Mobile Menu (animated open/close)
+       - Uses max-height/opacity/transform for smooth transitions
+       - Scrim blocks page interaction when open
+       ---------------------- */
+    #menu { 
+      max-height: 0; 
+      margin-top: 1px; 
+      opacity:0; 
+      transform:translateY(10px); 
+      transition: max-height .35s ease, opacity .35s ease, transform .35s ease; 
+      overflow: hidden; 
+      flex-direction: column;
+    }  
+    #menu.show { max-height: 400px; opacity:1; transform:translateY(0); }  /* large enough to reveal all items */
+
+    /* Mobile-only container positioning */
     .container.nav { position: relative; }  
-    @media (min-width: 900px) { .menu-toggle { display: none !important; } #menu { display: flex !important; position: static; flex-direction: row; gap: .6rem; margin-top: 0; opacity: 1; transform: none; } .nav-cta { display: flex; } }  
-    @media (max-width: 899px) { .menu-toggle { display: flex; } .nav-cta { display: none; } #menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 999; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); padding: .8rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); } }  
+    @media (min-width: 900px) { 
+      .menu-toggle { display: none !important; } 
+      #menu { display: flex !important; position: static; flex-direction: row; gap: .6rem; margin-top: 0; opacity: 1; transform: none; max-height: none; overflow: visible; } 
+      .nav-cta { display: flex; } 
+    }  
+    @media (max-width: 899px) { 
+      .menu-toggle { display: flex; } 
+      .nav-cta { display: none; } 
+      #menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 1001; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); padding: .8rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); } 
+    }  
+    /* Mobile CTA buttons (shape/spacing) */
     @media (max-width: 899px) {
-    #menu .nav-cta-mobile {
-      display: flex;
-      justify-content: flex-start;
+      #menu .nav-cta-mobile { display: flex; justify-content: flex-start; gap: .6rem; margin-top: .6rem; }
+      #menu .nav-cta-mobile .btn { width: 100%; text-align: center; border-radius: .8rem; padding: .7rem 1rem; line-height: 1.2; }
+      #menu .nav-cta-mobile .btn.ghost { border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); }
     }
-    #menu .nav-cta-mobile .btn {
-      width: 100%;          
-      text-align: center;
-      }
-    }
-    /* Hero */
+
+    /* Scrim overlay for mobile menu (prevents click-through) */
+    #nav-scrim { position: fixed; inset: 64px 0 0; background: color-mix(in hsl, var(--bg) 25%, black 25%); opacity: 0; pointer-events: none; transition: opacity .25s ease; z-index: 999; }
+    #nav-scrim.show { opacity: .5; pointer-events: auto; }
+    body.menu-open { overflow: hidden; }  /* prevent body scroll when menu open */
+
+    /* ---------------------- 
+       Hero Section
+       ---------------------- */
     .hero { padding: 6rem 0 1.2rem; position: relative; }
-    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: 999px; background: color-mix(in hsl, var(--brand) 20%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
+    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: .8rem; background: color-mix(in hsl, var(--brand) 20%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
     .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
     .hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .2px; }
     .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
     .hero-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    /* Stats */
     .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; margin-top: 1.2rem; text-align: center; }
     .stat { background: var(--panel); padding: 1rem; border-radius: .8rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); text-align: center; }
     .stat strong { display: block; font-size: 1.4rem; }
+    @media (max-width: 550px) { .stats { grid-template-columns: 1fr; } }
 
-    @media (max-width: 550px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
-    }
+    /* ---------------------- 
+       Hero Image Slider (right column)
+       ---------------------- */
+    .portrait { width: 100%; border-radius: .8rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: var(--shadow); transform: translateZ(0); }
+    .hero-visual { width: 100%; }
+    .hero-slider { position: relative; border-radius: .8rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: var(--shadow); overflow: clip; background: #0a1113; }
+    .hero-slider .slides { position: relative; aspect-ratio: 16 / 10; }
+    .hero-slider .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.02); transition: opacity .6s ease, transform .6s ease; will-change: opacity, transform; }
+    .hero-slider .slide.is-active { opacity: 1; transform: scale(1); }
+    @media (prefers-reduced-motion: reduce) { .hero-slider .slide { transition: none; } }
+    .slider-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+    .slide-btn { pointer-events: auto; background: color-mix(in hsl, var(--bg) 40%, transparent); color: var(--text); border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); width: 40px; height: 40px; border-radius: 50%; margin: 0 .6rem; display: grid; place-items: center; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, transform .2s ease; }
+    .slide-btn:hover { filter: brightness(1.05); }
+    .slider-dots { position: absolute; left: 0; right: 0; bottom: .6rem; display: flex; gap: .4rem; justify-content: center; align-items: center; }
+    .slider-dots .dot { width: 8px; height: 8px; border-radius: 999px; background: color-mix(in hsl, var(--muted) 40%, transparent); border: 1px solid color-mix(in hsl, var(--muted) 50%, transparent); cursor: pointer; }
+    .slider-dots .dot.is-active { width: 18px; background: var(--brand); border-color: var(--brand-2); }
+    @media (max-width: 1000px) { .hero-slider .slides { aspect-ratio: 16 / 9; } }
 
-    .portrait { width: 100%; border-radius: 1rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: var(--shadow); transform: translateZ(0); }
-
-    /* Section scaffolding */
+    /* ---------------------- 
+       Section scaffolding (shared)
+       ---------------------- */
     section { padding: 4rem 0; scroll-margin-top: 84px; }
     section header h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin: 0 0 .4rem; }
     section header p { color: var(--muted); margin: 0 0 1.4rem; }
 
-    /* Projects */
+    /* ---------------------- 
+       Projects Grid & Cards
+       ---------------------- */
     .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
     .card { background: var(--panel); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
     .card-media { aspect-ratio: 16/10; background: #0a1113; display: grid; place-items: center; overflow: hidden; }
-    .card-media img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+    .card-media img { width: 100%; height: 100%; object-fit: fill; will-change: transform; } /* swap to 'cover' if you want no distortion */
     .card-body { padding: 1rem; }
     .card-title { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
     .chip { display: inline-flex; align-items: center; padding: .1rem .5rem; border-radius: .45rem; background: color-mix(in hsl, var(--brand) 18%, transparent); color: var(--brand-2); font-size: .8rem; }
     .card p { color: var(--muted); margin: .4rem 0 .8rem; }
     .card-actions { display: flex; gap: .5rem; padding: 0 1rem 1rem; }
-
-    @media (max-width: 1000px) {
-      .projects { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .hero-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 1000px) { .projects { grid-template-columns: repeat(2, minmax(0,1fr)); } .hero-grid { grid-template-columns: 1fr; } }
     @media (max-width: 640px) { .projects { grid-template-columns: 1fr; } }
 
-    /* Experience Timeline */
+    /* ---------------------- 
+       Experience Timeline
+       ---------------------- */
     .timeline { position: relative; margin: 2rem 0; }
     .timeline::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: color-mix(in hsl, var(--muted) 25%, transparent); }
     .t-item { position: relative; margin-left: 2.5rem; padding: 1rem 1rem 1rem 1.2rem; border-left: 2px solid transparent; }
@@ -149,47 +204,52 @@
     .t-role { color: var(--brand-2); font-weight: 600; }
     .t-meta { color: var(--muted); font-size: .95rem; }
 
-    /* Skills */
+    /* ---------------------- 
+       Skills
+       ---------------------- */
     .skills { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
     .skill-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
     .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .tag-pill { padding: .25rem .55rem; background: color-mix(in hsl, var(--brand) 16%, transparent); border-radius: 999px; color: var(--text); font-size: .9rem; }
+    .tag-pill { padding: .25rem .55rem; background: color-mix(in hsl, var(--brand) 16%, transparent); border-radius: .8rem; color: var(--text); font-size: .9rem; }
     @media (max-width: 820px) { .skills { grid-template-columns: 1fr; } }
 
-    /* Education */
+    /* ---------------------- 
+       Education
+       ---------------------- */
     .edu { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
     .edu-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
     @media (max-width: 820px) { .edu { grid-template-columns: 1fr; } }
 
-    /* Contact */
+    /* ---------------------- 
+       Contact
+       ---------------------- */
     .contact { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.2rem; align-items: stretch; }  
     .contact .panel { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }  
     .contact-list { display: grid; gap: .5rem; }  
-    .row { display: flex; align-items: center; gap: .6rem; }
+    .row { display: flex; align-items: center; }
     .row strong { width: 80px; color: var(--muted); }
     .copy { padding: .3rem .5rem; border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); background: transparent; color: var(--text); border-radius: .4rem; }
+    @media (max-width: 820px) { .contact { grid-template-columns: 1fr; } }
 
-    @media (max-width: 875px) {
-      .contact { grid-template-columns: 1fr; }
-    }
-
-    /* Footer */
+    /* ---------------------- 
+       Footer
+       ---------------------- */
     footer { padding: 2rem 0 3rem; color: var(--muted); }
 
-    /* Focus styles */
+    /* ---------------------- 
+       Focus styles / Motion / Print
+       ---------------------- */
     :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
-
-    /* Subtle motion */
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.show { opacity: 1; transform: none; }
-
-    /* Print */
     @media print {
       header, .menu-toggle, .btn, .hero-cta, .nav-cta, .chip, .card-actions, .copy { display: none !important; }
       body { background: white; color: black; }
       section { padding: 1rem 0; }
     }
   </style>
+
+  <!-- Structured data -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -205,6 +265,9 @@
   </script>
 </head>
 <body>
+  <!-- ============================= -->
+  <!--           Header/Nav          -->
+  <!-- ============================= -->
   <a class="skip-link" href="#main">Skip to content</a>
   <header>
     <div class="container nav" role="navigation" aria-label="Primary">
@@ -212,59 +275,93 @@
         <img class="brand-avatar" src="assets/img/profile.png" alt="Nick Falletta avatar" />
         <span>Nick Falletta</span>
       </a>
+
+      <!-- Burger button (mobile) -->
       <button class="menu-toggle" aria-controls="menu" aria-expanded="false" id="menuBtn">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
       </button>
+
+      <!-- Primary nav links + mobile CTAs -->
       <ul id="menu">
-      <li><a class="link" href="#projects">Projects</a></li>
-      <li><a class="link" href="#experience">Experience</a></li>
-      <li><a class="link" href="#skills">Skills</a></li>
-      <li><a class="link" href="#education">Education</a></li>
-      <li><a class="link" href="#contact">Contact</a></li>
-      <li class="nav-cta-mobile">
-        <a class="btn ghost" href="assets/resume/FallettaResume.pdf" target="_blank" rel="noopener">Résumé</a>
-      </li>
-      <li class="nav-cta-mobile">
-        <a class="btn" href="mailto:nickfalletta29@outlook.com">Contact me</a>
-      </li>
-    </ul>
+        <li><a class="link" href="#projects">Projects</a></li>
+        <li><a class="link" href="#experience">Experience</a></li>
+        <li><a class="link" href="#skills">Skills</a></li>
+        <li><a class="link" href="#education">Education</a></li>
+        <li><a class="link" href="#contact">Contact</a></li>
+        <li class="nav-cta-mobile">
+          <a class="btn ghost" href="assets/resume/FallettaResume.pdf" target="_blank" rel="noopener">Résumé</a>
+        </li>
+        <li class="nav-cta-mobile">
+          <a class="btn" href="mailto:nickfalletta29@outlook.com">Contact me</a>
+        </li>
+      </ul>
+
+      <!-- Scrim overlay for mobile menu (prevents clicking page beneath) -->
+      <div id="nav-scrim" aria-hidden="true"></div>
     </div>
   </header>
 
+  <!-- ============================= -->
+  <!--              Main             -->
+  <!-- ============================= -->
   <main id="main">
-    <!-- HERO -->
+    <!-- ===== Hero ===== -->
     <section id="home" class="hero container">
       <div class="hero-grid">
+        <!-- Hero text/CTA/stats -->
         <div>
           <span class="tag" aria-hidden="true">Design × Engineering</span>
-          <h1>
-            Building polished, accessible products
-            that ship fast and scale.
-          </h1>
+          <h1>Building polished, accessible products that ship fast and scale.</h1>
           <p class="lede">
-            I’m a software engineer & designer focused on intuitive UX, robust code, and real‑world impact.
-            Previously at Penn State; shipped accessibility tools, large language models, and cross‑platform apps.
+            I’m a software engineer & designer focused on intuitive UX, robust code, and real-world impact.
+            Previously at Penn State; shipped accessibility tools, large language models, and cross-platform apps.
           </p>
           <div class="hero-cta">
             <a class="btn" href="#projects">View work</a>
             <a class="btn ghost" href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">GitHub</a>
             <a class="btn ghost" href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">LinkedIn</a>
           </div>
+
+          <!-- Stats (count-up) -->
           <div class="stats" aria-label="Highlights">
-            <div class="stat" aria-live="polite"><strong id="stat1">10+</strong> shipped projects</div>
-            <div class="stat"><strong>iOS, Web, Android</strong> multi‑platform</div>
+            <div class="stat" aria-live="polite">
+              <strong class="count" data-to="10">0</strong> shipped projects
+            </div>
+            <div class="stat"><strong>iOS, Web, Android</strong> multi-platform</div>
             <div class="stat"><strong>Accessibility</strong> first principles</div>
           </div>
         </div>
-        <div>
-          <img class="portrait" src="assets/img/NittanyLion.jpeg" alt="Nick with the Nittany Lion Statue" />
+
+        <!-- Hero image slider (right column) -->
+        <div class="hero-visual">
+          <div class="hero-slider" role="region" aria-label="Featured photos" tabindex="0">
+            <div class="slides">
+              <!-- Tip: you can override fill per-image with inline style e.g., style="object-fit:contain;background:#000" -->
+              <img class="slide is-active" src="assets/img/NittanyLion.jpeg" alt="Nick with the Nittany Lion Statue" loading="eager" />
+              <img class="slide" src="assets/img/vacation.jpeg" alt="Photo after a hike in Antigua" loading="lazy" />
+              <img class="slide" src="assets/img/IST.jpeg" alt="IST event" loading="lazy" />
+            </div>
+
+            <!-- Slider controls -->
+            <div class="slider-controls">
+              <button class="slide-btn prev" type="button" aria-label="Previous image" title="Previous">&#10094;</button>
+              <button class="slide-btn next" type="button" aria-label="Next image" title="Next">&#10095;</button>
+            </div>
+
+            <!-- Slider pagination dots -->
+            <div class="slider-dots" role="tablist" aria-label="Choose image">
+              <button class="dot is-active" role="tab" aria-selected="true" aria-label="Image 1"></button>
+              <button class="dot" role="tab" aria-selected="false" aria-label="Image 2"></button>
+              <button class="dot" role="tab" aria-selected="false" aria-label="Image 3"></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- ===== Projects ===== -->
     <section id="projects" aria-labelledby="projects-title">
       <div class="container">
         <div class="sectionHeader">
@@ -282,7 +379,7 @@
                 <h3 style="margin:0">Title Tracker</h3>
                 <span class="chip">Flutter · Firebase</span>
               </div>
-              <p>Workflow manager for Comm‑Res Exams Corp. Realtime data, secure auth, and cross‑platform delivery.</p>
+              <p>Workflow manager for Comm-Res Exams Corp. Realtime data, secure auth, and cross-platform delivery.</p>
             </div>
             <div class="card-actions">
               <a class="btn ghost" href="https://apps.apple.com/us/app/title-tracker/id6504823785" target="_blank" rel="noopener">iOS</a>
@@ -335,7 +432,7 @@
                 <h3 style="margin:0">Jarvis</h3>
                 <span class="chip">React · OpenAI</span>
               </div>
-              <p>Customizable AI chatbot with voice input and CSS live‑editing. Context retention and personality presets.</p>
+              <p>Customizable AI chatbot with voice input and CSS live-editing. Context retention and personality presets.</p>
             </div>
             <div class="card-actions">
               <a class="btn ghost" href="https://github.com/Nick-Falletta/jarvis" target="_blank" rel="noopener">GitHub</a>
@@ -349,27 +446,27 @@
             </div>
             <div class="card-body">
               <div class="card-title">
-                <h3 style="margin:0">Multiple‑Choice Builder</h3>
+                <h3 style="margin:0">Multiple-Choice Builder</h3>
                 <span class="chip">React · JSON</span>
               </div>
-              <p>Author quizzes via JSON with instant feedback and image support; great for self‑study & workshops.</p>
+              <p>Author quizzes via JSON with instant feedback and image support; great for self-study & workshops.</p>
             </div>
             <div class="card-actions">
               <a class="btn ghost" href="https://github.com/Nick-Falletta/taggingQuestion" target="_blank" rel="noopener">GitHub</a>
             </div>
           </article>
 
-          <!-- Add a placeholder project slot -->
+          <!-- Placeholder -->
           <article class="card reveal">
             <div class="card-media" aria-hidden="true">
-              <svg viewBox="0 0 400 250" role="img" aria-label="Placeholder" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="250" rx="12" fill="#0a1113"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#3b4b52" font-size="18">New case study coming…</text></svg>
+              <svg viewBox="0 0 400 250" role="img" aria-label="Placeholder" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="250" rx="12" fill="#0a1113"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#3b4b52" font-size="18">New project coming…</text></svg>
             </div>
             <div class="card-body">
               <div class="card-title">
                 <h3 style="margin:0">Next up</h3>
                 <span class="chip">TBD</span>
               </div>
-              <p>Currently exploring smarter, privacy‑first location experiences with on‑device ML.</p>
+              <p>Currently exploring smarter, privacy-first location experiences with on-device ML.</p>
             </div>
             <div class="card-actions">
               <a class="btn" href="mailto:nickfalletta29@outlook.com">Collaborate</a>
@@ -379,7 +476,7 @@
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
+    <!-- ===== Experience ===== -->
     <section id="experience" aria-labelledby="exp-title">
       <div class="container">
         <div class="sectionHeader">
@@ -394,7 +491,7 @@
               <span class="t-meta">Aug 2023 — May 2025 · State College, PA</span>
             </div>
             <ul>
-              <li>Guided students through semester‑long builds (React, full‑stack, GitHub, UI/UX), including a personality‑driven AI chatbot.</li>
+              <li>Guided students through semester-long builds (React, full-stack, GitHub, UI/UX), including a personality-driven AI chatbot.</li>
               <li>Organized weekly bootcamps; fostered collaboration and ownership.</li>
             </ul>
           </article>
@@ -406,14 +503,14 @@
               <span class="t-meta">May — Dec 2024 · State College, PA</span>
             </div>
             <ul>
-              <li>Developed <strong>NaviGPT</strong> — iOS app using LiDAR and OpenAI; collaborated with visually‑impaired users and faculty.</li>
-              <li>Ran research‑driven iterations; integrated Apple Maps; shipped haptics & on‑device guidance.</li>
+              <li>Developed <strong>NaviGPT</strong> — iOS app using LiDAR and OpenAI; collaborated with visually-impaired users and faculty.</li>
+              <li>Ran research-driven iterations; integrated Apple Maps; shipped haptics & on-device guidance.</li>
             </ul>
           </article>
 
           <article class="t-item reveal">
             <div class="t-head">
-              <h3 style="margin:0">Comm‑Res Exams Corporation</h3>
+              <h3 style="margin:0">Comm-Res Exams Corporation</h3>
               <span class="t-role">Software Developer Intern</span>
               <span class="t-meta">Dec 2022 — Apr 2023 · Mineola, NY</span>
             </div>
@@ -426,7 +523,7 @@
       </div>
     </section>
 
-    <!-- SKILLS -->
+    <!-- ===== Skills ===== -->
     <section id="skills" aria-labelledby="skills-title">
       <div class="container">
         <div class="sectionHeader">
@@ -456,7 +553,7 @@
       </div>
     </section>
 
-    <!-- EDUCATION -->
+    <!-- ===== Education ===== -->
     <section id="education" aria-labelledby="edu-title">
       <div class="container">
         <div class="sectionHeader">
@@ -486,7 +583,7 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- ===== Contact ===== -->
     <section id="contact" aria-labelledby="contact-title">
       <div class="container">
         <div class="sectionHeader">
@@ -497,9 +594,9 @@
           <div class="panel reveal">
             <div class="contact-list" role="list">
               <div class="row" role="listitem"><strong>Email</strong> <a href="mailto:nickfalletta29@outlook.com">nickfalletta29@outlook.com</a> <button class="copy" data-copy="nickfalletta29@outlook.com" aria-label="Copy email">Copy</button></div>
-              <div class="row" role="listitem"><strong>Phone</strong> <a href="tel:+16316375632">+1 (631) 637‑5632</a> <button class="copy" data-copy="+16316375632" aria-label="Copy phone">Copy</button></div>
-              <div class="row" role="listitem"><strong>GitHub</strong> <a href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">/Nick‑Falletta</a></div>
-              <div class="row" role="listitem"><strong>LinkedIn</strong> <a href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">/in/nick‑falletta</a></div>
+              <div class="row" role="listitem"><strong>Phone</strong> <a href="tel:+16316375632">+1 (631) 637-5632</a> <button class="copy" data-copy="+16316375632" aria-label="Copy phone">Copy</button></div>
+              <div class="row" role="listitem"><strong>GitHub</strong> <a href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">/Nick-Falletta</a></div>
+              <div class="row" role="listitem"><strong>LinkedIn</strong> <a href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">/in/nick-falletta</a></div>
             </div>
           </div>
           <div class="panel reveal">
@@ -516,6 +613,9 @@
     </section>
   </main>
 
+  <!-- ============================= -->
+  <!--             Footer            -->
+  <!-- ============================= -->
   <footer>
     <div class="container">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
@@ -525,31 +625,123 @@
     </div>
   </footer>
 
+  <!-- ============================= -->
+  <!--              JS               -->
+  <!-- ============================= -->
   <script>
-    // Mobile menu toggle
+    // ----------------------------------------
+    // Mobile menu toggle + scrim + scroll lock
+    // ----------------------------------------
     const menuBtn = document.getElementById('menuBtn');
     const menu = document.getElementById('menu');
+    const scrim = document.getElementById('nav-scrim');
+
+    function setMenuOpen(isOpen){
+      menuBtn.classList.toggle('active', isOpen);
+      menu.classList.toggle('show', isOpen);
+      scrim.classList.toggle('show', isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('menu-open', isOpen);
+    }
 
     menuBtn.addEventListener('click', () => {
-      menuBtn.classList.toggle('active');
-      menu.classList.toggle('show');
-      
-      const expanded = menuBtn.getAttribute('aria-expanded') === 'true' || false;
-      menuBtn.setAttribute('aria-expanded', !expanded);
+      const isOpen = !menu.classList.contains('show');
+      setMenuOpen(isOpen);
     });
 
-    // Close mobile menu when a nav link is clicked
-  document.querySelectorAll('#menu .link').forEach(a => {
-    a.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 899px)').matches) {
-        menu.classList.remove('show');
-        menuBtn.classList.remove('active');
-        menuBtn.setAttribute('aria-expanded', 'false');
+    // Close mobile menu when a nav link is clicked (on small screens)
+    document.querySelectorAll('#menu .link').forEach(a => {
+      a.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 899px)').matches) setMenuOpen(false);
+      });
+    });
+
+    // Close when scrim is clicked
+    scrim.addEventListener('click', () => setMenuOpen(false));
+
+    // ----------------------------------------
+    // Hero Image Slider (autoplay + controls)
+    // ----------------------------------------
+    (function initHeroSlider() {
+      const slider = document.querySelector('.hero-slider');
+      if (!slider) return;
+
+      const slides = [...slider.querySelectorAll('.slide')];
+      const dots   = [...slider.querySelectorAll('.dot')];
+      const prevBtn = slider.querySelector('.slide-btn.prev');
+      const nextBtn = slider.querySelector('.slide-btn.next');
+
+      let index = slides.findIndex(s => s.classList.contains('is-active'));
+      if (index < 0) index = 0;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const AUTOPLAY_MS = 5000; 
+      let autoplayId = null;
+      let paused = false;
+
+      function show(i) {
+        slides[index].classList.remove('is-active');
+        dots[index]?.classList.remove('is-active');
+        dots[index]?.setAttribute('aria-selected', 'false');
+
+        index = (i + slides.length) % slides.length;
+
+        slides[index].classList.add('is-active');
+        dots[index]?.classList.add('is-active');
+        dots[index]?.setAttribute('aria-selected', 'true');
       }
-    });
-  });
 
-    // Active link on scroll
+      function next() { show(index + 1); }
+      function prev() { show(index - 1); }
+
+      // Controls
+      nextBtn?.addEventListener('click', () => { next(); restartAutoplay(); });
+      prevBtn?.addEventListener('click', () => { prev(); restartAutoplay(); });
+      dots.forEach((d, i) => {
+        d.addEventListener('click', () => { show(i); restartAutoplay(); });
+        d.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); restartAutoplay(); }
+        });
+      });
+
+      // Keyboard 
+      slider.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { next(); restartAutoplay(); }
+        if (e.key === 'ArrowLeft')  { prev(); restartAutoplay(); }
+      });
+
+      // Pause on hover/focus
+      slider.addEventListener('mouseenter', () => { paused = true; stopAutoplay(); });
+      slider.addEventListener('mouseleave', () => { paused = false; restartAutoplay(); });
+      slider.addEventListener('focusin', () => { paused = true; stopAutoplay(); });
+      slider.addEventListener('focusout', () => { paused = false; restartAutoplay(); });
+
+      // Visibility change
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopAutoplay();
+        else if (!paused) restartAutoplay();
+      });
+
+      function startAutoplay() {
+        if (prefersReduced || slides.length <= 1) return;
+        stopAutoplay();
+        autoplayId = setInterval(next, AUTOPLAY_MS);
+      }
+      function stopAutoplay() {
+        if (autoplayId) clearInterval(autoplayId);
+        autoplayId = null;
+      }
+      function restartAutoplay() {
+        if (paused || prefersReduced) return;
+        startAutoplay();
+      }
+
+      startAutoplay();
+    })();
+
+    // ----------------------------------------
+    // Active link highlighting on scroll
+    // ----------------------------------------
     const links = [...document.querySelectorAll('.nav a.link')];
     const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
     const setActive = (id) => {
@@ -560,32 +752,73 @@
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
     sections.forEach(s => io.observe(s));
 
-    // Reveal on scroll
+    // ----------------------------------------
+    // Reveal-on-scroll animations
+    // ----------------------------------------
     const revealEls = document.querySelectorAll('.reveal');
     const ro = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); ro.unobserve(e.target); } });
     }, { threshold: 0.12 });
     revealEls.forEach(el => ro.observe(el));
 
-    // Stats count-up (simple, reduced-motion aware)
-    const stat1 = document.getElementById('stat1');
-    if (stat1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const end = 10; let n = 0; const step = () => { n += 1; stat1.textContent = n + '+'; if (n < end) requestAnimationFrame(step); };
-      requestAnimationFrame(step);
-    }
+    // ----------------------------------------
+    // Shipped Projects Counter (count-up on view)
+    // ----------------------------------------
+    (function initCountUp() {
+      const counters = [...document.querySelectorAll('.count[data-to]')];
+      if (!counters.length) return;
 
-    // Copy buttons
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const DURATION = 1200;
+      const EASE = t => 1 - Math.pow(1 - t, 4); // easeOutQuart
+
+      function animate(el) {
+        const end = parseFloat(el.dataset.to);
+        if (Number.isNaN(end)) return;
+        if (prefersReduced) { el.textContent = end + '+'; return; }
+
+        const startTime = performance.now();
+        function tick(now) {
+          const t = Math.min(1, (now - startTime) / DURATION);
+          const value = Math.floor(EASE(t) * end);
+          el.textContent = value + '+'; 
+          if (t < 1) requestAnimationFrame(tick);
+          else el.textContent = end + '+'; 
+        }
+        requestAnimationFrame(tick);
+      }
+
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            animate(e.target);
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      counters.forEach(c => io.observe(c));
+    })();
+
+    // ----------------------------------------
+    // Copy-to-clipboard buttons
+    // ----------------------------------------
     document.querySelectorAll('.copy').forEach(btn => {
       btn.addEventListener('click', async () => {
-        try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy', 1200); } catch {}
+        try { 
+          await navigator.clipboard.writeText(btn.dataset.copy); 
+          btn.textContent = 'Copied'; 
+          setTimeout(() => btn.textContent = 'Copy', 1200); 
+        } catch {}
       })
-    })
+    });
 
+    // ----------------------------------------
     // Footer metadata
+    // ----------------------------------------
     document.getElementById('year').textContent = new Date().getFullYear();
     const updated = new Date(document.lastModified);
     document.getElementById('updated').textContent = updated.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric'});
-  
   </script>
 </body>
 </html>
