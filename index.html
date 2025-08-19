@@ -1,740 +1,570 @@
-<!-- <!DOCTYPE html> -->
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Nicholas Falletta — Software Developer</title>
+  <meta name="description" content="Portfolio of Nicholas Falletta — software engineer & designer building intuitive, accessible products." />
+  <link rel="canonical" href="https://nick-falletta.dev/" />
+  <meta property="og:title" content="Nicholas Falletta — Software Developer" />
+  <meta property="og:description" content="Portfolio of Nicholas Falletta — software engineer & designer building intuitive, accessible products." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/og-cover.png" />
+  <meta name="theme-color" content="#0f766e" />
+  <style>
+    /* ---------------------- 
+       Design System
+       ---------------------- */
+    :root {
+      --bg: #0b0f10;           /* canvas */
+      --panel: #0e1416;        /* surfaces */
+      --text: #e7f1ef;         /* primary text */
+      --muted: #94a3a7;        /* secondary text */
+      --brand: #0f766e;        /* teal */
+      --brand-2: #14b8a6;      /* accent */
+      --ring: #22c55e;         /* focus ring */
+      --code: #0b1a1f;
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+    }
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PGZH8HT');</script>
-  <!-- End Google Tag Manager -->
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8faf9;
+        --panel: #ffffff;
+        --text: #111827;
+        --muted: #475569;
+        --brand: #0f766e;
+        --brand-2: #0ea5a4;
+        --ring: #0ea5a4;
+        --code: #f1f5f9;
+        --shadow: 0 10px 30px rgba(2, 12, 27, .08);
+      }
+    }
 
-  <!-- Materialize - Compiled and minified CSS-->
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" />
-  <!-- Font Awesome Icon - CSS-->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-  <!-- Custom Styles-->
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <title>Nicholas Falletta | Software Developer</title>
+    /* Reset-ish */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; background: var(--bg); color: var(--text); }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--brand-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126939217-2"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    /* Skip link */
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: .6rem 1rem; background: var(--brand); color: white; border-radius: .6rem; z-index: 1000; }
 
-    gtag('config', 'UA-126939217-2');
+    /* Header / Nav */
+    header { position: sticky; top: 0; z-index: 1000; backdrop-filter: saturate(180%) blur(8px); background: color-mix(in hsl, var(--bg) 75%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 64px; }
+    .brand { display: flex; align-items: center; gap: .8rem; font-weight: 700; letter-spacing: .2px; color: var(--text); text-decoration: none; }
+    .brand-avatar { width: 36px; height: 36px; border-radius: 50%; outline: 2px solid color-mix(in hsl, var(--brand) 60%, white); box-shadow: var(--shadow); }
+    .nav ul { display: flex; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+    .nav a.link { padding: .45rem .8rem; border-radius: .6rem; color: var(--text); text-decoration: none; }
+    .nav a.link[aria-current="true"], .nav a.link:hover { background: color-mix(in hsl, var(--brand) 18%, transparent); }
+    .nav-cta { display: flex; align-items: center; gap: .6rem; }
+
+    .btn, button.btn { background: var(--brand); color: white; padding: .52rem .9rem; border-radius: .6rem; border: none; cursor: pointer; box-shadow: var(--shadow); transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease, color .2s ease, border-color .2s ease; }
+    .btn.ghost { background: transparent; color: var(--text); border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); box-shadow: none; transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+    .btn:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+    /* sectionHeader */
+    .sectionHeader {
+
+    }
+
+    /* Mobile menu */
+    .menu-toggle { display:flex; flex-direction:column; justify-content:space-between; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; transition:transform .3s ease; }  
+    .menu-toggle .bar { height:3px; width:100%; background:var(--text); border-radius:3px; transition:all .3s ease; }  
+    .menu-toggle.active .bar:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }  
+    .menu-toggle.active .bar:nth-child(2) { opacity:0; }  
+    .menu-toggle.active .bar:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }  
+    #menu { display:none; flex-direction:column; gap:1rem; margin-top:1rem; opacity:0; transform:translateY(-10px); transition:opacity .3s ease, transform .3s ease; }  
+    #menu.show { display:flex; opacity:1; transform:translateY(0); }  
+
+    .container.nav { position: relative; }  
+    @media (min-width: 900px) { .menu-toggle { display: none !important; } #menu { display: flex !important; position: static; flex-direction: row; gap: .6rem; margin-top: 0; opacity: 1; transform: none; } .nav-cta { display: flex; } }  
+    @media (max-width: 899px) { .menu-toggle { display: flex; } .nav-cta { display: none; } #menu { position: absolute; top: 64px; left: 0; right: 0; z-index: 999; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); padding: .8rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); } }  
+
+    /* Hero */
+    .hero { padding: 6rem 0 1.2rem; position: relative; }
+    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: 999px; background: color-mix(in hsl, var(--brand) 20%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
+    .hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .2px; }
+    .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
+    .hero-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; margin-top: 1.2rem; }
+    .stat { background: var(--panel); padding: 1rem; border-radius: .8rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); text-align: center; }
+    .stat strong { display: block; font-size: 1.4rem; }
+
+    .portrait { width: 100%; border-radius: 1rem; border: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: var(--shadow); transform: translateZ(0); }
+
+    /* Section scaffolding */
+    section { padding: 4rem 0; scroll-margin-top: 84px; }
+    section header h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin: 0 0 .4rem; }
+    section header p { color: var(--muted); margin: 0 0 1.4rem; }
+
+    /* Projects */
+    .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
+    .card { background: var(--panel); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
+    .card-media { aspect-ratio: 16/10; background: #0a1113; display: grid; place-items: center; overflow: hidden; }
+    .card-media img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+    .card-body { padding: 1rem; }
+    .card-title { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+    .chip { display: inline-flex; align-items: center; padding: .1rem .5rem; border-radius: .45rem; background: color-mix(in hsl, var(--brand) 18%, transparent); color: var(--brand-2); font-size: .8rem; }
+    .card p { color: var(--muted); margin: .4rem 0 .8rem; }
+    .card-actions { display: flex; gap: .5rem; padding: 0 1rem 1rem; }
+
+    @media (max-width: 1000px) {
+      .projects { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) { .projects { grid-template-columns: 1fr; } }
+
+    /* Experience Timeline */
+    .timeline { position: relative; margin: 2rem 0; }
+    .timeline::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: color-mix(in hsl, var(--muted) 25%, transparent); }
+    .t-item { position: relative; margin-left: 2.5rem; padding: 1rem 1rem 1rem 1.2rem; border-left: 2px solid transparent; }
+    .t-item::before { content: ""; position: absolute; left: -5px; top: 1.2rem; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 3px color-mix(in hsl, var(--brand) 25%, transparent); }
+    .t-head { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: baseline; }
+    .t-role { color: var(--brand-2); font-weight: 600; }
+    .t-meta { color: var(--muted); font-size: .95rem; }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+    .skill-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag-pill { padding: .25rem .55rem; background: color-mix(in hsl, var(--brand) 16%, transparent); border-radius: 999px; color: var(--text); font-size: .9rem; }
+    @media (max-width: 820px) { .skills { grid-template-columns: 1fr; } }
+
+    /* Education */
+    .edu { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+    .edu-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
+    @media (max-width: 820px) { .edu { grid-template-columns: 1fr; } }
+
+    /* Contact */
+    .contact { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.2rem; align-items: stretch; }  
+    .contact .panel { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }  
+    .contact-list { display: grid; gap: .5rem; }  
+    .row { display: flex; align-items: center; gap: .6rem; }
+    .row strong { width: 80px; color: var(--muted); }
+    .copy { padding: .3rem .5rem; border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); background: transparent; color: var(--text); border-radius: .4rem; }
+
+    /* Footer */
+    footer { padding: 2rem 0 3rem; color: var(--muted); }
+
+    /* Focus styles */
+    :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
+
+    /* Subtle motion */
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* Print */
+    @media print {
+      header, .menu-toggle, .btn, .hero-cta, .nav-cta, .chip, .card-actions, .copy { display: none !important; }
+      body { background: white; color: black; }
+      section { padding: 1rem 0; }
+    }
+  </style>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Nicholas Falletta",
+      "jobTitle": "Software Developer",
+      "url": "https://nick-falletta.dev/",
+      "sameAs": [
+        "https://github.com/Nick-Falletta",
+        "https://www.linkedin.com/in/nick-falletta/"
+      ]
+    }
   </script>
-
-  <!-- Google Site Verification for indexing -->
-  <meta name="google-site-verification" content="_qxK8tePiU2fhnwlwnJ7pkDFnj1k2EiKq_cYGy1Cb84" />
 </head>
-
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGZH8HT"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe>
-  </noscript>
-  
-  <!-- Navigation Menu-->
-  <!-- Nav class 1 -->
-  <nav class="hide-on-small-only">
-    <ul class="side-nav fixed section table-of-contents">
-
-      <li class="logo">
-        <a id="logo-container" aria-label="Navigate to the beginning of the page" href="#intro"
-          class="brand-logo grey-blue-text">
-          <img src="assets/img/profile.png" class="circle img-responsive profile-pic" alt="avatar">
-        </a>
-      </li>
-
-      <li class="bold">
-        <a aria-label="Navigate to the About section" href="#about" class="waves-effect waves-dark teal-text"><i
-            class="mdi-social-person small"></i><span>About</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Navigate to the Experience section" href="#experience"
-          class="waves-effect waves-dark teal-text"><i
-            class="mdi-action-trending-up small"></i><span>Experience</span></a>
-      </li>
-
-      <li class="bold">
-        <!-- mdi-av-web small
-             mdi-av-my-library-books small-->
-        <a aria-label="Navigate to the Projects section" href="#projects" class="waves-effect waves-dark teal-text"><i
-            class="mdi-av-my-library-books small"></i><span>Projects</span></a>
-      </li>
-
-      <li class="bold">
-        <!--
-        ICONS:
-        mdi-action-assessment
-        mdi-social-poll
-        mdi-av-equalizer
-        -->
-        <a aria-label="Navigate to the Skills section" href="#skills" class="waves-effect waves-dark teal-text"><i
-            class="mdi-action-assessment small"></i><span>Skills</span></a>
-      </li>
-      
-      <li class="bold">
-        <!--
-        ICONS:
-        -->
-        <a aria-label="Navigate to the Education section" href="#education" class="waves-effect waves-dark teal-text"><i
-            class="mdi-social-school small"></i><span>Education</span></a>
-      </li>
-
-      <li class="bold">
-
-        <a aria-label="Navigate to the Contact section" href="#contact" class="waves-effect waves-dark teal-text"><i
-            class="mdi-content-mail small"></i><span>Contact</span></a>
-      </li>
-
-      <li class="bold">
-
-        <a aria-label="Open Nick's resume in a new tab" href="https://github.com/Nick-Falletta/portfolio/blob/main/assets/resume/FallettaResume.pdf" target="_blank"
-        class="waves-effect waves-dark teal-text"><i class="mdi-file-folder-open small"></i><span>Resume</span></a>  
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Nav class 2 -->
-  <nav class="hide-on-large only trigger z-depth-1">
-    <a aria-label="Toggle visibility of the mobile navbar" href="#" data-activates="slide-out"
-      class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-    <div class="name-title">
-      <a id="name" aria-label="Navigate to the beginning of the page" href="#" class="teal-text">Nicholas Falletta</a><span class="black-text">Software Developer</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <a class="brand" href="#">
+        <img class="brand-avatar" src="assets/img/profile.png" alt="Nick Falletta avatar" />
+        <span>Nick Falletta</span>
+      </a>
+      <button class="menu-toggle" aria-controls="menu" aria-expanded="false" id="menuBtn">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <ul id="menu">
+        <li><a class="link" href="#projects">Projects</a></li>
+        <li><a class="link" href="#experience">Experience</a></li>
+        <li><a class="link" href="#skills">Skills</a></li>
+        <li><a class="link" href="#education">Education</a></li>
+        <li><a class="link" href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn ghost" href="assets/resume/FallettaResume.pdf" target="_blank" rel="noopener">Résumé</a>
+        <a class="btn" href="mailto:nickfalletta29@outlook.com">Contact me</a>
+      </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Nav class 3 -->
-  <nav class="hide-on-large only">
-    <ul id="slide-out" class="side-nav">
-      <li class="bold">
-        <a aria-label="Navigate to the About section" href="#about" class="waves-effect waves-dark teal-text"><i
-            class="mdi-social-person small"></i><span>About</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Navigate to the Experience section" href="#experience"
-          class="waves-effect waves-dark teal-text"><i
-            class="mdi-action-trending-up small"></i><span>Experience</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Navigate to the Projects section" href="#projects" class="waves-effect waves-dark teal-text"><i
-            class="mdi-av-my-library-books small"></i><span>Projects</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Navigate to the Skills section" href="#skills" class="waves-effect waves-dark teal-text"><i
-            class="mdi-action-assessment small"></i><span>Skills</span></a>
-      </li>
-
-      <li class="bold">
-        <a aria-label="Navigate to the Education section" href="#education" class="waves-effect waves-dark teal-text"><i
-            class="mdi-social-school small"></i><span>Education</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Navigate to the Contact section" href="#contact" class="waves-effect waves-dark teal-text"><i
-            class="mdi-content-mail small"></i><span>Contact</span></a>
-      </li>
-      <li class="bold">
-        <a aria-label="Open Nick's Resume in a new tab"
-          href="https://github.com/Nick-Falletta/portfolio/blob/main/assets/resume/FallettaResume.pdf" target="_blank"
-          class="waves-effect waves-dark teal-text"><i class="mdi-file-folder-open small"></i><span>Resume</span></a>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Main Content-->
-  <main>
-    <!-- First Section: Heading lines and image -->
-    <section id="intro" class="section scrollspy full-height">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="col-md-9">
-          <div class="content section-padding valign" style="margin-left: 10%; margin-top: 50px;">
-            <div class="caption">
-              <h2>Hey there! I'm <span class="teal">Nick Falletta</span></h2>
-              <h5 style="color:#fff">A <span class="typing" style="font-weight: 300; color:#004d40"></span></h5>
-        
-              <h5>Self-motivated, and quick-learning software engineer and developer with a passion for solving complex challenges for real-world problems.</h5>
-            </div>
-            <div class="social">
-              <a href="https://www.linkedin.com/in/nick-falletta/" target="_blank">
-                <button class="icon-btn linkedin">
-                  <i class="fa fa-linkedin"></i>
-                </button>
-              </a>
-              <a href="https://github.com/Nick-Falletta" target="_blank">
-                <button class="icon-btn github">
-                  <i class="fa fa-github"></i>
-                </button>
-              </a>
-            </div>
-            <div class='buttons'>
-              <a href="#about" class="readme">Read More</a>
-              <a href="#contact" class="contactme">Contact Me</a>
-            </div>
+  <main id="main">
+    <!-- HERO -->
+    <section id="home" class="hero container">
+      <div class="hero-grid">
+        <div>
+          <span class="tag" aria-hidden="true">Design × Engineering</span>
+          <h1>
+            Building polished, accessible products
+            that ship fast and scale.
+          </h1>
+          <p class="lede">
+            I’m a software engineer & designer focused on intuitive UX, robust code, and real‑world impact.
+            Previously at Penn State; shipped accessibility tools, large language models, and cross‑platform apps.
+          </p>
+          <div class="hero-cta">
+            <a class="btn" href="#projects">View work</a>
+            <a class="btn ghost" href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn ghost" href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">LinkedIn</a>
           </div>
+          <div class="stats" aria-label="Highlights">
+            <div class="stat" aria-live="polite"><strong id="stat1">10+</strong> shipped projects</div>
+            <div class="stat"><strong>iOS, Web, Android</strong> multi‑platform</div>
+            <div class="stat"><strong>Accessibility</strong> first principles</div>
+          </div>
+        </div>
+        <div>
+          <img class="portrait" src="assets/img/NittanyLion.jpeg" alt="Nick with the Nittany Lion Statue" />
         </div>
       </div>
     </section>
 
-    <!-- Second Section: About -->
-    <section id="about" class="section scrollspy">
-      <h3 class="page-title white-text teal">About</h3>
-      <div class="container flow-text">     
-        <p>
-          I’m a Software Engineer and Designer with a strong foundation from Pennsylvania State University. I’m passionate about building intuitive, impactful solutions through code and design—and I love tackling complex problems that make a real difference.
-
-          During my undergraduate years, I worked on a variety of projects using countless technologies. These experiences sharpened my technical skills and sparked a deep interest in software engineering and development.
-
-          I also bring a year of professional internship experience, which helped me grow as a developer and collaborate effectively in real-world environments. I'm especially driven by opportunities to develop software that solve meaningful problems and have the potential to impact millions (or even billions) of users.
-        </p>
-        <p>
-          <ul>
-            <li><b>Languages:</b> Java, Python, JavaScript, TypeScript, HTML/CSS, Dart, Swift, SQL, C#</li>
-            <li><b>Frameworks & Libraries:</b> React.js, React Native, Node.js, Bootstrap, Angular, Flutter, .NET</li>
-            <li><b>Databases:</b> Firebase, MySQL, MongoDB</li>
-            <li><b>Tools & Technologies:</b> GitHub, VS Code, XCode, Android Studio, IntelliJ</li>
-          </ul>
-          
-        </p>
-          
-        <p>
-          My goal is to secure a position at a collarborative business where I can utilize my software engineering and development skills to create and advance software.
-        </p>
-      </div>
-    </section>
-
-
-    <!-- Third Section: Experience -->
-    <section id="experience" class="section scrollspy">
-      <h3 class="page-title white-text teal">Experience</h3>
+    <!-- PROJECTS -->
+    <section id="projects" aria-labelledby="projects-title">
       <div class="container">
-
-        <!-- Latest Experience-->
-        <div class="card">
-          <div class="card-content">
-            <div class="row">
-              <div class="col s12 m2">
-                <a href="https://www.instagram.com/fca.ist/" target="_blank"><img alt="FCA logo"
-                    src="assets/img/FCA Logo.png" class="responsive-img center-block" /></a>
-              </div>
-              <div class="col s12 m10">
-                <p>
-                  <span class="card-title"><a href="https://www.psu.edu" target="_blank"
-                      class="teal-text hoverline">Fundamentals of Computing<br>Association</a></span>
-                </p>
-              </div>
-            </div>
-            <div class="role brown-text text-darken-2">Project Manager</div>
-            <ul>
-              <li>Cultivated leadership and mentorship skills by guiding students through semester-long technical projects, including a personality-based AI chatbot that modifies a website’s visual appearance.</li>
-              <li>Fostered a collaborative and inclusive learning environment by organizing and leading weekly technical boot camps covering skills such as React.js, Full Stack development, GitHub workflows, and UI/UX principles.</li>
-              <li>Inspired growth in peers by emphasizing problem-solving, creativity, and ownership in all projects, helping students apply classroom knowledge to impactful real-world solutions.</li>
-            </ul>
-          </div>
-          <div class="card-action">
-            <span>August 2023 - May 2025 | State College, PA</span>
-          </div>
+        <div class="sectionHeader">
+          <h2 id="projects-title">Featured Projects</h2>
+          <p>Case studies that demonstrate product thinking, engineering depth, and delivery.</p>
         </div>
-
-        <div class="card">
-          <div class="card-content">
-            <div class="row">
-              <div class="col s12 m2">
-                <a href="https://www.psu.edu" target="_blank"><img alt="Psu logo"
-                    src="assets/img/psu.png" class="responsive-img center-block" /></a>
-              </div>
-              <div class="col s12 m10">
-                <p>
-                  <span class="card-title"><a href="https://www.psu.edu" target="_blank"
-                      class="teal-text hoverline">Pennsylvania State University</a></span>
-                </p>
-              </div>
+        <div class="projects">
+          <!-- Title Tracker -->
+          <article class="card reveal">
+            <div class="card-media">
+              <img src="assets/img/titletracker.png" alt="Title Tracker app preview" loading="lazy" />
             </div>
-            <div class="role brown-text text-darken-2">Software Developer Intern</div>
-            <ul>
-              <li>
-                Developed a strong foundation in accessibility-focused design and user-centered research through collaboration with visually impaired users and academic professors.
-              </li>
-              <li>Honed problem-solving and team collaboration skills by working in weekly meetings with PhD students and professors to troubleshoot, refine, and iterate on each other's projects.</li>
-              <li>Openly communicated with the employer and his employees to refine the application to their needs.</li>
-              <li>Led the development of NaviGPT, an iOS application using Swift and OpenAI's API to help visually impaired users navigate safely.</li>
-              <li>Researched and implemented best practices in AI and navigation by studying academic literature, ensuring the app effectively addressed real-world challenges in accessibility.</li>
-              <li>
-                <b>Tools:</b> Swift, LiDAR Camera, OpenAI API, Apple Maps
-              </li>
-            </ul>
-          </div>
-          <div class="card-action">
-            <span>May - Dec 2024 | State College, PA</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-content">
-            <div class="row">
-              <div class="col s12 m2">
-                <a href="https://www.comm-resexams.com" target="_blank"><img alt="CommRes logo"
-                    src="assets/img/commres.png" class="responsive-img center-block" /></a>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">Title Tracker</h3>
+                <span class="chip">Flutter · Firebase</span>
               </div>
-              <!-- <div class="col s12 m10"> -->
-              <div class="col s12 m10">
-                <p>
-                  <span class="card-title"><a href="https://www.comm-resexams.com" target="_blank"
-                      class="teal-text hoverline">Comm-Res Exams Corporation</a></span>
-                </p>
-              </div>
+              <p>Workflow manager for Comm‑Res Exams Corp. Realtime data, secure auth, and cross‑platform delivery.</p>
             </div>
-            <div class="role brown-text text-darken-2">Software Developer Intern</div>
-            <ul>
-              <li>
-                Strengthened project management and communication skills by collaborating closely with staff to align development with business needs.
-              </li>
-              <li>Gained hands-on experience refining company software and building scalable internal tools to enhance operational efficiency.</li>
-              <li>Led the development of Title Tracker, a cross-platform mobile app built with Flutter and Firebase to streamline company workflow management and securely store company data in the cloud.</li>
-              <li>Conducted interviews with employees to tailor the app’s design and functionality, effectively translating real-world needs into technical solutions.</li>
-                <li><b>Tools:</b> Dart, Flutter, Firebase, Cloud Firestore</li>
-            </ul>
-          </div>
-          <div class="card-action">
-            <span>Dec 2022 - April 2023 | Mineola, NY</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Fourth Section: Projects -->
-    <section id="projects" class="section scrollspy">
-      <h3 class="page-title white-text teal">Projects</h3>
-      <div class="container">
-        <div class="row">
-
-          <div class="col s12 m6 l4">
-            <div class="card medium">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img alt="Title Tracker" src="assets/img/titletracker.png" style="height: 100%; width: 100%" class="activator" />
-              </div>
-              <div class="card-content">
-                <span class="card-title activator teal-text hoverline">Title Tracker<i
-                    class="mdi-navigation-more-vert right"></i></span>
-                <p>
-                  A organizer app for tracking and managing workflows for Comm-Res Exams Corp
-                </p>
-              </div>
-              <div class="card-reveal">
-                
-                <span class="card-title grey-text"><small>Accomplishments</small><i
-                    class="mdi-navigation-close right"></i></span>
-                <ul>
-                  <li><b>Tools:</b> Dart, Flutter, Firebase, Cloud Firestore</li>
-                  <li>Implemented secure authentication with Firebase.</li>
-                  <li>Designed to manage workflows using real-time Firebase data.</li>
-                  <li>Users can add, edit, and delete data in-app.</li>
-                  <li>Built as a cross-platform app for iOS and Android.</li>
-                </ul>
-                <div class="card-action">
-                  <a aria-label="Visit the GitHub repo for  project" href="https://github.com/NickBoi0/TitleTracker"
-                    target="_blank" data-position="top" data-tooltip="View Source"
-                    class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                      class="fa fa-github"></i></a>
-                </div>
-              </div>
+            <div class="card-actions">
+              <a class="btn ghost" href="https://apps.apple.com/us/app/title-tracker/id6504823785" target="_blank" rel="noopener">iOS</a>
+              <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.nicky.titletracker" target="_blank" rel="noopener">Android</a>
             </div>
-          </div>
+          </article>
 
-          <div class="col s12 m6 l4">
-            <div class="card medium">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img alt="NaviGPT" src="assets/img/navigpt.png" style="height: 100%; width: 100%" class="activator" />
-              </div>
-              <div class="card-content">
-                <span class="card-title activator teal-text hoverline">NaviGPT<i
-                    class="mdi-navigation-more-vert right"></i></span>
-                <p>
-                  Smart Navigation Assistant for the Visually Impaired
-                </p>
-              </div>
-              <div class="card-reveal">
-              
-                <span class="card-title grey-text"><small>Accomplishments</small><i
-                    class="mdi-navigation-close right"></i></span>
-                <ul>
-                  <li><b>Tools:</b> Swift, LiDAR Camera, OpenAI API, Apple Maps</li>
-                  <li>Uses iPhone LiDAR to detect objects and give haptic feedback.</li>
-                  <li>Integrates Apple Maps for real-time navigation.</li>
-                  <li>AI analyzes routes and images to guide users intelligently.</li>
-                </ul>
-                <div class="card-action">
-                  <a aria-label="Visit the professional paper" href="https://arxiv.org/pdf/2410.04005"
-                      target="_blank" data-position="top" data-tooltip="View Paper"
-                      class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                        class="fa fa-external-link"></i></a>
-                  <a aria-label="Visit the GitHub repo for  project" href="https://github.com/PSU-IST-CIL/NaviGPT/"
-                    target="_blank" data-position="top" data-tooltip="View Source"
-                    class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                      class="fa fa-github"></i></a> 
-                </div>
-              </div>
+          <!-- NaviGPT -->
+          <article class="card reveal">
+            <div class="card-media">
+              <img src="assets/img/navigpt.png" alt="NaviGPT LiDAR navigation app" loading="lazy" />
             </div>
-          </div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">NaviGPT</h3>
+                <span class="chip">Swift · LiDAR · OpenAI</span>
+              </div>
+              <p>Accessible navigation assistant for visually impaired users. LiDAR object detection, haptics, and AI guidance.</p>
+            </div>
+            <div class="card-actions">
+              <a class="btn ghost" href="https://arxiv.org/pdf/2410.04005" target="_blank" rel="noopener">Paper</a>
+              <a class="btn ghost" href="https://github.com/PSU-IST-CIL/NaviGPT/" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
 
-          <!-- Kaizen Project -->
-          <div class="col s12 m6 l4">
-            <div class="card medium">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img alt="Kaizen" src="assets/img/kaizen.png"
-                style="height: 100%; width: 100%;" class="activator" />
-              </div>
-              <div class="card-content">
-                <span class="card-title activator teal-text hoverline">Kaizen<i
-                    class="mdi-navigation-more-vert right"></i></span>
-                <p>
-                  AI Tool for Converting Therapy Sessions into Concise Notes
-                </p>
-              </div>
-              <div class="card-reveal">
-              
-                <span class="card-title teal-text"><small>Accomplishments</small><i
-                    class="mdi-navigation-close right"></i></span>
-                <ul>
-                  <li><b>Tools:</b> React Native, Gemini API, Python</li>
-                  <li>Records sessions and generates concise, highlighted notes.</li>
-                  <li>Customizable home screen with folders and note organization.</li>
-                  <li>Supports uploading past sessions for note generation.</li>
-                  <li><b>Note:</b> Everything in the below Figma link is subject to change once coded!</li>
-                </ul>
-                <div class="card-action">
-                  <a aria-label="Visit Blog website" href="https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1&t=fS7IMlJgSrSIxIYD-1" target="_blank" data-position="top"
-                    data-tooltip="View Online"
-                    class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                      class="fa fa-external-link"></i></a>
-                </div>
-              </div>
+          <!-- Kaizen/TherAI -->
+          <article class="card reveal">
+            <div class="card-media">
+              <img src="assets/img/kaizen.png" alt="Kaizen note converter prototype" loading="lazy" />
             </div>
-          </div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">Kaizen</h3>
+                <span class="chip">React · Gemini · Python</span>
+              </div>
+              <p>Turns therapy sessions into concise, highlighted notes. Upload past sessions, organize by folder, export.</p>
+            </div>
+            <div class="card-actions">
+              <a class="btn ghost" href="https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1" target="_blank" rel="noopener">Figma</a>
+            </div>
+          </article>
 
           <!-- Jarvis -->
-          <div class="col s12 m6 l4">
-            <div class="card medium">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img alt="Kaizen" src="assets/img/jarvis.png"
-                style="height: 100%; width: 100%;" class="activator" />
-              </div>
-              <div class="card-content">
-                <span class="card-title activator teal-text hoverline">Jarvis<i
-                    class="mdi-navigation-more-vert right"></i></span>
-                <p>
-                  AI ChatBot with Personalized Personality, Voice Controls, and Real-Time Style Editing
-                </p>
-              </div>
-              <div class="card-reveal">
-              
-                <span class="card-title teal-text"><small>Accomplishments</small><i
-                    class="mdi-navigation-close right"></i></span>
-                <ul>
-                  <li><b>Tools:</b> React.js, OpenAI API</li>
-                  <li>Customizable ChatBot using OpenAI’s API with user-defined personalities.</li>
-                  <li>Retains conversation context for natural, continuous chats.</li>
-                  <li>Users can edit website CSS directly through the ChatBot.</li>
-                  <li>Supports voice input and Text-to-Speech for interaction.</li>
-
-                </ul>
-                <div class="card-action">
-                  <a aria-label="Visit the GitHub repo for  project" href="https://github.com/Nick-Falletta/jarvis"
-                    target="_blank" data-position="top" data-tooltip="View Source"
-                    class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                      class="fa fa-github"></i></a>
-                </div>
-              </div>
+          <article class="card reveal">
+            <div class="card-media">
+              <img src="assets/img/jarvis.png" alt="Jarvis chatbot editing a website style live" loading="lazy" />
             </div>
-          </div>
-
-          <!-- taggingQuestion -->
-          <div class="col s12 m6 l4">
-            <div class="card medium">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img alt="Kaizen" src="assets/img/taggingQuestion.png"
-                style="height: 100%; width: 100%;" class="activator" />
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">Jarvis</h3>
+                <span class="chip">React · OpenAI</span>
               </div>
-              <div class="card-content">
-                <span class="card-title activator teal-text hoverline">Multiple Choice Question Designer<i
-                    class="mdi-navigation-more-vert right"></i></span>
-                <p>
-                  Customizable Multiple-Choice Quiz Web App
-                </p>
-              </div>
-              <div class="card-reveal">
-              
-                <span class="card-title teal-text"><small>Accomplishments</small><i
-                    class="mdi-navigation-close right"></i></span>
-                <ul>
-                  <li><b>Tools:</b> React.js, JavaScript, HTML/CSS, JSON</li>
-                  <li>Lets users create questions, images, and answers via JSON.</li>
-                  <li>Displays quizzes in an interactive format for self or guest use.</li>
-                  <li>Gives instant feedback with clear visual indicators.</li>
-                </ul>
-
-                <div class="card-action">
-                  <a aria-label="Visit the GitHub repo for  project" href="https://github.com/Nick-Falletta/taggingQuestion"
-                    target="_blank" data-position="top" data-tooltip="View Source"
-                    class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-                      class="fa fa-github"></i></a>
-                </div>
-              </div>
+              <p>Customizable AI chatbot with voice input and CSS live‑editing. Context retention and personality presets.</p>
             </div>
-          </div>
+            <div class="card-actions">
+              <a class="btn ghost" href="https://github.com/Nick-Falletta/jarvis" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
 
-          <!-- ************* -->
+          <!-- Multiple Choice Builder -->
+          <article class="card reveal">
+            <div class="card-media">
+              <img src="assets/img/taggingQuestion.png" alt="Multiple choice builder interface" loading="lazy" />
+            </div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">Multiple‑Choice Builder</h3>
+                <span class="chip">React · JSON</span>
+              </div>
+              <p>Author quizzes via JSON with instant feedback and image support; great for self‑study & workshops.</p>
+            </div>
+            <div class="card-actions">
+              <a class="btn ghost" href="https://github.com/Nick-Falletta/taggingQuestion" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+
+          <!-- Add a placeholder project slot -->
+          <article class="card reveal">
+            <div class="card-media" aria-hidden="true">
+              <svg viewBox="0 0 400 250" role="img" aria-label="Placeholder" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="250" rx="12" fill="#0a1113"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#3b4b52" font-size="18">New case study coming…</text></svg>
+            </div>
+            <div class="card-body">
+              <div class="card-title">
+                <h3 style="margin:0">Next up</h3>
+                <span class="chip">TBD</span>
+              </div>
+              <p>Currently exploring smarter, privacy‑first location experiences with on‑device ML.</p>
+            </div>
+            <div class="card-actions">
+              <a class="btn" href="mailto:nickfalletta29@outlook.com">Collaborate</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- Fifth Section: Skills -->
-    <section id="skills" class="section scrollspy">
-      <h3 class="page-title white-text teal">Skills</h3>
+    <!-- EXPERIENCE -->
+    <section id="experience" aria-labelledby="exp-title">
       <div class="container">
-        <!-- Languages -->
-        <div class="card">
-          <div class="card-content">
-            <h4 class="brown-text light">Programming Languages</h4>
-            <div class="row text-center">
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/java.webp" class="responsive-img" />Java
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/python.png" class="responsive-img" />Python
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/stack.png" class="responsive-img" />Front-End Stack
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/typescript.png" class="responsive-img" />TypeScript
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/dart.png" class="responsive-img" />Dart
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/Csharp.png" class="responsive-img" />C#
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/swift.png" class="responsive-img" />Swift
-              </div>
-            </div>
-          </div>
+        <div class="sectionHeader">
+          <h2 id="exp-title">Experience</h2>
+          <p>Leadership, research collaboration, and product delivery across academia and industry.</p>
         </div>
-<!-- Frameworks & Libraries -->
-        <div class="card">
-          <div class="card-content">
-            <h4 class="brown-text light">Frameworks & Libraries</h4>
-            <div class="row text-center">
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/React.webp" class="responsive-img" />React.js
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/React.webp" class="responsive-img" />React Native
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/flutter.png" class="responsive-img" />Flutter
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/nodejs.png" class="responsive-img" />Node.js
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/bootstrap.png" class="responsive-img" />Bootstrap
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/angular.png" class="responsive-img" />Angular
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/net.png" class="responsive-img" />.NET
-              </div>
+        <div class="timeline">
+          <article class="t-item reveal">
+            <div class="t-head">
+              <h3 style="margin:0">Fundamentals of Computing Association</h3>
+              <span class="t-role">Project Manager</span>
+              <span class="t-meta">Aug 2023 — May 2025 · State College, PA</span>
             </div>
-          </div>
-        </div>
+            <ul>
+              <li>Guided students through semester‑long builds (React, full‑stack, GitHub, UI/UX), including a personality‑driven AI chatbot.</li>
+              <li>Organized weekly bootcamps; fostered collaboration and ownership.</li>
+            </ul>
+          </article>
 
-        <!-- DataBases -->
-        <div class="card">
-          <div class="card-content">
-            <h4 class="brown-text light">Databases</h4>
-            <div class="row text-center">
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/mysql-logo-1-300x300.jpg" class="responsive-img" />MySQL
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/firebase.webp" class="responsive-img" />Firebase
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/mongo.png" class="responsive-img" />MongoDB
-              </div>
+          <article class="t-item reveal">
+            <div class="t-head">
+              <h3 style="margin:0">Pennsylvania State University</h3>
+              <span class="t-role">Software Developer Intern</span>
+              <span class="t-meta">May — Dec 2024 · State College, PA</span>
             </div>
-          </div>
-        </div>
+            <ul>
+              <li>Developed <strong>NaviGPT</strong> — iOS app using LiDAR and OpenAI; collaborated with visually‑impaired users and faculty.</li>
+              <li>Ran research‑driven iterations; integrated Apple Maps; shipped haptics & on‑device guidance.</li>
+            </ul>
+          </article>
 
-        <!-- Tools -->
-        <div class="card">
-          <div class="card-content">
-            <h4 class="brown-text light">Tools</h4>
-            <div class="row text-center">
-
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/figma.png" class="responsive-img" />Figma
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/github.svg" class="responsive-img" />GitHub
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/vscode.png" class="responsive-img" />VS Code
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/xcode.png" class="responsive-img" />XCode
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/androidstudio.png" class="responsive-img" />Android Studio
-              </div>
-              <div class="col s4 m2">
-                <img alt="" src="assets/img/intellij.png" class="responsive-img" />IntelliJ
-              </div>
+          <article class="t-item reveal">
+            <div class="t-head">
+              <h3 style="margin:0">Comm‑Res Exams Corporation</h3>
+              <span class="t-role">Software Developer Intern</span>
+              <span class="t-meta">Dec 2022 — Apr 2023 · Mineola, NY</span>
             </div>
-          </div>
+            <ul>
+              <li>Built <strong>Title Tracker</strong> (Flutter + Firebase): secure auth, realtime data, iOS & Android release.</li>
+              <li>Partnered with stakeholders; translated workflow needs into app features.</li>
+            </ul>
+          </article>
         </div>
-
       </div>
     </section>
 
-    <!-- Seventh Section: Education -->
-    <section id="education" class="section scrollspy">
-      <h3 class="page-title white-text teal">Education</h3>
+    <!-- SKILLS -->
+    <section id="skills" aria-labelledby="skills-title">
       <div class="container">
-        <div class="row">
-          <!-- Education -->
-          <div class="col s12 m6 l6">
-            <div class="card">
-              <div class="card-content">
-                <p>
-                  <span class="card-title"><a href="https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/human-centered-design-development-bs/" target="_blank" class="teal-text hoverline">The Pennsylvania State University</a></span>
-                </p>
-                <p class="brown-text">State College, PA</p>
-                <p>
-                  <b>Degree: </b>Bachelor of Science in Software Design and Development   
-                  <br>
-                </p>
-
-                <ul>
-                  <p>
-                    <b>Relevant Courseworks:</b>
-                  <ul>
-                    <li>Designing with Figma</li>
-                    <li>Developing with React.js and Android Studio</li>
-                    <li>Database Management Systems</li>                    
-                  </ul>
-                  </p>
-
-                </ul>
-              </div>
+        <div class="sectionHeader">
+          <h2 id="skills-title">Skills</h2>
+          <p>Comfortable across the stack; obsessed with detail, accessibility, and performance.</p>
+        </div>
+        <div class="skills">
+          <div class="skill-card reveal">
+            <h3>Languages</h3>
+            <div class="skill-tags">
+              <span class="tag-pill">Java</span><span class="tag-pill">Python</span><span class="tag-pill">TypeScript</span><span class="tag-pill">JavaScript</span><span class="tag-pill">Swift</span><span class="tag-pill">Dart</span><span class="tag-pill">SQL</span><span class="tag-pill">C#</span>
             </div>
-
-            
           </div>
-          <div class="col s12 m6 l6">
-            <div class="card">
-              <div class="card-content">
-                <p>
-                  <span class="card-title"><a href="https://bulletins.psu.edu/undergraduate/colleges/smeal-business/smeal-college-business-fundamentals-certificate/" target="_blank" class="teal-text hoverline">The Pennsylvania State University</a></span>
-                </p>
-                <p class="brown-text">State College, PA</p>
-                <p>
-                  <b>Degree: </b>Smeal College Business Fundamentals Certificate
-                  <br>
-                </p>
-
-                <ul>
-                  <p>
-                    <b>Relevant Courseworks:</b>
-                  <ul>
-                    <li>Business Analytics</li>
-                    <li>Finance and Accounting</li>
-                    <li>Marketing Strategies</li>
-                  </ul>
-                  </p>
-
-                </ul>
-              </div>
+          <div class="skill-card reveal">
+            <h3>Frameworks & Libraries</h3>
+            <div class="skill-tags">
+              <span class="tag-pill">React</span><span class="tag-pill">React Native</span><span class="tag-pill">Node</span><span class="tag-pill">Flutter</span><span class="tag-pill">.NET</span><span class="tag-pill">Bootstrap</span><span class="tag-pill">Angular</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <h3>Platforms & Tools</h3>
+            <div class="skill-tags">
+              <span class="tag-pill">iOS</span><span class="tag-pill">Xcode</span><span class="tag-pill">Android Studio</span><span class="tag-pill">Firebase</span><span class="tag-pill">MongoDB</span><span class="tag-pill">MySQL</span><span class="tag-pill">GitHub</span><span class="tag-pill">Figma</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Eight Section: Contact -->
-    <section id="contact" class="section scrollspy full-height">
-      <h3 class="page-title white-text teal">Contact</h3>
+    <!-- EDUCATION -->
+    <section id="education" aria-labelledby="edu-title">
       <div class="container">
-        <p>
-          <a aria-label="Call Nick" data-position="top" data-tooltip="Call Nick"
-            class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i class="fa fa-phone"></i><a
-              aria-label="Call Nick">+1 631-637-5632</a></a>
-        </p>
-        <p>
-          <a aria-label="Email Nick" href="mailto:vbhogayata@gmail.com" target="_blank" data-position="top"
-            data-tooltip="Email Nick" class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-              class="fa fa-envelope"></i><a aria-label="Email Nick" href="mailto:nickfalletta29@outlook.com"
-              class="hoverline">nickfalletta29@outlook.com</a></a>
-        </p>
-        <p>
-          <a aria-label="View Nick on GitHub" href="https://github.com/Nick-Falletta" target="_blank"
-            data-position="top" data-tooltip="View Nick on GitHub"
-            class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i class="fa fa-github"></i><a
-              aria-label="Nick on Github" href="https://github.com/Nick-Falletta" class="hoverline"
-              target="_blank">https://github.com/Nick-Falletta</a></a>
-        </p>
-        <p>
-          <a aria-label="View Nick on LinkedIn" href="https://www.linkedin.com/in/nick-falletta" target="_blank"
-            data-position="top" data-tooltip="View Nick on LinkedIn"
-            class="btn-floating btn-large waves-effect waves-light blue-grey tooltipped"><i
-              class="fa fa-linkedin"></i><a aria-label="Nick on LinkedIn" href="https://www.linkedin.com/in/nick-falletta"
-              class="hoverline" target="_blank">https://www.linkedin.com/in/nick-falletta</a></a>
-        </p>
+        <div class="sectionHeader">
+          <h2 id="edu-title">Education</h2>
+          <p>Pennsylvania State University · B.S. in Human Centered Design & Development · Smeal Business Fundamentals Cert.</p>
+        </div>
+        <div class="edu">
+          <article class="edu-card reveal">
+            <h3 style="margin-top:0">B.S. — Human Centered Design & Development</h3>
+            <p class="muted">State College, PA</p>
+            <ul>
+              <li>Built full-stack applications with React, Java, and Python</li>
+              <li>Applied UI/UX principles in Figma to design and prototype user-centric interfaces</li>
+              <li>Implemented relational database systems with SQL and MongoDB and optimized queries for performance</li>
+            </ul>
+          </article>
+          <article class="edu-card reveal">
+            <h3 style="margin-top:0">Smeal Business Fundamentals Certificate</h3>
+            <p class="muted">State College, PA</p>
+            <ul>
+              <li>Applied data-driven decision making through business analytics case studies</li>
+              <li>Gained foundations in financial reporting, accounting, and managerial finance</li>
+              <li>Developed insights into marketing strategy and competitive positioning</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="sectionHeader">
+          <h2 id="contact-title">Let’s build something great</h2>
+          <p>Reach out for roles, collaborations, or just to say hi.</p>
+        </div>
+        <div class="contact">
+          <div class="panel reveal">
+            <div class="contact-list" role="list">
+              <div class="row" role="listitem"><strong>Email</strong> <a href="mailto:nickfalletta29@outlook.com">nickfalletta29@outlook.com</a> <button class="copy" data-copy="nickfalletta29@outlook.com" aria-label="Copy email">Copy</button></div>
+              <div class="row" role="listitem"><strong>Phone</strong> <a href="tel:+16316375632">+1 (631) 637‑5632</a> <button class="copy" data-copy="+16316375632" aria-label="Copy phone">Copy</button></div>
+              <div class="row" role="listitem"><strong>GitHub</strong> <a href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">/Nick‑Falletta</a></div>
+              <div class="row" role="listitem"><strong>LinkedIn</strong> <a href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">/in/nick‑falletta</a></div>
+            </div>
+          </div>
+          <div class="panel reveal">
+            <h3 style="margin-top:0">Why teams work with me</h3>
+            <ul>
+              <li>Blend of product sense and engineering rigor — think in systems, ship in iterations.</li>
+              <li>Accessibility and performance aren’t afterthoughts; they’re the baseline.</li>
+              <li>Clear communication, strong ownership, and empathy for users and teammates.</li>
+            </ul>
+            <p style="color:var(--muted)">Résumé available on request or via the button above.</p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- typed.js -->
-  <script src="assets/Vendor/typed.js/typed.min.js"></script>
-  <script type="text/javascript">
-    var typed = new Typed('.typing',{
-      strings: ["Innovative", "Analytical", "Curious"],
-      loop: true,
-      typeSpeed: 80,
-      backSpeed: 40
-    });
-  </script>
+  <footer>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+        <small>© <span id="year"></span> Nicholas Falletta. All rights reserved.</small>
+        <small>Last updated <time id="updated"></time></small>
+      </div>
+    </div>
+  </footer>
 
-
-  <!-- jQuery-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-  <!-- Materialize - Compiled and minified JavaScript-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
   <script>
-    // Materialize - Initializers
-    $(document).ready(function () {
-      $(".scrollspy").scrollSpy()
-      // Initialize collapse button
-      $(".button-collapse").sideNav({
-        menuWidth: 190, // Default is 240
-        edge: "left", // Choose the horizontal origin
-        closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('active');
+      menu.classList.toggle('show');
+      
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true' || false;
+      menuBtn.setAttribute('aria-expanded', !expanded);
+    });
+
+    // Close mobile menu when a nav link is clicked
+  document.querySelectorAll('#menu .link').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 899px)').matches) {
+        menu.classList.remove('show');
+        menuBtn.classList.remove('active');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+    // Active link on scroll
+    const links = [...document.querySelectorAll('.nav a.link')];
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const setActive = (id) => {
+      links.forEach(l => l.setAttribute('aria-current', l.getAttribute('href') === '#' + id));
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+    sections.forEach(s => io.observe(s));
+
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); ro.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => ro.observe(el));
+
+    // Stats count-up (simple, reduced-motion aware)
+    const stat1 = document.getElementById('stat1');
+    if (stat1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const end = 10; let n = 0; const step = () => { n += 1; stat1.textContent = n + '+'; if (n < end) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }
+
+    // Copy buttons
+    document.querySelectorAll('.copy').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy', 1200); } catch {}
       })
     })
+
+    // Footer metadata
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const updated = new Date(document.lastModified);
+    document.getElementById('updated').textContent = updated.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric'});
+  
   </script>
 </body>
-
 </html>

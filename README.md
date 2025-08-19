@@ -1,26 +1,79 @@
-<h1 align="center">Hey 👋, I'm Nick Falletta</h1>
-<h3 align="center">I am a Software Design and Development student at the Pennsylvania State University, expected to graduate Spring 2025. I enjoy problem-solving and coding, and I always strive to bring 100% to the work I do. I have worked on technologies utizing React.js, React Native, JavaScript, Flutter, MySQL, HTML/CSS, Swift, and Java during my undergraduate years. I have 10 months of professional work experience which helped me strengthen my experience. I am passionate about developing complex applications that solve real-world problems impacting billions of users.</h3>
+# Nicholas Falletta — Software Developer
 
-- 🔭 I’m currently working on [Kaizen](https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1&t=fS7IMlJgSrSIxIYD-1)
+I am a **Software Design and Development student** at **The Pennsylvania State University**, graduating **Spring 2025**. My work bridges **product design and engineering**, with a focus on **intuitive user experiences, accessibility-first development, and scalable solutions**.
 
-- 🌱 I’m currently learning **React Native and Large Language Models!**
+I’ve built and shipped applications across **iOS, Android, and Web**, leveraging modern frameworks and tools such as **React.js, React Native, Flutter, Swift, Java, and Python**. With nearly a year of professional experience and multiple research collaborations, I bring both **technical depth** and **product sense** to the teams I work with.
 
-- 🤝 My favorite project is [NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/https://github.com/PSU-IST-CIL/NaviGPT/)
+---
 
-- 👨‍💻 All of my projects are available at [nick-falletta.github.io/portfolio](https://nick-falletta.github.io/portfolio/)
+## 🚀 Featured Projects
 
-- 💬 Ask me about **React.js, Flutter, Java**
+* **[NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/)** · *Swift · LiDAR · OpenAI*
+  Accessibility-focused navigation assistant for visually impaired users. Integrates LiDAR object detection, haptics, and AI guidance.
 
-- 📫 How to reach me **nickfalletta29@outlook.com**
+  * Published [research paper](https://arxiv.org/pdf/2410.04005) and GitHub release.
 
-- 📄 Know about my experiences [https://github.com/Nick-Falletta/portfolio/blob/main/assets/resume/FallettaResume2025.pdf](https://github.com/Nick-Falletta/portfolio/blob/main/assets/resume/FallettaResume2025.pdf)
+* **[Title Tracker](https://apps.apple.com/us/app/title-tracker/id6504823785)** · *Flutter · Firebase*
+  Workflow management system for Comm-Res Exams Corp. Deployed on iOS and Android with secure auth and real-time data.
 
-- ⚡ Fun fact **I enjoy rock climbing!**
+* **[Kaizen](https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1)** · *React · Gemini · Python*
+  Transforms therapy session transcripts into concise, organized notes. Prototype in Figma with export functionality.
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-<a href="https://linkedin.com/in/nick-falletta" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="nick-falletta" height="30" width="40" /></a>
-</p>
+* **[Jarvis](https://github.com/Nick-Falletta/jarvis)** · *React · OpenAI*
+  A customizable AI chatbot with voice input, CSS live-editing, context retention, and personality presets.
 
-<h3 align="left">Languages and Tools:</h3>
-<p align="left"> <a href="https://developer.android.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/android/android-original-wordmark.svg" alt="android" width="40" height="40"/> </a> <a href="https://www.gnu.org/software/bash/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/> </a> <a href="https://www.figma.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/> </a> <a href="https://firebase.google.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/> </a> <a href="https://flutter.dev" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg" alt="flutter" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://ionicframework.com" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Ionic_Logo.svg" alt="ionic" width="40" height="40"/> </a> <a href="https://www.java.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> <a href="https://reactnative.dev/" target="_blank" rel="noreferrer"> <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="40" height="40"/> </a> <a href="https://developer.apple.com/swift/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/swift/swift-original.svg" alt="swift" width="40" height="40"/> </a> </p>
+* **[Multiple-Choice Builder](https://github.com/Nick-Falletta/taggingQuestion)** · *React · JSON*
+  JSON-driven quiz authoring tool with instant feedback and image support, designed for self-study and workshops.
+
+---
+
+## 💼 Experience
+
+**Software Developer Intern — Penn State** *(2024)*
+
+* Developed *NaviGPT*, an iOS navigation assistant, collaborating with visually impaired users and faculty.
+* Integrated LiDAR, Apple Maps, haptics, and on-device guidance through iterative, research-driven design.
+
+**Software Developer Intern — Comm-Res Exams Corp.** *(2022–2023)*
+
+* Built *Title Tracker* with Flutter and Firebase, translating workflow needs into a cross-platform mobile app.
+
+**Project Manager — Fundamentals of Computing Association** *(2023–2025)*
+
+* Guided students through full-stack builds (React, GitHub, UI/UX).
+* Led workshops and bootcamps, fostering collaboration and ownership.
+
+---
+
+## 🛠️ Skills
+
+* **Languages:** Java, Python, TypeScript, JavaScript, Swift, Dart, SQL, C#
+* **Frameworks:** React, React Native, Node.js, Flutter, .NET, Bootstrap, Angular
+* **Tools & Platforms:** iOS, Android Studio, Xcode, Firebase, MongoDB, MySQL, GitHub, Figma
+
+---
+
+## 🎓 Education
+
+**B.S. Human-Centered Design & Development** — Penn State University *(Expected Spring 2025)*
+
+* Focused on full-stack application development, UI/UX design, and accessible software.
+
+**Smeal College of Business — Business Fundamentals Certificate**
+
+* Coursework in financial reporting, managerial finance, and data-driven decision making.
+
+---
+
+## 📫 Connect
+
+* **Email:** [nickfalletta29@outlook.com](mailto:nickfalletta29@outlook.com)
+* **GitHub:** [Nick-Falletta](https://github.com/Nick-Falletta)
+* **LinkedIn:** [nick-falletta](https://www.linkedin.com/in/nick-falletta)
+* **Portfolio:** [nick-falletta.dev](https://nick-falletta.dev)
+
+---
+
+⚡ **Fun fact:** When I’m not coding, I enjoy **rock climbing**, **fishing**, **camping**, **and hiking!**
+
+---
