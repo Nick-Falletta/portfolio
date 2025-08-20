@@ -21,19 +21,25 @@
   <!--              CSS              -->
   <!-- ============================= -->
   <style>
-    /* ---------------------- 
-       Design System (colors, shadows)
-       ---------------------- */
+    /* ================================
+              DESIGN SYSTEM
+      ================================ */
     :root {
-      --bg: #0b0f10;           /* canvas */
-      --panel: #0e1416;        /* surfaces */
-      --text: #e7f1ef;         /* primary text */
-      --muted: #94a3a7;        /* secondary text */
-      --brand: #0f766e;        /* teal */
-      --brand-2: #14b8a6;      /* accent */
-      --ring: #22c55e;         /* focus ring */
+      --bg: #0b0f10;
+      --panel: #0e1416;
+      --text: #e7f1ef;
+      --muted: #a6b6ba;
+      --brand: #0f766e;
+      --brand-2: #14b8a6;
+      --ring: #22c55e;
       --code: #0b1a1f;
       --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --ocean-surface: hsl(195, 94%, 50%);
+      --ocean-mid: hsl(195 100% 15%);
+      --ocean-deep: hsl(200 100% 0%);
+      --ocean-snow: hsl(190 12% 82% / .6);
+      --ocean-plank: hsl(160 60% 55% / .35);
+      --ocean-bubble: hsl(190 100% 96% / .9);
     }
     @media (prefers-color-scheme: light) {
       :root {
@@ -49,18 +55,82 @@
       }
     }
 
-    /* ---------------------- 
-       Base / Reset
-       ---------------------- */
+    /* ================================
+                BASE / RESET
+      ================================ */
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     html:focus-within { scroll-behavior: smooth; }
-    body { margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; background: var(--bg); color: var(--text); }
+    body { margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); background: transparent; }
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--brand-2); text-decoration: none; }
     a:hover { text-decoration: underline; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     .container { width: min(1100px, 92%); margin-inline: auto; }
+
+
+    /* ================================
+              OCEAN BACKGROUND
+      ================================ */
+    #ocean-canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+    #ocean-top { position: relative; height: 240px; background: rgb(134, 226, 250); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); -webkit-mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); mask-repeat: no-repeat; mask-size: 100% 100%; }
+    #ocean-top .waves { position: absolute; inset: 0; top: 80px; width: calc(100% + 100px); height: 100%; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); pointer-events: none; }
+    .waves-back { z-index: 1; }
+    #boat-wrap { z-index: 2; }
+    .waves-front { z-index: 3; }
+
+
+    /* ================================
+                    BOAT
+      ================================ */
+    #boat-wrap { position: absolute; top: 10px; right: 20px; pointer-events: none; }
+    #boat-img { width: 300px; animation: boatBob 5s ease-in-out infinite, boatTilt 8s ease-in-out infinite; filter: drop-shadow(0 6px 14px rgba(0,0,0,.3)); }
+    @media (prefers-reduced-motion: reduce) { #boat-img, .waves .layer, .waves .bob { animation: none !important; } }
+
+
+    /* ================================
+                  WAVES
+      ================================ */
+    .waves .layer use { fill: var(--c); }
+    .waves .waveA use { opacity: .75; }
+    .waves .waveB use { opacity: .55; }
+    .waves .waveC use { opacity: .38; }
+    @keyframes tiltA { 0% { transform: rotate(0.3deg);} 100% { transform: rotate(-0.3deg);} }
+    @keyframes tiltB { 0% { transform: rotate(-0.4deg);} 100% { transform: rotate(0.4deg);} }
+    @keyframes tiltC { 0% { transform: rotate(0.2deg);} 100% { transform: rotate(-0.2deg);} }
+    @keyframes bobA { 0%,100% { transform: translateY(0);} 50% { transform: translateY(12px);} }
+    @keyframes bobB { 0%,100% { transform: translateY(0);} 50% { transform: translateY(9px);} }
+    @keyframes bobC { 0%,100% { transform: translateY(0);} 50% { transform: translateY(6px);} }
+    .waves .waveA { animation: tiltA 8s ease-in-out infinite alternate; }
+    .waves .waveB { animation: tiltB 10s ease-in-out infinite alternate; }
+    .waves .waveC { animation: tiltC 12s ease-in-out infinite alternate; }
+    .waves .waveA .bob { animation: bobA 6s ease-in-out infinite alternate; }
+    .waves .waveB .bob { animation: bobB 7s ease-in-out infinite alternate; }
+    .waves .waveC .bob { animation: bobC 8s ease-in-out infinite alternate; }
+
+
+    /* ================================
+              BOAT ANIMATIONS
+      ================================ */
+    @keyframes boatBob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(14px);} }
+    @keyframes boatTilt { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(-1.2deg);} }
+
+
+    /* ================================
+                HOOK + LINE
+      ================================ */
+    #hook-wrap { position: fixed; top: 250px; right: 10px; width: 30px; height: auto; pointer-events: none; z-index: 4; transform: translateY(0); filter: sepia(100%) hue-rotate(160deg) brightness(60%) saturate(200%); max-height: 200px; }
+    #hook-wrap, #hook-line { opacity: 1; transition: opacity 0.2s ease-in-out; }
+    #hook-wrap.hidden, #hook-line.hidden { opacity: 0; }
+    #hook-line { position: fixed; inset: 0; pointer-events: none; z-index: 4; }
+    @keyframes lineShimmer { 0% { stroke-dashoffset: 20;} 100% { stroke-dashoffset: 0;} }
+
+
+    /* ================================
+                DEPTH METER
+      ================================ */
+    #depth-meter { position: fixed; top: -10px; right: 20px; display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 12px; background: rgba(50, 50, 50, 0.6); color: #fff; font-size: 0.95rem; font-weight: 500; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); z-index: 9999; transition: opacity .35s ease, transform .35s ease; opacity: 0; transform: translateY(-6px); }
+    #depth-meter.is-visible { opacity: 1; transform: translateY(0); }
 
     /* ---------------------- 
        Accessibility: Skip Link
@@ -140,8 +210,8 @@
     /* ---------------------- 
        Hero Section
        ---------------------- */
-    .hero { padding: 6rem 0 1.2rem; position: relative; }
-    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: .8rem; background: color-mix(in hsl, var(--brand) 20%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
+    .hero { padding: 0 0 1.2rem; }
+    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: .8rem; background: color-mix(in hsl, var(--brand) 50%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
     .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
     .hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .2px; }
     .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
@@ -182,7 +252,7 @@
        Projects Grid & Cards
        ---------------------- */
     .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
-    .card { background: var(--panel); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
+    .card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
     .card-media { aspect-ratio: 16/10; background: #0a1113; display: grid; place-items: center; overflow: hidden; }
     .card-media img { width: 100%; height: 100%; object-fit: fill; will-change: transform; } /* swap to 'cover' if you want no distortion */
     .card-body { padding: 1rem; }
@@ -208,7 +278,7 @@
        Skills
        ---------------------- */
     .skills { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
-    .skill-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
+    .skill-card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
     .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
     .tag-pill { padding: .25rem .55rem; background: color-mix(in hsl, var(--brand) 16%, transparent); border-radius: .8rem; color: var(--text); font-size: .9rem; }
     @media (max-width: 820px) { .skills { grid-template-columns: 1fr; } }
@@ -217,14 +287,14 @@
        Education
        ---------------------- */
     .edu { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
-    .edu-card { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
+    .edu-card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
     @media (max-width: 820px) { .edu { grid-template-columns: 1fr; } }
 
     /* ---------------------- 
        Contact
        ---------------------- */
     .contact { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.2rem; align-items: stretch; }  
-    .contact .panel { background: var(--panel); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }  
+    .contact .panel { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }  
     .contact-list { display: grid; gap: .5rem; }  
     .row { display: flex; align-items: center; }
     .row strong { width: 80px; color: var(--muted); }
@@ -269,6 +339,7 @@
   <!--           Header/Nav          -->
   <!-- ============================= -->
   <a class="skip-link" href="#main">Skip to content</a>
+
   <header>
     <div class="container nav" role="navigation" aria-label="Primary">
       <a class="brand" href="#">
@@ -276,7 +347,7 @@
         <span>Nick Falletta</span>
       </a>
 
-      <!-- Burger button (mobile) -->
+      <!-- Burger button -->
       <button class="menu-toggle" aria-controls="menu" aria-expanded="false" id="menuBtn">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -297,8 +368,6 @@
           <a class="btn" href="mailto:nickfalletta29@outlook.com">Contact me</a>
         </li>
       </ul>
-
-      <!-- Scrim overlay for mobile menu (prevents clicking page beneath) -->
       <div id="nav-scrim" aria-hidden="true"></div>
     </div>
   </header>
@@ -307,6 +376,81 @@
   <!--              Main             -->
   <!-- ============================= -->
   <main id="main">
+
+    <section id="ocean-top" aria-hidden="true">
+  <!-- BACK WAVES -->
+  <svg class="waves waves-back" viewBox="0 0 2000 260" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <path id="w" d="M0,110 C130,130 260,90 390,110 C520,130 650,90 780,110 
+      C910,130 1040,90 1170,110 C1300,130 1430,90 1560,110 C1690,130 1820,90 
+      1950,110 L1950,260 L0,260 Z"/>
+    </defs>
+
+    <!-- Wave C -->
+    <g class="layer waveC" style="--c: color-mix(in hsl, var(--ocean-mid) 55%, var(--ocean-deep) 45%);">
+      <g class="bob">
+        <use href="#w" x="0"></use>
+        <use href="#w" x="2000"></use>
+      </g>
+    </g>
+
+    <!-- Wave B -->
+    <g class="layer waveB" style="--c: color-mix(in hsl, var(--ocean-surface) 55%, var(--ocean-mid) 45%);">
+      <g class="bob">
+        <use href="#w" x="0"></use>
+        <use href="#w" x="2000"></use>
+      </g>
+    </g>
+  </svg>
+
+  <!-- BOAT -->
+  <div id="boat-wrap">
+    <img id="boat-img" src="assets/img/boat.png" alt="Boat"/>
+  </div>
+
+  <!-- FRONT WAVES -->
+  <svg class="waves waves-front" viewBox="0 0 2000 260" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <path id="w2" d="M0,110 C130,130 260,90 390,110 C520,130 650,90 780,110 
+      C910,130 1040,90 1170,110 C1300,130 1430,90 1560,110 C1690,130 1820,90 
+      1950,110 L1950,260 L0,260 Z"/>
+    </defs>
+
+    <!-- Wave A  -->
+    <g class="layer waveA" style="--c: color-mix(in hsl, var(--ocean-surface) 88%, var(--ocean-mid) 12%);">
+      <g class="bob">
+        <use href="#w2" x="0"></use>
+        <use href="#w2" x="2000"></use>
+      </g>
+    </g>
+  </svg>
+</section>
+
+<!-- HOOK -->
+<div id="hook-wrap">
+  <img id="hook-img" src="assets/img/hook.png" alt="Hook"/>
+
+  <!-- Depth meter -->
+  <div id="depth-meter" aria-live="polite">
+    <span class="depth-value">0</span> m
+  </div>
+</div>
+<!-- Fishing line overlay (drawn from the boat to the hook) -->
+<svg id="hook-line" aria-hidden="true">
+  <path id="hook-path"
+        d=""
+        fill="none"
+        stroke="rgba(225,245,250,.85)"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        vector-effect="non-scaling-stroke"
+        stroke-dasharray="6 6"
+        style="animation: lineShimmer 3s linear infinite;"></path>
+</svg>
+
+  <!-- Ocean background canvas (fixed, behind all content) -->
+  <canvas id="ocean-canvas" aria-hidden="true"></canvas>
+
     <!-- ===== Hero ===== -->
     <section id="home" class="hero container">
       <div class="hero-grid">
@@ -762,7 +906,7 @@
     revealEls.forEach(el => ro.observe(el));
 
     // ----------------------------------------
-    // Shipped Projects Counter (count-up on view)
+    // Shipped Projects Counter
     // ----------------------------------------
     (function initCountUp() {
       const counters = [...document.querySelectorAll('.count[data-to]')];
@@ -770,7 +914,7 @@
 
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const DURATION = 1200;
-      const EASE = t => 1 - Math.pow(1 - t, 4); // easeOutQuart
+      const EASE = t => 1 - Math.pow(1 - t, 4);
 
       function animate(el) {
         const end = parseFloat(el.dataset.to);
@@ -819,6 +963,328 @@
     document.getElementById('year').textContent = new Date().getFullYear();
     const updated = new Date(document.lastModified);
     document.getElementById('updated').textContent = updated.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric'});
+
+    // ----------------------------------------
+    // Ocean Background (canvas) with depth-based particles
+    // ----------------------------------------
+    (function initOcean() {
+      const canvas = document.getElementById('ocean-canvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let w = 0, h = 0, dpr = Math.max(1, window.devicePixelRatio || 1);
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Particles
+      const MAX_BUBBLES = 50;
+      const MAX_PLANK   = 180;
+      const MAX_SNOW    = 240;
+
+      const bubbles = [];
+      const plankton = [];
+      const snow = [];
+
+      function resize() {
+        w = canvas.clientWidth = window.innerWidth;
+        h = canvas.clientHeight = window.innerHeight;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function rand(a, b){ return a + Math.random()*(b-a); }
+      function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
+      function lerp(a, b, t){ return a + (b - a) * t; }
+
+      // Depth factor
+      function depthFactor() {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        return clamp(window.scrollY / max, 0, 1);
+      }
+
+      function lerpHsl(hslA, hslB, t){
+        const p = s => s.replace(/[^\d.\s]/g,'').trim().split(/\s+/).map(Number); // crude parse "hsl(H S% L%)"
+        const [h1,s1,l1] = p(hslA);
+        const [h2,s2,l2] = p(hslB);
+        const h = lerp(h1, h2, t), s = lerp(s1, s2, t), l = lerp(l1, l2, t);
+        return `hsl(${h} ${s}% ${l}%)`;
+      }
+
+      function paintBackground(t) {
+
+        const top = lerpHsl(
+          getComputedStyle(document.documentElement).getPropertyValue('--ocean-surface'),
+          getComputedStyle(document.documentElement).getPropertyValue('--ocean-mid'),
+          clamp(Math.pow(t, 0.6), 0, 1) 
+        );
+        const bottom = lerpHsl(
+          getComputedStyle(document.documentElement).getPropertyValue('--ocean-mid'),
+          getComputedStyle(document.documentElement).getPropertyValue('--ocean-deep'),
+          clamp(Math.pow(t, 1.5), 0, 1) 
+        );
+        const g = ctx.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, top);
+        g.addColorStop(1, bottom);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      function seedParticles() {
+        bubbles.length = 0; plankton.length = 0; snow.length = 0;
+        for (let i=0;i<MAX_BUBBLES;i++) {
+          bubbles.push({
+            x: rand(0,w), y: rand(h*0.5, h), r: rand(1, 3.5), vy: rand(-28, -10), wob: rand(0.4, 1.5), a: rand(0.2, 0.9)
+          });
+        }
+        for (let i=0;i<MAX_PLANK;i++) {
+          plankton.push({
+            x: rand(0,w), y: rand(0, h), r: rand(0.7, 1.8), vx: rand(-8, 8), vy: rand(-6, 6), tw: rand(2,5), a: rand(0.15, 0.45)
+          });
+        }
+        for (let i=0;i<MAX_SNOW;i++) {
+          snow.push({
+            x: rand(0,w), y: rand(0, h), r: rand(0.6, 1.4), vy: rand(6, 18), drift: rand(-4, 4), a: rand(0.12, 0.35)
+          });
+        }
+      }
+
+      // Bubbles
+      function drawParticles(t) {
+
+        const bubblesPct = 1 - t;             
+        const plankPct   = 1 - Math.abs(t-0.45)*2;
+        const snowPct    = t;                  
+
+        const bubbleN = Math.floor(MAX_BUBBLES * bubblesPct);
+        const plankN  = Math.floor(MAX_PLANK * clamp(plankPct, 0, 1));
+        const snowN   = Math.floor(MAX_SNOW * snowPct);
+
+        const surfaceY = document.getElementById("ocean-top").offsetHeight; 
+
+        ctx.fillStyle = getComputedStyle(document.documentElement)
+          .getPropertyValue('--ocean-bubble').trim() || 'rgba(240,250,255,.9)';
+
+        for (let i = 0; i < bubbleN; i++) {
+          const b = bubbles[i];
+          b.y += b.vy * 0.016;
+          b.x += Math.sin((performance.now() / 1000 + i) * b.wob) * 0.6;
+
+          if (b.y < surfaceY + 50) {
+            b.y = h + rand(0, 60);
+            b.x = rand(0, w);
+          }
+
+          const drawY = Math.max(b.y, surfaceY);
+
+          ctx.globalAlpha = b.a;
+          ctx.beginPath();
+          ctx.arc(b.x, drawY, b.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Plankton 
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-plank').trim() || 'rgba(120,255,180,.35)';
+        for (let i=0;i<plankN;i++){
+          const p = plankton[i];
+          const tw = p.tw;
+          p.x += (p.vx + Math.sin((performance.now()/600)+i)*tw) * 0.016;
+          p.y += (p.vy + Math.cos((performance.now()/700)+i)*tw) * 0.016;
+          if (p.x < -10) p.x = w+10; if (p.x > w+10) p.x = -10;
+          if (p.y < -10) p.y = h+10; if (p.y > h+10) p.y = -10;
+          ctx.globalAlpha = p.a;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        }
+
+        // Marine snow
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-snow').trim() || 'rgba(200,220,230,.6)';
+        for (let i=0;i<snowN;i++){
+          const s = snow[i];
+          s.y += s.vy * 0.016; s.x += s.drift * 0.008;
+          if (s.y > h+6) { s.y = -6; s.x = rand(0,w); }
+          ctx.globalAlpha = s.a;
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+      }
+
+      let raf = null;
+      function frame(){
+        if (prefersReduced) return; 
+        const t = depthFactor();
+        ctx.clearRect(0,0,w,h);
+        paintBackground(t);
+        drawParticles(t);
+        raf = requestAnimationFrame(frame);
+      }
+
+      resize();
+      seedParticles();
+      if (!prefersReduced) frame();
+
+      window.addEventListener('resize', () => { resize(); });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (raf) cancelAnimationFrame(raf), raf = null; }
+        else if (!prefersReduced && !raf) { frame(); }
+      });
+    })();
+
+    // ----------------------------------------
+    // Fishing line and hook
+    // ----------------------------------------
+    (function initHookFollow() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const boat = document.getElementById('boat-img');
+      const hookWrap = document.getElementById('hook-wrap');
+      const hookImg = document.getElementById('hook-img');
+      const lineSvg = document.getElementById('hook-line');
+      const linePath = document.getElementById('hook-path');
+      const oceanTop = document.getElementById('ocean-top');
+
+      if (!boat || !hookWrap || !hookImg || !lineSvg || !linePath) return;
+
+      const START_TOP = parseFloat(getComputedStyle(hookWrap).top) || 250; // px
+      const RATE = 0.09;          
+      const MAX_EXTRA = 450;   
+      const SAG_BASE = 5;       
+      const SAG_GAIN = 0.12;       
+      const RIGHT_OFFSET = 20;   
+
+      let raf = null;
+
+      function getBoatAnchor() {
+
+        const r = boat.getBoundingClientRect();
+        const x = r.left + r.width * 1;
+        const y = r.top + r.height * .95;
+        return { x, y };
+      }
+
+      function getHookAttach() {
+
+        const r = hookImg.getBoundingClientRect();
+        const x = r.left + r.width * 0.85;
+        const y = r.top + r.height * 0.15;
+        return { x, y };
+      }
+
+      function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+
+      function update() {
+        const extra = clamp(window.scrollY * RATE, 0, MAX_EXTRA);
+
+        const maxAllowed = Math.max(0, document.documentElement.scrollHeight - window.innerHeight - 50);
+        const extraClamped = clamp(extra, 0, maxAllowed);
+
+        hookWrap.style.transform = `translateY(${extraClamped}px)`;
+
+        lineSvg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+
+        const A = getBoatAnchor();
+        const B = getHookAttach();
+
+        const sag = SAG_BASE + (extraClamped * SAG_GAIN * 0.1);
+        const drift = Math.sin((performance.now() / 1200)) * Math.min(24, 6 + extraClamped * 0.02);
+
+        const cp1 = { x: A.x + 10 + drift, y: A.y + Math.max(18, sag * 0.5) };
+        const midY = (A.y + B.y) / 2 + sag;
+        const cp2 = { x: B.x + drift * 0.4, y: midY };
+
+        const d = `M ${A.x},${A.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${B.x},${B.y}`;
+        linePath.setAttribute('d', d);
+      }
+
+      function onScrollOrResize() {
+        if (prefersReduced) return;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(update);
+      }
+
+      function gateVisibility() {
+        const hookRect = hookWrap.getBoundingClientRect();
+        const oceanBottom = oceanTop.getBoundingClientRect().bottom;
+        const visible = hookRect.top >= oceanBottom - 52;
+        lineSvg.style.opacity = visible ? '1' : '0';
+      }
+
+      window.addEventListener('scroll', () => { onScrollOrResize(); gateVisibility(); }, { passive: true });
+      window.addEventListener('resize', onScrollOrResize);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) onScrollOrResize();
+      });
+
+      onScrollOrResize();
+      gateVisibility();
+    })();
+
+    (function initHookVisibility() {
+      const hookWrap = document.getElementById('hook-wrap');
+      const hookLine = document.getElementById('hook-line');
+      if (!hookWrap || !hookLine) return;
+
+      const WATERLINE = 1;
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY < WATERLINE) {
+          hookWrap.classList.add('hidden');
+          hookLine.classList.add('hidden');
+        } else {
+          hookWrap.classList.remove('hidden');
+          hookLine.classList.remove('hidden');
+        }
+      });
+    })();
+
+    (function initScrollDepth(){
+      const MAX_DEPTH = 4000;
+      const HIDE_MS = 600;
+
+      let meter = document.getElementById('depth-meter');
+      if (!meter) {
+        meter = document.createElement('div');
+        meter.id = 'depth-meter';
+        meter.innerHTML = '<span class="depth-value">0</span> m';
+        document.body.appendChild(meter);
+      }
+      const valueEl = meter.querySelector('.depth-value') || meter;
+
+      function scrollProgress() {
+        const maxScrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        return Math.min(1, Math.max(0, window.scrollY / maxScrollable));
+      }
+
+      let raf = null;
+      let hideTimer = null;
+
+      function showMeter() {
+        meter.classList.add('is-visible');
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          meter.classList.remove('is-visible');
+        }, HIDE_MS);
+      }
+
+      function updateDepth() {
+        raf = null;
+        const pct = scrollProgress();
+        const rawDepth = Math.round(pct * MAX_DEPTH);
+        const depth = Math.floor(rawDepth / 10) * 10;
+        valueEl.textContent = String(depth);
+      }
+
+      function schedule() {
+        if (raf == null) raf = requestAnimationFrame(updateDepth);
+        showMeter();
+      }
+
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule);
+      window.addEventListener('load', schedule);
+
+      schedule();
+    })();
+
   </script>
 </body>
 </html>
+
