@@ -62,7 +62,7 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     html:focus-within { scroll-behavior: smooth; }
-    body { background: none; margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); background: transparent; padding-top: var(--header-h); }
+    body { margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); padding-top: var(--header-h); }
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--brand-2); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -74,7 +74,14 @@
     /* ================================
               OCEAN BACKGROUND
       ================================ */
-    #ocean-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    #ocean-canvas { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+    @supports (height: 100svh){
+      #ocean-canvas{ height:100svh; }   /* stable viewport height */
+    }
+    @supports (height: 100lvh){
+      #ocean-canvas{ height:100lvh; }   /* large viewport height when bars hidden */
+    }
+
     #ocean-top { overflow: hidden; position: relative; height: 240px; background: rgb(134, 226, 250); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); -webkit-mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); mask-repeat: no-repeat; mask-size: 100% 100%; }
     #ocean-top .waves { position: absolute; inset: 0; top: 80px; width: calc(100% + 100px); height: 100%; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); pointer-events: none; }
     .waves-back { z-index: 1; }
