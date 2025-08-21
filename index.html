@@ -60,34 +60,26 @@
                 BASE / RESET
       ================================ */
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: transparent;}
     html:focus-within { scroll-behavior: smooth; }
-    body { margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); padding-top: var(--header-h); }
+    body{ margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); padding-top: var(--header-h); }
+    
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--brand-2); text-decoration: none; }
     a:hover { text-decoration: underline; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     .container { width: min(1100px, 92%); margin-inline: auto; }
-    html, body { width: 100%; max-width: 100%; overflow-x: hidden; overscroll-behavior: none; }
-    @supports (-webkit-touch-callout: none) { html, body { overscroll-behavior-y: contain; } }
 
     /* ================================
               OCEAN BACKGROUND
       ================================ */
-    #ocean-canvas { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-    @supports (height: 100svh){
-      #ocean-canvas{ height:100svh; }   /* stable viewport height */
-    }
-    @supports (height: 100lvh){
-      #ocean-canvas{ height:100lvh; }   /* large viewport height when bars hidden */
-    }
+    #ocean-canvas { position: fixed; left: 0; top: 0px; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
 
     #ocean-top { overflow: hidden; position: relative; height: 240px; background: rgb(134, 226, 250); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); -webkit-mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); mask-repeat: no-repeat; mask-size: 100% 100%; }
     #ocean-top .waves { position: absolute; inset: 0; top: 80px; width: calc(100% + 100px); height: 100%; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); pointer-events: none; }
     .waves-back { z-index: 1; }
     #boat-wrap { z-index: 2; }
     .waves-front { z-index: 3; }
-
 
     /* ================================
                     BOAT
@@ -159,7 +151,6 @@
     .nav a.link[aria-current="true"], .nav a.link:hover { background:color-mix(in hsl, var(--brand) 18%, transparent); }
     .nav-cta { display:flex; align-items:center; gap:.6rem; }
     .nav-cta .btn { padding:.42rem .75rem; border-radius:.5rem; font-weight:500; }
-
 
     /* ================================
               Burger + Mobile Menu
@@ -320,7 +311,7 @@
     /* ---------------------- 
        Section Titles
        ---------------------- */
-    .sectionHeader p{color:color-mix(in hsl,var(--ocean-surface) 18%,var(--muted));}
+    .sectionHeader p{color:rgb(210, 210, 210);}
 
     .zone-title{display:inline-block;font-weight:800;letter-spacing:.8px;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 1px 1px rgba(255,255,255,.65),0 3px 6px rgba(0,0,0,.4);}
     #home .zone-title{background-image:linear-gradient(180deg,#f2feff 0%,#baf7f5 35%,#ffffff 48%,#ffffff 52%,#74e0f0 60%,#12b9d6 100%);}
@@ -363,8 +354,7 @@
       ]
     }
   </script>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+
 </head>
 <body>
   <!-- ============================= -->
@@ -1127,13 +1117,20 @@
       const plankton = [];
       const snow = [];
 
+      // after resize() or inside it:
       function resize() {
         w = canvas.clientWidth = window.innerWidth;
         h = canvas.clientHeight = window.innerHeight;
-        canvas.width = Math.floor(w * dpr);
+        canvas.width  = Math.floor(w * dpr);
         canvas.height = Math.floor(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // keep CSS background in sync
+        paintBackground(depthFactor());
       }
+
+      window.addEventListener('load', () => paintBackground(depthFactor()));
+      window.addEventListener('resize', () => paintBackground(depthFactor()));
 
       function rand(a, b){ return a + Math.random()*(b-a); }
       function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
@@ -1154,22 +1151,30 @@
       }
 
       function paintBackground(t) {
+        // read CSS custom props once
+        const rs = getComputedStyle(document.documentElement);
 
         const top = lerpHsl(
-          getComputedStyle(document.documentElement).getPropertyValue('--ocean-surface'),
-          getComputedStyle(document.documentElement).getPropertyValue('--ocean-mid'),
-          clamp(Math.pow(t, 0.6), 0, 1) 
+          rs.getPropertyValue('--ocean-surface'),
+          rs.getPropertyValue('--ocean-mid'),
+          clamp(Math.pow(t, 0.6), 0, 1)
         );
+
         const bottom = lerpHsl(
-          getComputedStyle(document.documentElement).getPropertyValue('--ocean-mid'),
-          getComputedStyle(document.documentElement).getPropertyValue('--ocean-deep'),
-          clamp(Math.pow(t, 1.5), 0, 1) 
+          rs.getPropertyValue('--ocean-mid'),
+          rs.getPropertyValue('--ocean-deep'),
+          clamp(Math.pow(t, 1.5), 0, 1)
         );
-        const g = ctx.createLinearGradient(0, 0, 0, h);
-        g.addColorStop(0, top);
-        g.addColorStop(1, bottom);
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, w, h);
+
+        // build a CSS gradient and apply it to the page background
+        const gradient = `linear-gradient(180deg, ${top} 0%, ${bottom} 100%)`;
+
+        // Put the gradient on <html> so iOS Safari samples it behind the URL bar
+        document.documentElement.style.background = gradient;
+        document.documentElement.style.minHeight = '100dvh';
+
+        // Keep <body> transparent so the html background shows through
+        document.body.style.background = 'transparent';
       }
 
       function seedParticles() {
@@ -1253,11 +1258,18 @@
 
       let raf = null;
       function frame(){
-        if (prefersReduced) return; 
+        if (prefersReduced) return;
         const t = depthFactor();
-        ctx.clearRect(0,0,w,h);
+
+        // don't paint the canvas background anymore
+        ctx.clearRect(0, 0, w, h);
+
+        // update the page background via CSS
         paintBackground(t);
+
+        // keep particles on the canvas
         drawParticles(t);
+
         raf = requestAnimationFrame(frame);
       }
 
