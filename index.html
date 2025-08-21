@@ -92,7 +92,7 @@
     /* ================================
                     BOAT
       ================================ */
-    #boat-wrap { position: absolute; top: 10px; right: 20px; pointer-events: none; }
+    #boat-wrap { position: absolute; top: 70px; right: 20px; pointer-events: none; }
     #boat-img { width: 300px; animation: boatBob 5s ease-in-out infinite, boatTilt 8s ease-in-out infinite; filter: drop-shadow(0 6px 14px rgba(0,0,0,.3)); }
     @media (prefers-reduced-motion: reduce) { #boat-img, .waves .layer, .waves .bob { animation: none !important; } }
 
@@ -107,9 +107,9 @@
     @keyframes tiltA { 0% { transform: rotate(0.3deg);} 100% { transform: rotate(-0.3deg);} }
     @keyframes tiltB { 0% { transform: rotate(-0.4deg);} 100% { transform: rotate(0.4deg);} }
     @keyframes tiltC { 0% { transform: rotate(0.2deg);} 100% { transform: rotate(-0.2deg);} }
-    @keyframes bobA { 0%,100% { transform: translateY(0);} 50% { transform: translateY(12px);} }
-    @keyframes bobB { 0%,100% { transform: translateY(0);} 50% { transform: translateY(9px);} }
-    @keyframes bobC { 0%,100% { transform: translateY(0);} 50% { transform: translateY(6px);} }
+    @keyframes bobA { 0%,100% { transform: translateY(0);} 50% { transform: translateY(9px);} }
+    @keyframes bobB { 0%,100% { transform: translateY(0);} 50% { transform: translateY(6px);} }
+    @keyframes bobC { 0%,100% { transform: translateY(0);} 50% { transform: translateY(3px);} }
     .waves .waveA { animation: tiltA 8s ease-in-out infinite alternate; }
     .waves .waveB { animation: tiltB 10s ease-in-out infinite alternate; }
     .waves .waveC { animation: tiltC 12s ease-in-out infinite alternate; }
@@ -121,8 +121,8 @@
     /* ================================
               BOAT ANIMATIONS
       ================================ */
-    @keyframes boatBob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(14px);} }
-    @keyframes boatTilt { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(-1.2deg);} }
+    @keyframes boatBob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-15px);} }
+    @keyframes boatTilt { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(-1.5deg);} }
 
 
     /* ================================
@@ -138,19 +138,19 @@
     /* ================================
                 DEPTH METER
       ================================ */
-    #depth-meter { position: fixed; top: -10px; right: 20px; display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 12px; background: rgba(50, 50, 50, 0.6); color: #fff; font-size: 0.95rem; font-weight: 500; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); z-index: 9999; transition: opacity .35s ease, transform .35s ease; opacity: 0; transform: translateY(-6px); }
+    #depth-meter { position: fixed; top: -10px; right: 20px; display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 12px; background: rgba(50, 50, 50, 0.6); color: #fff; font-size: 0.95rem; font-weight: 500; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); z-index: 10; transition: opacity .35s ease, transform .35s ease; opacity: 0; transform: translateY(-6px); }
     #depth-meter.is-visible { opacity: 1; transform: translateY(0); }
 
     /* ---------------------- 
        Accessibility: Skip Link
        ---------------------- */
     .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: .6rem 1rem; background: var(--brand); color: white; border-radius: .6rem; z-index: 1000; }
+    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: .6rem 1rem; background: var(--brand); color: white; border-radius: .6rem; z-index: 11; }
 
     /* ================================
       Header / Navigation (desktop + mobile)
       ================================ */
-    header { position:fixed; top:0; left:0; right:0; z-index:1000; backdrop-filter:saturate(180%) blur(8px); background:color-mix(in hsl, var(--bg) 75%, transparent); border-bottom:1px solid color-mix(in hsl, var(--muted) 20%, transparent); height:var(--header-h); }
+    header { position:fixed; top:0; left:0; right:0; z-index:10; backdrop-filter:saturate(180%) blur(8px); background:color-mix(in hsl, var(--bg) 75%, transparent); border-bottom:1px solid color-mix(in hsl, var(--muted) 20%, transparent); height:var(--header-h); }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:1rem; height:var(--header-h); }
     .brand { display:flex; align-items:center; gap:.8rem; font-weight:700; letter-spacing:.2px; color:var(--text); text-decoration:none; }
     .brand-avatar { width:36px; height:36px; border-radius:50%; outline:2px solid color-mix(in hsl, var(--brand) 60%, white); box-shadow:var(--shadow); }
@@ -178,11 +178,11 @@
 
     @media (max-width: 1100px) {
       .container.nav { position: static; }
-      #menu { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 1001; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: 0 10px 30px rgba(0,0,0,.25); display: block; padding: 0 1rem; height: 0; overflow: hidden; opacity: 0; transform: translateY(-4px); transition: height .28s ease, opacity .2s ease, transform .2s ease; }
+      #menu { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 11; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: 0 10px 30px rgba(0,0,0,.25); display: block; padding: 0 1rem; height: 0; overflow: hidden; opacity: 0; transform: translateY(-4px); transition: height .28s ease, opacity .2s ease, transform .2s ease; }
       #menu .link { display:block; padding: 14px 0; line-height: 1.4; }
       #menu .nav-cta-mobile { display:flex; gap:.6rem; margin: .4rem 0 1rem; }
       #menu .nav-cta-mobile .btn { flex:1; text-align:center; border-radius:.8rem; padding:.8rem 1rem; }
-      #nav-scrim { position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 1000; }
+      #nav-scrim { position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 10; }
       #nav-scrim.show { opacity:.5; pointer-events:auto; }
     }
 
@@ -198,7 +198,7 @@
     #menu .nav-cta-mobile .btn { background:var(--brand); color:#fff; border:none; }
 
     /* Scrim */
-    #nav-scrim { position:fixed; inset:var(--header-h) 0 0 0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:1000; }
+    #nav-scrim { position:fixed; inset:var(--header-h) 0 0 0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10; }
     #nav-scrim.show { opacity:.5; pointer-events:auto; }
     body.menu-open { overflow:hidden; }
 
@@ -226,6 +226,8 @@
     .hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .2px; }
     .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
     .hero-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .btnIcon { transition: transform .2s; }
+    .btnIcon:hover { transform: scale(1.1); }
     .hero-cta img { width: 50px; height: 50px; display: block; }
 
     /* Stats */
@@ -263,9 +265,11 @@
        Projects Grid & Cards
        ---------------------- */
     .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
-    .card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
+    .cardContainer { transition: transform .2s }
+    .cardContainer:hover { transform: scale(1.02); }
+    .card { transition: transform .2s; background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
     .card-media { aspect-ratio: 16/10; background: #0a1113; display: grid; place-items: center; overflow: hidden; }
-    .card-media img { width: 100%; height: 100%; object-fit: fill; will-change: transform; } /* swap to 'cover' if you want no distortion */
+    .card-media img { width: 100%; height: 100%; object-fit: fill; will-change: transform; }
     .card-body { padding: 1rem; }
     .card-title { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
     .chip { display: inline-flex; align-items: center; padding: .1rem .5rem; border-radius: .45rem; background: color-mix(in hsl, var(--brand) 18%, transparent); color: var(--brand-2); font-size: .8rem; }
@@ -309,7 +313,8 @@
     .contact-list { display: grid; gap: .5rem; }  
     .row { display: flex; align-items: center; }
     .row strong { width: 80px; color: var(--muted); }
-    .copy { padding: .3rem .5rem; border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); background: transparent; color: var(--text); border-radius: .4rem; }
+    .copy { margin-left: 8px; padding: .3rem .5rem; border: 1px solid color-mix(in hsl, var(--muted) 30%, transparent); background: transparent; color: var(--text); border-radius: .4rem; cursor: pointer;}
+    .copy:hover { text-decoration: underline;}
     @media (max-width: 820px) { .contact { grid-template-columns: 1fr; } }
 
     /* ---------------------- 
@@ -359,7 +364,7 @@
     }
   </script>
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white">
 </head>
 <body>
   <!-- ============================= -->
@@ -432,7 +437,7 @@
 
   <!-- BOAT -->
   <div id="boat-wrap">
-    <img id="boat-img" src="assets/img/boat.png" alt="Boat"/>
+    <img id="boat-img" src="assets/img/kayak.png" alt="Boat"/>
   </div>
 
   <!-- FRONT WAVES -->
@@ -491,10 +496,10 @@
             from accessibility tools and large-language-model projects to cross-platform mobile and web apps.
           </p>
           <div class="hero-cta reveal">
-            <a class="btn ghost" href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">
+            <a class="btnIcon" href="https://github.com/Nick-Falletta" target="_blank" rel="noopener">
               <img src="assets/img/github.svg" alt="GitHub" loading="eager" />
             </a>
-            <a class="btn ghost" href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">
+            <a class="btnIcon" href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">
               <img src="assets/img/linkedin.png" alt="LinkedIn" loading="eager" />
             </a>
           </div>
@@ -544,109 +549,123 @@
           <p>Work visible in open waters — shipped apps, case studies, experiments.</p>
         </div>
         <div class="projects">
+
           <!-- Title Tracker -->
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="assets/img/titletracker.png" alt="Title Tracker app preview" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">Title Tracker</h3>
-                <span class="chip">Flutter · Firebase</span>
+           <div class="cardContainer">
+            <div class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/titletracker.png" alt="Title Tracker app preview" loading="lazy" />
               </div>
-              <p>Workflow manager for Comm-Res Exams Corp. Realtime data, secure auth, and cross-platform delivery.</p>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Title Tracker</h3>
+                  <span class="chip">Flutter · Firebase</span>
+                </div>
+                <p>Workflow manager for Comm-Res Exams Corp. Realtime data, secure auth, and cross-platform delivery.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://apps.apple.com/us/app/title-tracker/id6504823785" target="_blank" rel="noopener">iOS</a>
+                <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.nicky.titletracker" target="_blank" rel="noopener">Android</a>
+              </div>
             </div>
-            <div class="card-actions">
-              <a class="btn ghost" href="https://apps.apple.com/us/app/title-tracker/id6504823785" target="_blank" rel="noopener">iOS</a>
-              <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.nicky.titletracker" target="_blank" rel="noopener">Android</a>
-            </div>
-          </article>
+          </div>
 
           <!-- NaviGPT -->
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="assets/img/navigpt.png" alt="NaviGPT LiDAR navigation app" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">NaviGPT</h3>
-                <span class="chip">Swift · LiDAR · OpenAI</span>
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/navigpt.png" alt="NaviGPT LiDAR navigation app" loading="lazy" />
               </div>
-              <p>Accessible navigation assistant for visually impaired users. LiDAR object detection, haptics, and AI guidance.</p>
-            </div>
-            <div class="card-actions">
-              <a class="btn ghost" href="https://arxiv.org/pdf/2410.04005" target="_blank" rel="noopener">Paper</a>
-              <a class="btn ghost" href="https://github.com/PSU-IST-CIL/NaviGPT/" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </article>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">NaviGPT</h3>
+                  <span class="chip">Swift · LiDAR · OpenAI</span>
+                </div>
+                <p>Accessible navigation assistant for visually impaired users. LiDAR object detection, haptics, and AI guidance.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://arxiv.org/pdf/2410.04005" target="_blank" rel="noopener">Paper</a>
+                <a class="btn ghost" href="https://github.com/PSU-IST-CIL/NaviGPT/" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </article>
+          </div>
 
           <!-- Kaizen/TherAI -->
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="assets/img/kaizen.png" alt="Kaizen note converter prototype" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">Kaizen</h3>
-                <span class="chip">React · Gemini · Python</span>
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/kaizen.png" alt="Kaizen note converter prototype" loading="lazy" />
               </div>
-              <p>Turns therapy sessions into concise, highlighted notes. Upload past sessions, organize by folder, export.</p>
-            </div>
-            <div class="card-actions">
-              <a class="btn ghost" href="https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1" target="_blank" rel="noopener">Figma</a>
-            </div>
-          </article>
-
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Kaizen</h3>
+                  <span class="chip">React · Gemini · Python</span>
+                </div>
+                <p>Turns therapy sessions into concise, highlighted notes. Upload past sessions, organize by folder, export.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1" target="_blank" rel="noopener">Figma</a>
+              </div>
+            </article>
+           </div>
+        
           <!-- Jarvis -->
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="assets/img/jarvis.png" alt="Jarvis chatbot editing a website style live" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">Jarvis</h3>
-                <span class="chip">React · OpenAI</span>
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/jarvis.png" alt="Jarvis chatbot editing a website style live" loading="lazy" />
               </div>
-              <p>Customizable AI chatbot with voice input and CSS live-editing. Context retention and personality presets.</p>
-            </div>
-            <div class="card-actions">
-              <a class="btn ghost" href="https://github.com/Nick-Falletta/jarvis" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </article>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Jarvis</h3>
+                  <span class="chip">React · OpenAI</span>
+                </div>
+                <p>Customizable AI chatbot with voice input and CSS live-editing. Context retention and personality presets.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://github.com/Nick-Falletta/jarvis" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </article>
+           </div>
 
           <!-- Multiple Choice Builder -->
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="assets/img/taggingQuestion.png" alt="Multiple choice builder interface" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">Multiple-Choice Builder</h3>
-                <span class="chip">React · JSON</span>
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/taggingQuestion.png" alt="Multiple choice builder interface" loading="lazy" />
               </div>
-              <p>Author quizzes via JSON with instant feedback and image support; great for self-study & workshops.</p>
-            </div>
-            <div class="card-actions">
-              <a class="btn ghost" href="https://github.com/Nick-Falletta/taggingQuestion" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </article>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Multiple-Choice Builder</h3>
+                  <span class="chip">React · JSON</span>
+                </div>
+                <p>Author quizzes via JSON with instant feedback and image support; great for self-study & workshops.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://github.com/Nick-Falletta/taggingQuestion" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </article>
+           </div>
+
 
           <!-- Placeholder -->
-          <article class="card reveal">
-            <div class="card-media" aria-hidden="true">
-              <svg viewBox="0 0 400 250" role="img" aria-label="Placeholder" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="250" rx="12" fill="#0a1113"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#3b4b52" font-size="18">New project coming…</text></svg>
-            </div>
-            <div class="card-body">
-              <div class="card-title">
-                <h3 style="margin:0">Next up</h3>
-                <span class="chip">TBD</span>
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media" aria-hidden="true">
+                <svg viewBox="0 0 400 250" role="img" aria-label="Placeholder" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="250" rx="12" fill="#0a1113"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#3b4b52" font-size="18">New project coming…</text></svg>
               </div>
-              <p>Currently exploring smarter, privacy-first location experiences with on-device ML.</p>
-            </div>
-            <div class="card-actions">
-              <a class="btn" href="mailto:nickfalletta29@outlook.com">Collaborate</a>
-            </div>
-          </article>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Next up</h3>
+                  <span class="chip">TBD</span>
+                </div>
+                <p>Currently exploring smarter, privacy-first location experiences with on-device ML.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn" href="mailto:nickfalletta29@outlook.com">Collaborate</a>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -1279,8 +1298,8 @@
       function getBoatAnchor() {
 
         const r = boat.getBoundingClientRect();
-        const x = r.left + r.width * 1;
-        const y = r.top + r.height * .95;
+        const x = r.left + r.width * .99;
+        const y = r.top + r.height * .08;
         return { x, y };
       }
 
