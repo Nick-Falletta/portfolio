@@ -27,8 +27,8 @@
     :root {
       --bg: #0b0f10;
       --panel: #0e1416;
-      --text: #e7f1ef;
-      --muted: #a6b6ba;
+      --text: #ffffff;
+      --muted: #b9b9b9;
       --brand: #0f766e;
       --brand-2: #14b8a6;
       --ring: #22c55e;
@@ -62,7 +62,7 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: transparent;}
     html:focus-within { scroll-behavior: smooth; }
-    body{ margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); padding-top: var(--header-h); }
+    body{ height: 100%; margin: 0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji"; color: var(--text); padding-top: var(--header-h); }
     
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--brand-2); text-decoration: none; }
@@ -75,7 +75,7 @@
       ================================ */
     #ocean-canvas { position: fixed; left: 0; top: 0px; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
 
-    #ocean-top { overflow: hidden; position: relative; height: 240px; background: rgb(134, 226, 250); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); -webkit-mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); mask-repeat: no-repeat; mask-size: 100% 100%; }
+    #ocean-top { overflow: hidden; position: relative; height: 240px; background: linear-gradient(to top, rgb(134, 226, 250) 0%, var(--ocean-surface) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); -webkit-mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); mask-repeat: no-repeat; mask-size: 100% 100%; }
     #ocean-top .waves { position: absolute; inset: 0; top: 80px; width: calc(100% + 100px); height: 100%; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%); pointer-events: none; }
     .waves-back { z-index: 1; }
     #boat-wrap { z-index: 2; }
@@ -153,7 +153,7 @@
     .nav-cta .btn { padding:.42rem .75rem; border-radius:.5rem; font-weight:500; }
 
     /* ================================
-              Burger + Mobile Menu
+      Burger + Mobile Menu :focus-within { outline: none; }
       ================================ */
     .menu-toggle { display:flex; flex-direction:column; justify-content:space-between; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; transition:transform .3s ease; }
     .menu-toggle .bar { height:3px; width:100%; background:var(--text); border-radius:3px; transition:all .3s ease; }
@@ -185,7 +185,7 @@
     #menu .nav-cta-mobile .btn { display:block; width:100%; text-align:center; border-radius:.9rem; padding:.5rem 1rem; font-weight:600; box-shadow:var(--shadow); }
 
     /* Cleaner button styles */
-    #menu .nav-cta-mobile .btn.ghost { background:transparent; border:1px solid var(--brand); color:var(--brand); }
+    #menu .nav-cta-mobile .btn.ghost { background:color-mix(in hsl, var(--bg) 50%, transparent); border:1px solid var(--brand); color:var(--brand); }
     #menu .nav-cta-mobile .btn { background:var(--brand); color:#fff; border:none; }
 
     /* Scrim */
@@ -214,7 +214,7 @@
     .hero { padding: 0 0 1.2rem; }
     .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .55rem; border-radius: .8rem; background: color-mix(in hsl, var(--brand) 50%, transparent); color: var(--brand-2); font-weight: 600; font-size: .9rem; }
     .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
-    .hero h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .2px; }
+    .hero h1 { font-size: clamp(1.5rem, 4.5vw, 3rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .3px; }
     .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
     .hero-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
     .btnIcon { transition: transform .2s; }
@@ -281,26 +281,54 @@
     .t-meta { color: var(--muted); font-size: .95rem; }
 
     /* ---------------------- 
-       Skills
+       Info card
        ---------------------- */
-    .skills { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
-    .skill-card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .tag-pill { padding: .25rem .55rem; background: color-mix(in hsl, var(--brand) 16%, transparent); border-radius: .8rem; color: var(--text); font-size: .9rem; }
-    @media (max-width: 820px) { .skills { grid-template-columns: 1fr; } }
+    .info-card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
+
+    /* ---------------------- 
+      Skills 
+      ---------------------- */
+    .skills-controls{display:flex;gap:.8rem;align-items:center;margin-bottom:1rem;}
+    .segmented{display:inline-flex;background:color-mix(in hsl,var(--panel) 80%,transparent);border:1px solid color-mix(in hsl,var(--muted) 25%,transparent);border-radius:.8rem;padding:.25rem;box-shadow:var(--shadow);}
+    .seg-btn{appearance:none;border:0;background:transparent;color:var(--text);padding:.55rem 1rem;border-radius:.6rem;font-weight:700;cursor:pointer;transition:background .18s ease,transform .08s ease,box-shadow .18s ease;}
+    .seg-btn:hover{text-decoration: underline;}
+    .seg-btn.is-active{background:color-mix(in hsl,var(--brand) 22%,transparent);box-shadow:inset 0 0 0 1px var(--brand);}
+    .skills-legend{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;margin-bottom:.6rem;color:var(--muted);font-size:.95rem;}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.4rem;}
+    .dot-adv{background:hsl(190 95% 45%);}
+    .dot-prof{background:hsl(190 70% 60%);}
+    .dot-fam{background:hsl(190 35% 70%);}
+    .skill-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;}
+    @media (max-width:1000px){.skill-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media (max-width:600px){.skill-grid{grid-template-columns:1fr;}}
+    .skill-card{position:relative;display:grid;grid-template-columns:96px 1fr;gap:1rem;background:color-mix(in oklab,var(--panel) 72%,transparent);border:1px solid color-mix(in hsl,var(--muted) 22%,transparent);border-radius:.9rem;padding:1rem;align-items:center;box-shadow:var(--shadow);transition:transform .18s ease,border-color .2s ease,background .2s ease;}
+    .skill-card:hover{transform:translateY(-2px);}
+    .skill-card:focus-within{outline:none;}
+    .ring{width:96px;height:96px;position:relative;}
+    .ring svg{width:100%;height:100%;display:block;}
+    .ring .bg{stroke:color-mix(in hsl,var(--muted) 30%,transparent);stroke-width:12;fill:none;}
+    .ring .fg{fill:none;stroke-linecap:round;stroke-width:12;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));transition:stroke-dashoffset .9s ease,filter .3s ease;}
+    @media (prefers-reduced-motion:reduce){.ring .fg{transition:none;}}
+    .ring .center{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:.95rem;color:var(--text);}
+    .skill-meta h3{margin:0 0 .2rem;font-size:1.05rem;}
+    .skill-meta p{margin:0;color:var(--muted);font-size:.95rem;}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem;}
+    .skill-tag{font-size:.8rem;padding:.15rem .4rem;border-radius:.4rem;background:color-mix(in hsl,var(--brand) 14%,transparent);color:var(--brand-2);}
+    .skill-card::after{content:\"\";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,color-mix(in hsl,var(--ocean-bubble) 50%,transparent) 0%,transparent 35%),radial-gradient(circle at 80% 65%,color-mix(in hsl,var(--ocean-bubble) 35%,transparent) 0%,transparent 45%);opacity:0;transition:opacity .2s ease;border-radius:inherit;}
+    .skill-card:hover::after{opacity:.35;}
+    .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+    .sr-live{position:absolute;left:-9999px;}
 
     /* ---------------------- 
        Education
        ---------------------- */
     .edu { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
-    .edu-card { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; }
     @media (max-width: 820px) { .edu { grid-template-columns: 1fr; } }
 
     /* ---------------------- 
        Contact
        ---------------------- */
     .contact { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1.2rem; align-items: stretch; }  
-    .contact .panel { background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); border-radius: .8rem; padding: 1rem; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }  
     .contact-list { display: grid; gap: .5rem; }  
     .row { display: flex; align-items: center; }
     .row strong { width: 80px; color: var(--muted); }
@@ -311,15 +339,16 @@
     /* ---------------------- 
        Section Titles
        ---------------------- */
-    .sectionHeader p{color:rgb(210, 210, 210);}
+    .sectionHeader p{color: var(--text);}
 
-    .zone-title{display:inline-block;font-weight:800;letter-spacing:.8px;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 1px 1px rgba(255,255,255,.65),0 3px 6px rgba(0,0,0,.4);}
+    .zone-title{display:flex; justify-content: space-between; flex-wrap: wrap; font-weight:800;letter-spacing:.8px;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 1px 1px rgba(255,255,255,.65),0 3px 6px rgba(0,0,0,.4);}
     #home .zone-title{background-image:linear-gradient(180deg,#f2feff 0%,#baf7f5 35%,#ffffff 48%,#ffffff 52%,#74e0f0 60%,#12b9d6 100%);}
     #projects .zone-title{background-image:linear-gradient(180deg,#ecfeff 0%,#a8e6ff 35%,#ffffff 48%,#ffffff 52%,#4fb7f0 60%,#0a75c7 100%);}
     #experience .zone-title{background-image:linear-gradient(180deg,#f0f9ff 0%,#a7c8ff 35%,#ffffff 48%,#ffffff 52%,#4a76d9 60%,#102a6e 100%);}
     #skills .zone-title{background-image:linear-gradient(180deg,#f0fff4 0%,#baf6ce 35%,#ffffff 48%,#ffffff 52%,#39c072 60%,#0f3e23 100%);}
     #education .zone-title{background-image:linear-gradient(180deg,#fbf5ff 0%,#e3c9ff 35%,#ffffff 48%,#ffffff 52%,#8f5be6 60%,#3a0d6b 100%);}
     #contact .zone-title{background-image:linear-gradient(180deg,#f0fdfa 0%,#aef3e6 35%,#ffffff 48%,#ffffff 52%,#2dbca2 60%,#0b2b29 100%);}
+    @media (max-width: 600px) { .zone-title { flex-direction: column; align-items: flex-start; } }
 
     /* ---------------------- 
        Footer
@@ -478,8 +507,11 @@
       <div class="hero-grid">
         <!-- Hero text/CTA/stats -->
         <div class="sectionHeader">
-          <h1 id="projects-title" class="zone-title">About me - The Surface</h1>
-          <h2>Breaking the surface with polished, accessible products</h2>
+
+          <h1 class="zone-title">The Surface<div>~0-700m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
+
+          <h2>I'm Nick, wonderful to meet you! Breaking the surface with polished, accessible products</h2>
           <p>
             Clarity, speed, and usability.  
             I’m a software engineer & designer who blends intuitive UX with robust code —  
@@ -496,11 +528,11 @@
 
           <!-- Stats -->
           <div class="stats" aria-label="Highlights">
-            <div class="skill-card reveal" aria-live="polite">
+            <div class="info-card reveal" aria-live="polite">
               <strong class="count" data-to="10">0</strong> shipped projects
             </div>
-            <div class="skill-card reveal"><strong>iOS, Web, Android</strong> multi-platform</div>
-            <div class="skill-card reveal"><strong>Accessibility</strong> first principles</div>
+            <div class="info-card reveal"><strong>iOS, Web, Android</strong> multi-platform</div>
+            <div class="info-card reveal"><strong>Accessibility</strong> first principles</div>
           </div>
         </div>
 
@@ -533,9 +565,10 @@
 
     <!-- ===== Projects ===== -->
     <section id="projects" aria-labelledby="projects-title">
-      <div class="container">
+      <div class="hero container">
         <div class="sectionHeader">
-          <h1 id="projects-title" class="zone-title">Projects - Sunlight Zone</h1>
+          <h1 class="zone-title">The Sunlight Zone<div>~700-1850m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Work visible in open waters — shipped apps, case studies, experiments.</p>
         </div>
         <div class="projects">
@@ -662,9 +695,10 @@
 
     <!-- ===== Experience ===== -->
     <section id="experience" aria-labelledby="exp-title">
-      <div class="container">
+      <div class="hero container">
         <div class="sectionHeader">
-          <h1 id="exp-title" class="zone-title">Experience - Twilight Zone</h1>
+          <h1 class="zone-title">The Twilight Zone<div>~1850-2560m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Where light fades, responsibility grows, and skills deepen.</p>
         </div>
         <div class="timeline">
@@ -709,43 +743,47 @@
 
     <!-- ===== Skills ===== -->
     <section id="skills" aria-labelledby="skills-title">
-      <div class="container">
+      <div class="hero container">
         <div class="sectionHeader">
-          <h1 id="skills-title" class="zone-title">Skills - Midnight Zone</h1>
+          <h1 class="zone-title">The Midnight Zone<div>~2400-3100m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Tools and technologies honed under pressure.</p>
         </div>
-        <div class="skills">
-          <div class="skill-card reveal">
-            <h3>Languages</h3>
-            <div class="skill-tags">
-              <span class="tag-pill">Java</span><span class="tag-pill">Python</span><span class="tag-pill">TypeScript</span><span class="tag-pill">JavaScript</span><span class="tag-pill">Swift</span><span class="tag-pill">Dart</span><span class="tag-pill">SQL</span><span class="tag-pill">C#</span>
-            </div>
-          </div>
-          <div class="skill-card reveal">
-            <h3>Frameworks & Libraries</h3>
-            <div class="skill-tags">
-              <span class="tag-pill">React</span><span class="tag-pill">React Native</span><span class="tag-pill">Node</span><span class="tag-pill">Flutter</span><span class="tag-pill">.NET</span><span class="tag-pill">Bootstrap</span><span class="tag-pill">Angular</span>
-            </div>
-          </div>
-          <div class="skill-card reveal">
-            <h3>Platforms & Tools</h3>
-            <div class="skill-tags">
-              <span class="tag-pill">iOS</span><span class="tag-pill">Xcode</span><span class="tag-pill">Android Studio</span><span class="tag-pill">Firebase</span><span class="tag-pill">MongoDB</span><span class="tag-pill">MySQL</span><span class="tag-pill">GitHub</span><span class="tag-pill">Figma</span>
-            </div>
+
+        <!-- Controls -->
+        <div class="skills-controls" role="group" aria-label="Skill filters">
+          <div class="segmented" role="tablist" aria-label="Categories">
+            <button class="seg-btn is-active" role="tab" aria-selected="true" data-cat="languages" id="tab-languages">Languages</button>
+            <button class="seg-btn" role="tab" aria-selected="false" data-cat="frameworks" id="tab-frameworks">Frameworks</button>
+            <button class="seg-btn" role="tab" aria-selected="false" data-cat="tools" id="tab-tools">Platforms &amp; Tools</button>
           </div>
         </div>
+
+        <!-- Legend -->
+        <div class="skills-legend" aria-hidden="true">
+          <span><i class="dot dot-adv"></i> Advanced (80–100%)</span>
+          <span><i class="dot dot-prof"></i> Proficient (60–79%)</span>
+          <span><i class="dot dot-fam"></i> Familiar (40–59%)</span>
+        </div>
+
+        <!-- Grid -->
+        <div id="skill-grid" class="skill-grid" role="tabpanel" aria-labelledby="tab-languages"></div>
+
+        <!-- Live region for announcements -->
+        <div class="sr-live" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
 
     <!-- ===== Education ===== -->
     <section id="education" aria-labelledby="edu-title">
-      <div class="container">
+      <div class="hero container">
         <div class="sectionHeader">
-          <h1 id="edu-title" class="zone-title">Education - Abyssal Zone</h1>
+          <h1 class="zone-title">The Abyssal Zone<div>~3100-3600m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>The deep foundations that support everything above.</p>
         </div>
         <div class="edu">
-          <article class="edu-card reveal">
+          <article class="info-card reveal">
             <h3 style="margin-top:0">B.S. — Human Centered Design & Development</h3>
             <p class="muted">Pennsylvania State University - State College, PA</p>
             <ul>
@@ -754,7 +792,7 @@
               <li>Implemented relational database systems with SQL and MongoDB and optimized queries for performance</li>
             </ul>
           </article>
-          <article class="edu-card reveal">
+          <article class="info-card reveal">
             <h3 style="margin-top:0">Smeal Business Fundamentals Certificate</h3>
             <p class="muted">Pennsylvania State University - State College, PA</p>
             <ul>
@@ -769,13 +807,14 @@
 
     <!-- ===== Contact ===== -->
     <section id="contact" aria-labelledby="contact-title">
-      <div class="container">
+      <div class="hero container">
         <div class="sectionHeader">
-          <h1 id="contact-title" class="zone-title">Contact Me - The Trench</h1>
+          <h1 class="zone-title" style="display: flex; justify-content: space-between;">The Trench<div>~3600-4000m</div></h1>
+          <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>From the deepest depths, connections surface.</p>
         </div>
         <div class="contact">
-          <div class="panel reveal">
+          <div class="info-card reveal">
             <div class="contact-list" role="list">
               <div class="row" role="listitem"><strong>Email</strong> <a href="mailto:nickfalletta29@outlook.com">nickfalletta29@outlook.com</a> <button class="copy" data-copy="nickfalletta29@outlook.com" aria-label="Copy email">Copy</button></div>
               <div class="row" role="listitem"><strong>Phone</strong> <a href="tel:+16316375632">+1 (631) 637-5632</a> <button class="copy" data-copy="+16316375632" aria-label="Copy phone">Copy</button></div>
@@ -783,7 +822,7 @@
               <div class="row" role="listitem"><strong>LinkedIn</strong> <a href="https://www.linkedin.com/in/nick-falletta" target="_blank" rel="noopener">/in/nick-falletta</a></div>
             </div>
           </div>
-          <div class="panel reveal">
+          <div class="info-card reveal">
             <h3 style="margin-top:0">Why teams work with me</h3>
             <ul>
               <li>Blend of product sense and engineering rigor — think in systems, ship in iterations.</li>
@@ -1075,6 +1114,155 @@
       }, { threshold: 0.3 });
 
       counters.forEach(c => io.observe(c));
+    })();
+
+    // ----------------------------------------
+    // Skills Section
+    // ----------------------------------------
+    (function initSkills() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const grid = document.getElementById('skill-grid');
+      const tabs = [...document.querySelectorAll('.seg-btn')];
+
+      // SkillData
+      const data = {
+        languages: [
+          { name:'Java', val: 90, tags:['OOP','Backend'] },
+          { name:'Python', val: 80, tags:['Scripting','Data'] },
+          { name:'TypeScript', val: 55, tags:['Web','Types'] },
+          { name:'JavaScript', val: 90, tags:['Web','Frontend'] },
+          { name:'Swift', val: 65, tags:['iOS'] },
+          { name:'Dart', val: 80, tags:['Flutter'] },
+          { name:'SQL', val: 75, tags:['DB'] },
+          { name:'C#', val: 50, tags:['.NET'] }
+        ],
+        frameworks: [
+          { name:'React', val: 90, tags:['SPA','Hooks'] },
+          { name:'React Native', val: 85, tags:['Mobile'] },
+          { name:'Node', val: 50, tags:['API'] },
+          { name:'Flutter', val: 80, tags:['Cross-platform'] },
+          { name:'.NET', val: 50, tags:['Server'] },
+          { name:'Bootstrap', val: 80, tags:['UI'] },
+          { name:'Tailwind', val: 70, tags:['UI'] },
+          { name:'Angular', val: 40, tags:['SPA'] }
+        ],
+        tools: [
+          { name:'Xcode', val: 75, tags:['IDE'] },
+          { name:'Android Studio', val: 75, tags:['IDE'] },
+          { name:'Firebase', val: 75, tags:['Auth','DB'] },
+          { name:'MongoDB', val: 45, tags:['NoSQL'] },
+          { name:'MySQL', val: 80, tags:['RDBMS'] },
+          { name:'GitHub', val: 90, tags:['CI/CD'] },
+          { name:'Figma', val: 90, tags:['UX'] }
+        ]
+      };
+
+      let cat = 'languages';
+
+      // Tabs (with hover handled in CSS)
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabs.forEach(b => b.classList.toggle('is-active', b === btn));
+          tabs.forEach(b => b.setAttribute('aria-selected', b === btn ? 'true' : 'false'));
+          cat = btn.dataset.cat;
+          render();
+          grid.setAttribute('aria-labelledby', btn.id);
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+        });
+      });
+
+      // Always sort high -> low
+      function sortDesc(items) {
+        return items.slice().sort((a,b)=>b.val - a.val);
+      }
+
+      // “Abyss” gradient that darkens as val rises
+      // val=0 → shallow (lighter); val=100 → deep (darker, bluer)
+      function abyssStops(val) {
+        // Map 0..100 to lightness/depth
+        const t = Math.max(0, Math.min(100, val)) / 100;
+        // interpolate hues/sat/light for two stops
+        const h1 = 195;                 // surface blue
+        const h2 = 210;                 // deep blue
+        const s1 = 80 - t*10;           // slight drop in saturation with depth
+        const s2 = 70 - t*20;
+        const l1 = 70 - t*30;           // gets darker
+        const l2 = 50 - t*32;           // much darker
+        return {
+          c1: `hsl(${h1} ${s1}% ${l1}%)`,
+          c2: `hsl(${h2} ${s2}% ${l2}%)`
+        };
+      }
+
+      function ringSVG(val, idBase) {
+        const r = 38, c = 2 * Math.PI * r;
+        const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
+        const uid = `${idBase}-${Math.random().toString(36).slice(2)}`;
+        const { c1, c2 } = abyssStops(val);
+
+        return `
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="grad-${uid}" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%"  stop-color="${c1}"/>
+                <stop offset="100%" stop-color="${c2}"/>
+              </linearGradient>
+            </defs>
+            <circle class="bg" cx="50" cy="50" r="${r}" />
+            <circle class="fg" cx="50" cy="50" r="${r}"
+              style="stroke-dasharray:${(2*Math.PI*r).toFixed(2)}; stroke-dashoffset:${prefersReduced?off.toFixed(2):(2*Math.PI*r).toFixed(2)}; stroke:url(#grad-${uid}); transform: rotate(-90deg); transform-origin: 50% 50%;" />
+          </svg>
+          <div class="center">${val}%</div>
+        `;
+      }
+
+      // Animate rings on view
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const fg = e.target.querySelector('.fg');
+            const r = 38, c = 2*Math.PI*r;
+            const val = parseInt(e.target.dataset.val || '0', 10);
+            const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
+            if (!prefersReduced && fg) {
+              requestAnimationFrame(() => { fg.style.strokeDashoffset = off.toFixed(2); });
+            } else if (fg) {
+              fg.style.strokeDashoffset = off.toFixed(2);
+            }
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.4 });
+
+      function cardHTML(item) {
+        const tagHTML = (item.tags||[]).map(t => `<span class="skill-tag">${t}</span>`).join('');
+        const level =
+          item.val >= 80 ? 'Advanced' :
+          item.val >= 60 ? 'Proficient' : 'Familiar';
+
+        return `
+          <article class="skill-card" tabindex="0" aria-label="${item.name}, ${level}, ${item.val} percent">
+            <div class="ring" data-val="${item.val}">
+              ${ringSVG(item.val, item.name.toLowerCase().replace(/\s+/g,'-'))}
+            </div>
+            <div class="skill-meta">
+              <h3>${item.name}</h3>
+              <p>${level} · Focus: ${(item.tags||[]).join(', ') || '—'}</p>
+              <div class="skill-tags">${tagHTML}</div>
+            </div>
+          </article>
+        `;
+      }
+
+      function render() {
+        const items = sortDesc(data[cat] || []);
+        grid.innerHTML = items.map(cardHTML).join('');
+        grid.querySelectorAll('.ring').forEach(r => io.observe(r));
+      }
+
+      render();
     })();
 
     // ----------------------------------------
