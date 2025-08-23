@@ -42,6 +42,7 @@
       --ocean-plank: hsl(160 60% 55% / .35);
       --ocean-bubble: hsl(190 100% 96% / .9);
     }
+    /*
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #f8faf9;
@@ -54,7 +55,7 @@
         --code: #f1f5f9;
         --shadow: 0 10px 30px rgba(2, 12, 27, .08);
       }
-    }
+    } /*
 
     /* ================================
                 BASE / RESET
@@ -69,6 +70,12 @@
     a:hover { text-decoration: underline; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
     .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    html, body {
+      min-height: 100%;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+    }
 
     /* ================================
               OCEAN BACKGROUND
@@ -150,12 +157,12 @@
     .nav a.link { padding:.45rem .8rem; border-radius:.6rem; color:var(--text); text-decoration:none; }
     .nav a.link[aria-current="true"], .nav a.link:hover { background:color-mix(in hsl, var(--brand) 18%, transparent); }
     .nav-cta { display:flex; align-items:center; gap:.6rem; }
-    .nav-cta .btn { padding:.42rem .75rem; border-radius:.5rem; font-weight:500; }
+    .nav-cta .btn { outline:none; padding:.42rem .75rem; border-radius:.5rem; font-weight:500; }
 
     /* ================================
-      Burger + Mobile Menu :focus-within { outline: none; }
+      Burger + Mobile Menu :focus-within
       ================================ */
-    .menu-toggle { display:flex; flex-direction:column; justify-content:space-between; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; transition:transform .3s ease; }
+    .menu-toggle { outline:none; display:flex; flex-direction:column; justify-content:space-between; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; transition:transform .3s ease; }
     .menu-toggle .bar { height:3px; width:100%; background:var(--text); border-radius:3px; transition:all .3s ease; }
     .menu-toggle.active .bar:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
     .menu-toggle.active .bar:nth-child(2) { opacity:0; }
@@ -172,7 +179,7 @@
       #menu { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 11; background: color-mix(in hsl, var(--bg) 88%, transparent); border-bottom: 1px solid color-mix(in hsl, var(--muted) 20%, transparent); box-shadow: 0 10px 30px rgba(0,0,0,.25); display: block; padding: 0 1rem; height: 0; overflow: hidden; opacity: 0; transform: translateY(-4px); transition: height .28s ease, opacity .2s ease, transform .2s ease; }
       #menu .link { display:block; padding: 14px 0; line-height: 1.4; }
       #menu .nav-cta-mobile { display:flex; gap:.6rem; margin: .4rem 0 1rem; }
-      #menu .nav-cta-mobile .btn { flex:1; text-align:center; border-radius:.8rem; padding:.8rem 1rem; }
+      #menu .nav-cta-mobile .btn { outline:none; flex:1; text-align:center; border-radius:.8rem; padding:.8rem 1rem; }
       #nav-scrim { position: fixed; inset: var(--header-h) 0 0 0; background: rgba(0,0,0,.45); opacity: 0; pointer-events: none; transition: opacity .2s ease; z-index: 10; }
       #nav-scrim.show { opacity:.5; pointer-events:auto; }
     }
@@ -182,11 +189,11 @@
 
     /* Mobile CTAs */
     #menu .nav-cta-mobile { display:flex; flex-direction:column; gap:.7rem; margin:1rem 0 1.2rem; padding:0; }
-    #menu .nav-cta-mobile .btn { display:block; width:100%; text-align:center; border-radius:.9rem; padding:.5rem 1rem; font-weight:600; box-shadow:var(--shadow); }
+    #menu .nav-cta-mobile .btn { outline:none; display:block; width:100%; text-align:center; border-radius:.9rem; padding:.5rem 1rem; font-weight:600; box-shadow:var(--shadow); }
 
     /* Cleaner button styles */
-    #menu .nav-cta-mobile .btn.ghost { background:color-mix(in hsl, var(--bg) 50%, transparent); border:1px solid var(--brand); color:var(--brand); }
-    #menu .nav-cta-mobile .btn { background:var(--brand); color:#fff; border:none; }
+    #menu .nav-cta-mobile .btn.ghost { outline:none; background:color-mix(in hsl, var(--bg) 50%, transparent); border:1px solid var(--brand); color:var(--brand); }
+    #menu .nav-cta-mobile .btn { outline:none; background:var(--brand); color:#fff; border:none; }
 
     /* Scrim */
     #nav-scrim { position:fixed; inset:var(--header-h) 0 0 0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10; }
@@ -199,7 +206,7 @@
       #menu > li { display:flex; align-items:center; }
       .nav a.link { display:inline-flex; align-items:center; padding:.6rem .9rem; line-height:1; }
       .nav-cta { display:flex; gap:.6rem; }
-      .nav-cta .btn { padding:.45rem .8rem; border-radius:.6rem; font-weight:500; }
+      .nav-cta .btn { outline:none; padding:.45rem .8rem; border-radius:.6rem; font-weight:500; }
     }
 
     /* Reduced motion */
@@ -217,7 +224,7 @@
     .hero h1 { font-size: clamp(1.5rem, 4.5vw, 3rem); line-height: 1.1; margin: 0.4rem 0 0.6rem; letter-spacing: .3px; }
     .hero p.lede { color: var(--muted); font-size: clamp(1rem, 2.4vw, 1.15rem); margin: 0 0 1.2rem; }
     .hero-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .btnIcon { transition: transform .2s; }
+    .btnIcon { outline:none; transition: transform .2s; }
     .btnIcon:hover { transform: scale(1.1); }
     .hero-cta img { width: 50px; height: 50px; display: block; }
 
@@ -348,7 +355,7 @@
     #skills .zone-title{background-image:linear-gradient(180deg,#f0fff4 0%,#baf6ce 35%,#ffffff 48%,#ffffff 52%,#39c072 60%,#0f3e23 100%);}
     #education .zone-title{background-image:linear-gradient(180deg,#fbf5ff 0%,#e3c9ff 35%,#ffffff 48%,#ffffff 52%,#8f5be6 60%,#3a0d6b 100%);}
     #contact .zone-title{background-image:linear-gradient(180deg,#f0fdfa 0%,#aef3e6 35%,#ffffff 48%,#ffffff 52%,#2dbca2 60%,#0b2b29 100%);}
-    @media (max-width: 600px) { .zone-title { flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 350px) { .zone-title { flex-direction: column; align-items: flex-start; } }
 
     /* ---------------------- 
        Footer
@@ -362,7 +369,7 @@
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.show { opacity: 1; transform: none; }
     @media print {
-      header, .menu-toggle, .btn, .hero-cta, .nav-cta, .chip, .card-actions, .copy { display: none !important; }
+      header, .menu-toggle, .btn, .hero-cta, .nav-cta, .chip, .card-actions, .copy { outline:none; display: none !important; }
       body { background: white; color: black; }
       section { padding: 1rem 0; }
     }
@@ -478,7 +485,7 @@
 </section>
 
 <!-- HOOK -->
-<div id="hook-wrap">
+<div id="hook-wrap" class="hidden">
   <img id="hook-img" src="assets/img/hook.png" alt="Hook"/>
 
   <!-- Depth meter -->
@@ -487,7 +494,7 @@
   </div>
 </div>
 <!-- Fishing line overlay (drawn from the boat to the hook) -->
-<svg id="hook-line" aria-hidden="true">
+<svg id="hook-line" class="hidden" aria-hidden="true">
   <path id="hook-path"
         d=""
         fill="none"
@@ -508,10 +515,10 @@
         <!-- Hero text/CTA/stats -->
         <div class="sectionHeader">
 
-          <h1 class="zone-title">The Surface<div>~0-700m</div></h1>
+          <h1 class="zone-title">The Surface<div>~0m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
 
-          <h2>I'm Nick, wonderful to meet you! Breaking the surface with polished, accessible products</h2>
+          <h2>I'm Nick, wonderful to meet you!</h2>
           <p>
             Clarity, speed, and usability.  
             I’m a software engineer & designer who blends intuitive UX with robust code —  
@@ -529,7 +536,7 @@
           <!-- Stats -->
           <div class="stats" aria-label="Highlights">
             <div class="info-card reveal" aria-live="polite">
-              <strong class="count" data-to="10">0</strong> shipped projects
+              <strong>Full-Stack</strong> Development
             </div>
             <div class="info-card reveal"><strong>iOS, Web, Android</strong> multi-platform</div>
             <div class="info-card reveal"><strong>Accessibility</strong> first principles</div>
@@ -567,7 +574,7 @@
     <section id="projects" aria-labelledby="projects-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Sunlight Zone<div>~700-1850m</div></h1>
+          <h1 class="zone-title">The Sunlight Zone<div>~700m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Work visible in open waters — shipped apps, case studies, experiments.</p>
         </div>
@@ -697,7 +704,7 @@
     <section id="experience" aria-labelledby="exp-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Twilight Zone<div>~1850-2560m</div></h1>
+          <h1 class="zone-title">The Twilight Zone<div>~1850m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Where light fades, responsibility grows, and skills deepen.</p>
         </div>
@@ -745,7 +752,7 @@
     <section id="skills" aria-labelledby="skills-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Midnight Zone<div>~2400-3100m</div></h1>
+          <h1 class="zone-title">The Midnight Zone<div>~2400m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Tools and technologies honed under pressure.</p>
         </div>
@@ -778,7 +785,7 @@
     <section id="education" aria-labelledby="edu-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Abyssal Zone<div>~3100-3600m</div></h1>
+          <h1 class="zone-title">The Abyssal Zone<div>~3100m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>The deep foundations that support everything above.</p>
         </div>
@@ -809,7 +816,7 @@
     <section id="contact" aria-labelledby="contact-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title" style="display: flex; justify-content: space-between;">The Trench<div>~3600-4000m</div></h1>
+          <h1 class="zone-title" style="display: flex; justify-content: space-between;">The Trench<div>~3600m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>From the deepest depths, connections surface.</p>
         </div>
@@ -1078,45 +1085,6 @@
     revealEls.forEach(el => ro.observe(el));
 
     // ----------------------------------------
-    // Shipped Projects Counter
-    // ----------------------------------------
-    (function initCountUp() {
-      const counters = [...document.querySelectorAll('.count[data-to]')];
-      if (!counters.length) return;
-
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const DURATION = 1200;
-      const EASE = t => 1 - Math.pow(1 - t, 4);
-
-      function animate(el) {
-        const end = parseFloat(el.dataset.to);
-        if (Number.isNaN(end)) return;
-        if (prefersReduced) { el.textContent = end + '+'; return; }
-
-        const startTime = performance.now();
-        function tick(now) {
-          const t = Math.min(1, (now - startTime) / DURATION);
-          const value = Math.floor(EASE(t) * end);
-          el.textContent = value + '+'; 
-          if (t < 1) requestAnimationFrame(tick);
-          else el.textContent = end + '+'; 
-        }
-        requestAnimationFrame(tick);
-      }
-
-      const io = new IntersectionObserver((entries, obs) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            animate(e.target);
-            obs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.3 });
-
-      counters.forEach(c => io.observe(c));
-    })();
-
-    // ----------------------------------------
     // Skills Section
     // ----------------------------------------
     (function initSkills() {
@@ -1327,7 +1295,9 @@
       // Depth factor
       function depthFactor() {
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        return clamp(window.scrollY / max, 0, 1);
+        const raw = window.scrollY || window.pageYOffset || 0;
+        const clamped = Math.min(max, Math.max(0, raw));
+        return clamped / max;
       }
 
       function lerpHsl(hslA, hslB, t){
@@ -1475,109 +1445,91 @@
     // ----------------------------------------
     // Fishing line and hook
     // ----------------------------------------
-    (function initHookFollow() {
+    (function initHook() {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const boat = document.getElementById('boat-img');
-      const hookWrap = document.getElementById('hook-wrap');
-      const hookImg = document.getElementById('hook-img');
-      const lineSvg = document.getElementById('hook-line');
-      const linePath = document.getElementById('hook-path');
-      const oceanTop = document.getElementById('ocean-top');
+      const boat      = document.getElementById('boat-img');
+      const hookWrap  = document.getElementById('hook-wrap');
+      const hookImg   = document.getElementById('hook-img');
+      const lineSvg   = document.getElementById('hook-line');
+      const linePath  = document.getElementById('hook-path');
+      const WATERLINE = 2; // px of scroll before hook/line appear
 
       if (!boat || !hookWrap || !hookImg || !lineSvg || !linePath) return;
 
-      const START_TOP = parseFloat(getComputedStyle(hookWrap).top) || 250; // px
-      const RATE = 0.07;          
-      const MAX_EXTRA = 350;   
-      const SAG_BASE = 5;       
-      const SAG_GAIN = 0.12;       
-      const RIGHT_OFFSET = 20;   
-
-      let raf = null;
+      // helpers
+      const clamp = (n,a,b)=>Math.min(b,Math.max(a,n));
+      const maxScrollable = () =>
+        Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
 
       function getBoatAnchor() {
-
         const r = boat.getBoundingClientRect();
-        const x = r.left + r.width * .99;
-        const y = r.top + r.height * .08;
-        return { x, y };
+        return { x: r.left + r.width * .99, y: r.top + r.height * .08 };
       }
-
       function getHookAttach() {
-
         const r = hookImg.getBoundingClientRect();
-        const x = r.left + r.width * 0.85;
-        const y = r.top + r.height * 0.15;
-        return { x, y };
+        return { x: r.left + r.width * 0.85, y: r.top + r.height * 0.15 };
       }
 
-      function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+      // visibility control
+      function updateHookVisibility() {
+        const atTop = (window.scrollY || window.pageYOffset || 0) < WATERLINE;
+        hookWrap.classList.toggle('hidden', atTop);
+        lineSvg.classList.toggle('hidden', atTop);
+      }
 
-      function update() {
-        const extra = clamp(window.scrollY * RATE, 0, MAX_EXTRA);
-
-        const maxAllowed = Math.max(0, document.documentElement.scrollHeight - window.innerHeight - 50);
-        const extraClamped = clamp(extra, 0, maxAllowed);
-
-        hookWrap.style.transform = `translateY(${extraClamped}px)`;
+      // draw / update line path
+      let raf = null;
+      function updateLine() {
+        raf = null;
+        const extra = clamp(window.scrollY * 0.07, 0, Math.min(350, maxScrollable()));
+        hookWrap.style.transform = `translateY(${extra}px)`;
 
         lineSvg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
 
         const A = getBoatAnchor();
         const B = getHookAttach();
-
-        const sag = SAG_BASE + (extraClamped * SAG_GAIN * 0.1);
-        const drift = Math.sin((performance.now() / 1200)) * Math.min(24, 6 + extraClamped * 0.02);
+        const sag = 5 + (extra * 0.012);
+        const drift = Math.sin((performance.now() / 1200)) *
+                      Math.min(24, 6 + extra * 0.02);
 
         const cp1 = { x: A.x + 10 + drift, y: A.y + Math.max(18, sag * 0.5) };
         const midY = (A.y + B.y) / 2 + sag;
         const cp2 = { x: B.x + drift * 0.4, y: midY };
 
-        const d = `M ${A.x},${A.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${B.x},${B.y}`;
-        linePath.setAttribute('d', d);
+        linePath.setAttribute('d',
+          `M ${A.x},${A.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${B.x},${B.y}`);
       }
 
-      function onScrollOrResize() {
-        if (prefersReduced) return;
-        if (raf) cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(update);
-      }
-
-      function gateVisibility() {
-        const hookRect = hookWrap.getBoundingClientRect();
-        const oceanBottom = oceanTop.getBoundingClientRect().bottom;
-        const visible = hookRect.top >= oceanBottom - 52;
-        lineSvg.style.opacity = visible ? '1' : '0';
-      }
-
-      window.addEventListener('scroll', () => { onScrollOrResize(); gateVisibility(); }, { passive: true });
-      window.addEventListener('resize', onScrollOrResize);
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) onScrollOrResize();
-      });
-
-      onScrollOrResize();
-      gateVisibility();
-    })();
-
-    (function initHookVisibility() {
-      const hookWrap = document.getElementById('hook-wrap');
-      const hookLine = document.getElementById('hook-line');
-      if (!hookWrap || !hookLine) return;
-
-      const WATERLINE = 1;
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY < WATERLINE) {
-          hookWrap.classList.add('hidden');
-          hookLine.classList.add('hidden');
-        } else {
-          hookWrap.classList.remove('hidden');
-          hookLine.classList.remove('hidden');
+      function scheduleUpdate() {
+        if (!prefersReduced) {
+          if (raf) cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(updateLine);
         }
+      }
+
+      // combined scroll/resize handler
+      const onScrollLike = () => {
+        updateHookVisibility();
+        scheduleUpdate();
+      };
+
+      window.addEventListener('scroll', onScrollLike, { passive: true });
+      window.addEventListener('resize', onScrollLike);
+      window.addEventListener('wheel', onScrollLike, { passive: true });
+      window.addEventListener('touchmove', onScrollLike, { passive: true });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) onScrollLike();
       });
+
+      // initialize once
+      updateHookVisibility();
+      scheduleUpdate();
     })();
 
+
+    // ----------------------------------------
+    // Depth meter
+    // ----------------------------------------
     (function initScrollDepth(){
       const MAX_DEPTH = 4000;
       const HIDE_MS = 600;
