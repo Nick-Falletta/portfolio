@@ -95,6 +95,17 @@
     #boat-img { width: 300px; animation: boatBob 5s ease-in-out infinite, boatTilt 8s ease-in-out infinite; filter: drop-shadow(0 6px 14px rgba(0,0,0,.3)); }
     @media (prefers-reduced-motion: reduce) { #boat-img, .waves .layer, .waves .bob { animation: none !important; } }
 
+    /* ================================
+                    FISH
+      ================================ */
+    .fish{width:200px;height:auto;max-width:none;will-change:transform,filter,opacity}
+    .fish-swim { position: fixed; width: 200px; height: auto; will-change: transform, top, left; z-index: 5; animation: wiggle .6s infinite ease-in-out;}
+    #boat-catch{position:absolute;bottom:15px;left:-95px;display:flex;flex-direction:column-reverse;align-items:flex-start;pointer-events:none}
+    #boat-catch .fish.stack{position:absolute;transform:translateY(calc(var(--i,0)*-10px)) rotate(var(--tilt,0deg))}
+    .on-hook-rot{position:absolute;top:10px;right:-80px;transition:transform 0.25s ease;will-change:transform}
+    .fish.on-hook{position:relative;transform:translate(-50%,-10%);animation:wiggle 1.2s ease-in-out infinite}
+    @keyframes wiggle{0%,100%{transform:translate(-50%,-10%) rotate(5deg)}50%{transform:translate(-50%,-14%) rotate(10deg)}}
+
 
     /* ================================
                   WAVES
@@ -127,7 +138,7 @@
     /* ================================
                 HOOK + LINE
       ================================ */
-    #hook-wrap { position: fixed; top: 250px; right: 10px; width: 30px; height: auto; pointer-events: none; z-index: 4; transform: translateY(0); filter: sepia(100%) hue-rotate(160deg) brightness(60%) saturate(200%); max-height: 200px; }
+    #hook-wrap { position: fixed; top: 250px; right: 10px; width: 30px; height: auto; pointer-events: none; z-index: 4; transform: translateY(0); max-height: 200px; }
     #hook-wrap, #hook-line { opacity: 1; transition: opacity 0.2s ease-in-out; }
     #hook-wrap.hidden, #hook-line.hidden { opacity: 0; }
     #hook-line { position: fixed; inset: 0; pointer-events: none; z-index: 4; overflow: hidden;}
@@ -462,7 +473,8 @@
   </svg>
 
   <!-- BOAT -->
-  <div id="boat-wrap">
+  <div id="boat-wrap">    
+    <div id="boat-catch" aria-live="polite" aria-label="Catch bin"></div>
     <img id="boat-img" src="assets/img/kayak.png" alt="Boat"/>
   </div>
 
@@ -493,7 +505,7 @@
     <span class="depth-value">0</span> m
   </div>
 </div>
-<!-- Fishing line overlay (drawn from the boat to the hook) -->
+<!-- Fishing line -->
 <svg id="hook-line" class="hidden" aria-hidden="true">
   <path id="hook-path"
         d=""
@@ -538,7 +550,7 @@
             <div class="info-card reveal" aria-live="polite">
               <strong>Full-Stack</strong> Development
             </div>
-            <div class="info-card reveal"><strong>iOS, Web, Android</strong> multi-platform</div>
+            <div class="info-card reveal"><strong>Web, iOS, Android</strong> Experience</div>
             <div class="info-card reveal"><strong>Accessibility</strong> first principles</div>
           </div>
         </div>
@@ -574,7 +586,7 @@
     <section id="projects" aria-labelledby="projects-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Sunlight Zone<div>~700m</div></h1>
+          <h1 class="zone-title">The Sunlight Zone<div>~100m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Work visible in open waters — shipped apps, case studies, experiments.</p>
         </div>
@@ -704,7 +716,7 @@
     <section id="experience" aria-labelledby="exp-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Twilight Zone<div>~1850m</div></h1>
+          <h1 class="zone-title">The Twilight Zone<div>~600m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Where light fades, responsibility grows, and skills deepen.</p>
         </div>
@@ -752,7 +764,7 @@
     <section id="skills" aria-labelledby="skills-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Midnight Zone<div>~2400m</div></h1>
+          <h1 class="zone-title">The Midnight Zone<div>~2500m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>Tools and technologies honed under pressure.</p>
         </div>
@@ -785,7 +797,7 @@
     <section id="education" aria-labelledby="edu-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title">The Abyssal Zone<div>~3100m</div></h1>
+          <h1 class="zone-title">The Abyss <div>~5000m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>The deep foundations that support everything above.</p>
         </div>
@@ -816,7 +828,7 @@
     <section id="contact" aria-labelledby="contact-title">
       <div class="hero container">
         <div class="sectionHeader">
-          <h1 class="zone-title" style="display: flex; justify-content: space-between;">The Trench<div>~3600m</div></h1>
+          <h1 class="zone-title" style="display: flex; justify-content: space-between;">The Trench<div>~8500m</div></h1>
           <hr style="border-top: 5px dashed white; border-bottom: 0px">
           <p>From the deepest depths, connections surface.</p>
         </div>
@@ -1526,12 +1538,83 @@
       scheduleUpdate();
     })();
 
+    // ----------------------------------------
+    // Depth Points
+    // ----------------------------------------
+    const DEPTH_POINTS = [
+      { id: 'home',       depth: 0    },  // The Surface
+      { id: 'projects',   depth: 100  },  // Sunlight Zone
+      { id: 'experience', depth: 600  },  // Twilight Zone
+      { id: 'skills',     depth: 2500 },  // Midnight Zone
+      { id: 'education',  depth: 5000 },  // The Abyss
+      { id: 'contact',    depth: 8500 }   // The Trench
+    ];
+    let depthAnchors = [];
+
+    function headerPx() {
+      const h = getComputedStyle(document.documentElement).getPropertyValue('--header-h').trim();
+      const n = parseFloat(h);
+      return Number.isFinite(n) ? n : 64;
+    }
+
+    function sectionTitleTop(id) {
+      const section = document.getElementById(id);
+      if (!section) return 0;
+      const title = section.querySelector('.zone-title');
+      const el = title || section;
+      const rect = el.getBoundingClientRect();
+      return rect.top + window.scrollY;
+    }
+
+    function rebuildDepthAnchors() {
+      depthAnchors = DEPTH_POINTS
+        .map(p => ({ y: sectionTitleTop(p.id), depth: p.depth }))
+        .sort((a, b) => a.y - b.y);
+    }
+
+    function depthAtViewport() {
+      if (!depthAnchors.length) rebuildDepthAnchors();
+      if ((window.scrollY || 0) <= 0) return 0;
+
+      const refY = window.scrollY + (window.innerHeight / 2) - headerPx() / 2;
+      if (refY <= depthAnchors[0].y) return depthAnchors[0].depth;
+
+      const slowdown = window.innerHeight / 800;
+
+      for (let i = 0; i < depthAnchors.length - 1; i++) {
+        const a = depthAnchors[i], b = depthAnchors[i + 1];
+        if (refY >= a.y && refY < b.y) {
+          const t = (refY - a.y) / Math.max(1, (b.y - a.y) * slowdown);
+          const d = a.depth + (b.depth - a.depth) * Math.min(1, t);
+          return Math.round(d / 10) * 10;
+        }
+      }
+      return depthAnchors[depthAnchors.length - 1].depth;
+    }
+
+
+    function deepestDepth() {
+      if (!depthAnchors.length) rebuildDepthAnchors();
+      return depthAnchors[depthAnchors.length - 1].depth;
+    }
+
+    const resize = new ResizeObserver(() => rebuildDepthAnchors());
+    resize.observe(document.documentElement);
+
+    window.addEventListener('load', rebuildDepthAnchors);
+    window.addEventListener('resize', rebuildDepthAnchors);
+    document.addEventListener('DOMContentLoaded', rebuildDepthAnchors);
+
+    window.addEventListener('load', () => {
+      document.querySelectorAll('img').forEach(img => {
+        if (!img.complete) img.addEventListener('load', rebuildDepthAnchors, { once: true });
+      });
+    });
 
     // ----------------------------------------
     // Depth meter
     // ----------------------------------------
     (function initScrollDepth(){
-      const MAX_DEPTH = 4000;
       const HIDE_MS = 600;
 
       let meter = document.getElementById('depth-meter');
@@ -1543,28 +1626,19 @@
       }
       const valueEl = meter.querySelector('.depth-value') || meter;
 
-      function scrollProgress() {
-        const maxScrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        return Math.min(1, Math.max(0, window.scrollY / maxScrollable));
-      }
-
       let raf = null;
       let hideTimer = null;
 
       function showMeter() {
         meter.classList.add('is-visible');
         if (hideTimer) clearTimeout(hideTimer);
-        hideTimer = setTimeout(() => {
-          meter.classList.remove('is-visible');
-        }, HIDE_MS);
+        hideTimer = setTimeout(() => meter.classList.remove('is-visible'), HIDE_MS);
       }
 
       function updateDepth() {
         raf = null;
-        const pct = scrollProgress();
-        const rawDepth = Math.round(pct * MAX_DEPTH);
-        const depth = Math.floor(rawDepth / 10) * 10;
-        valueEl.textContent = String(depth);
+        const d = depthAtViewport();
+        valueEl.textContent = String(d);
       }
 
       function schedule() {
@@ -1575,9 +1649,171 @@
       window.addEventListener('scroll', schedule, { passive: true });
       window.addEventListener('resize', schedule);
       window.addEventListener('load', schedule);
-
       schedule();
     })();
+
+    // ----------------------------------------
+    // Fishing Game
+    // ----------------------------------------
+    (function fishingGame() {
+      const fishOptions = [
+        'assets/img/skate.png',
+        'assets/img/fluke.png',
+        'assets/img/seaBass.png',
+        'assets/img/blueFish.png',
+        'assets/img/blueFin.png',
+        'assets/img/stripedBass.png'
+      ]
+
+      const LEGENDARY_FISH_SRC = 'assets/img/mahi.png'
+      const LEGENDARY_CHANCE = 0.01
+      const MAX_TILT_DEG = 15
+      const LEGENDARY_FILTER = 'drop-shadow(0 0 6px rgba(50,205,50,.9)) drop-shadow(0 0 12px rgba(0,255,255,.75))'
+
+      const boatWrap = document.getElementById('boat-wrap')
+      const hookWrap = document.getElementById('hook-wrap')
+      const boatCatch = document.getElementById('boat-catch')
+
+      if (!boatWrap || !hookWrap || !boatCatch) return
+
+      function randomFrom(arr) {
+        return arr[Math.floor(Math.random() * arr.length)]
+      }
+
+      function randomTilt() {
+        return (Math.random() * MAX_TILT_DEG * 2) - MAX_TILT_DEG
+      }
+
+      function generateCatch() {
+        const legendary = LEGENDARY_FISH_SRC && Math.random() < LEGENDARY_CHANCE
+        const src = legendary ? LEGENDARY_FISH_SRC : randomFrom(fishOptions)
+        const tilt = randomTilt()
+        return { src, tilt, legendary }
+      }
+
+      let carrying = false
+      let currentCatch = null
+
+      function spawnSwimmingFish() {
+        if (carrying) return
+        currentCatch = generateCatch()
+
+        const swim = document.createElement('img')
+        swim.src = currentCatch.src
+        swim.alt = 'Swimming fish'
+        swim.className = 'fish-swim'
+        if (currentCatch.legendary) swim.style.filter = LEGENDARY_FILTER
+        document.body.appendChild(swim)
+
+        let x = -200
+        let y = window.innerHeight * 0.5
+        let frame = 0
+
+        function animate() {
+          const hookRect = hookWrap.getBoundingClientRect()
+          const targetX = hookRect.left + hookRect.width * 0.5 - 100
+          const targetY = hookRect.top
+
+          const dx = targetX - x
+          const dy = targetY - y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+
+          if (dist < 40) {
+            swim.remove()
+            hookFish()
+            return
+          }
+
+          const step = 15 // fish swimming speed
+          x += (dx / dist) * step
+          y += (dy / dist) * step
+
+          const wiggle = Math.sin(frame / 8) * 15
+          swim.style.left = x + wiggle + 'px'
+          swim.style.top = y + 'px'
+
+          frame++
+          requestAnimationFrame(animate)
+        }
+
+        animate()
+      }
+
+      function hookFish() {
+        if (carrying || !currentCatch) return
+
+        const wrap = document.createElement('div')
+        wrap.className = 'on-hook-rot'
+
+        const img = document.createElement('img')
+        img.src = currentCatch.src
+        img.alt = 'Fish on hook'
+        img.className = 'fish on-hook'
+        if (currentCatch.legendary) img.style.filter = LEGENDARY_FILTER
+
+        wrap.appendChild(img)
+        hookWrap.appendChild(wrap)
+        carrying = true
+      }
+
+      function landFish() {
+        if (!carrying || !currentCatch) return
+
+        const rotWrap = hookWrap.querySelector('.on-hook-rot')
+        if (rotWrap) rotWrap.remove()
+
+        const stack = document.createElement('img')
+        stack.src = currentCatch.src
+        stack.alt = 'Caught fish'
+        stack.className = 'fish stack'
+        stack.style.setProperty('--tilt', `${currentCatch.tilt.toFixed(1)}deg`)
+        stack.style.setProperty('--i', boatCatch.children.length)
+        if (currentCatch.legendary) stack.style.filter = LEGENDARY_FILTER
+
+        boatCatch.appendChild(stack)
+        boatCatch.setAttribute('aria-label', `Caught fish: ${boatCatch.children.length}`)
+
+        carrying = false
+        currentCatch = null
+      }
+
+      let lastDepth = -1
+      let lastScrollY = window.scrollY
+
+      function updateFishRotation() {
+        const rotWrap = hookWrap.querySelector('.on-hook-rot')
+        if (!rotWrap) return
+
+        const y = window.scrollY
+        const dy = y - lastScrollY
+        lastScrollY = y
+
+        const speed = Math.max(-60, Math.min(60, dy))
+        const angle = (speed / 60) * 70
+
+        rotWrap.style.transform = `rotate(${angle.toFixed(1)}deg)`
+      }
+
+      function onScrollLike() {
+        const d = depthAtViewport()
+        if (d !== lastDepth) {
+          if (d >= deepestDepth() && !carrying) {
+            spawnSwimmingFish()
+          }
+          if (d <= 0 && carrying) {
+            landFish()
+          }
+          lastDepth = d
+        }
+        updateFishRotation()
+      }
+
+      window.addEventListener('scroll', onScrollLike, { passive: true })
+      window.addEventListener('resize', onScrollLike)
+      window.addEventListener('load', onScrollLike)
+
+      onScrollLike()
+    })()
 
   </script>
 </body>
