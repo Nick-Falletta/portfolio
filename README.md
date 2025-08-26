@@ -6,7 +6,7 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-## 🚀 Featured Projects
+## Featured Projects
 
 * **[NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/)** · *Swift · LiDAR · OpenAI*
   Accessibility-focused navigation assistant for visually impaired users. Integrates LiDAR object detection, haptics, and AI guidance.
@@ -27,7 +27,7 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-## 💼 Experience
+## Experience
 
 **Software Developer Intern — Penn State** *(2024)*
 
@@ -45,7 +45,7 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-## 🛠️ Skills
+## Skills
 
 * **Languages:** Java, Python, TypeScript, JavaScript, Swift, Dart, SQL, C#
 * **Frameworks:** React, React Native, Node.js, Flutter, .NET, Bootstrap, Angular
@@ -53,7 +53,7 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-## 🎓 Education
+## Education
 
 **B.S. Human-Centered Design & Development** — Penn State University *(Expected Spring 2025)*
 
@@ -65,7 +65,7 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-## 📫 Connect
+## Connect
 
 * **Email:** [nickfalletta29@outlook.com](mailto:nickfalletta29@outlook.com)
 * **GitHub:** [Nick-Falletta](https://github.com/Nick-Falletta)
@@ -74,6 +74,6 @@ I’ve built and shipped applications across **iOS, Android, and Web**, leveragi
 
 ---
 
-⚡ **Fun fact:** When I’m not coding, I enjoy **rock climbing**, **fishing**, **camping**, **and hiking!**
+**Fun fact:** When I’m not coding, I enjoy **rock climbing**, **fishing**, **camping**, **and hiking!**
 
 ---
