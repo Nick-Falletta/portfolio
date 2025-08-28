@@ -1519,11 +1519,11 @@
       'assets/img/fluke.png',
       'assets/img/seaBass.png',
       'assets/img/blueFish.png',
-      'assets/img/blueFin.png',
+      'assets/img/bluefin.png',
       'assets/img/stripedBass.png'
     ];
     const LEGENDARY_FISH_SRC = 'assets/img/mahi.png';
-    const LEGENDARY_CHANCE = 0.01;
+    const LEGENDARY_CHANCE = 0.1;
     const MAX_TILT_DEG = 15;
     const LEGENDARY_FILTER = 'drop-shadow(0 0 6px rgba(50,205,50,.9)) drop-shadow(0 0 12px rgba(0,255,255,.75))';
 
@@ -1640,7 +1640,7 @@
     function rotateHookedFish(vSmoothed) {
       const rotWrap = hookWrap.querySelector('.on-hook-rot');
       if (!rotWrap) return;
-      const angle = Math.max(-70, Math.min(70, vSmoothed * 70 * 16)); // scale px/ms to deg
+      const angle = Math.max(-70, Math.min(70, vSmoothed * 70 * 16));
       rotWrap.style.transform = `rotate(${angle.toFixed(1)}deg) translateZ(0)`;
     }
 
