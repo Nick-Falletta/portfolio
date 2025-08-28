@@ -276,7 +276,7 @@
     .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
     .cardContainer { transition: transform .2s }
     .cardContainer:hover { transform: scale(1.02); }
-    .card { transition: transform .2s; background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
+    .card { min-height: 450px; transition: transform .2s; background: color-mix(in oklab, var(--panel) 70%, transparent); backdrop-filter: saturate(130%) blur(6px); border-radius: 1rem; overflow: clip; border: 1px solid color-mix(in hsl, var(--muted) 22%, transparent); display: grid; grid-template-rows: auto 1fr auto; }
     .card-media { aspect-ratio: 16/10; background: #0a1113; display: grid; place-items: center; overflow: hidden; }
     .card-media img { width: 100%; height: 100%; object-fit: fill; will-change: transform; }
     .card-body { padding: 1rem; }
@@ -689,6 +689,43 @@
             </article>
            </div>
 
+          <!-- ASCII Art Generator -->
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/python_ascii.png" alt="Python Logo - ASCII Art" loading="lazy" />
+              </div>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">ASCII Art Generator</h3>
+                  <span class="chip">Python</span>
+                </div>
+                <p>Convert PNGs and JPGs into downloadable, customized ASCII art.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://github.com/Nick-Falletta/ASCII_Art" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </article>
+           </div>
+
+          <!-- Java Image Processor -->
+           <div class="cardContainer">
+            <article class="card reveal">
+              <div class="card-media">
+                <img src="assets/img/imageProcessor.png" alt="Java Logo - Processed Image" loading="lazy" />
+              </div>
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 style="margin:0">Image Processor</h3>
+                  <span class="chip">Java</span>
+                </div>
+                <p>Image editing tool with upload, crop, brightness, contrast, and blur features. Save edited images directly to your PC.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn ghost" href="https://github.com/Nick-Falletta/JavaImageProcessor" target="_blank" rel="noopener">GitHub</a>
+              </div>
+            </article>
+           </div>
 
           <!-- Placeholder -->
            <div class="cardContainer">
@@ -871,951 +908,752 @@
   <!--              JS               -->
   <!-- ============================= -->
   <script>
-    // ----------------------------------------
-    // Mobile menu toggle + scrim + scroll lock
-    // ----------------------------------------
-    const menuBtn = document.getElementById('menuBtn');
-    const menu    = document.getElementById('menu');
-    const scrim   = document.getElementById('nav-scrim');
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* =========================================================
+    ONE SCROLL PIPELINE
+    ========================================================= */
+  (() => {
+    const listeners = new Set();
+    let lastY = window.scrollY || 0;
+    let lastT = performance.now();
+    let vSmoothed = 0;
+    let ticking = false;
 
-    // init closed
-    menu.style.display = 'none';
-    menu.setAttribute('aria-hidden', 'true');
-    menuBtn.setAttribute('aria-expanded', 'false');
+    const lerp = (a, b, t) => a + (b - a) * t;
 
-    function lockScroll(lock) {
-      document.body.classList.toggle('menu-open', lock);
-      document.body.style.overflow = lock ? 'hidden' : '';
+    function tick(now) {
+      ticking = false;
+      const y  = window.scrollY || 0;
+      const dt = Math.max(1, now - lastT);
+      const dy = y - lastY;
+      const v  = dy / dt;                 // px per ms
+      vSmoothed = lerp(vSmoothed, v, 0.20);
+
+      listeners.forEach(fn => fn({ y, dy, dt, v, vSmoothed }));
+
+      lastY = y; lastT = now;
+    }
+    function schedule() {
+      if (!ticking) { ticking = true; requestAnimationFrame(tick); }
     }
 
-    function openMenu() {
-      // make it measurable
-      menu.style.display = 'block';
-      // read natural height
-      menu.style.height = 'auto';
-      const target = menu.scrollHeight + 'px';
-      // start from 0 for animation
-      menu.style.height = '0px';
-      // force style calc then animate
-      requestAnimationFrame(() => {
-        if (prefersReduced) {
-          menu.style.height = 'auto';
-          menu.style.opacity = '1';
-          menu.style.transform = 'none';
-        } else {
-          menu.style.height = target;
-          menu.style.opacity = '1';
-          menu.style.transform = 'translateY(0)';
-        }
-      });
+    addEventListener('scroll',     schedule, { passive: true });
+    addEventListener('touchmove',  schedule, { passive: true });
+    addEventListener('wheel',      schedule, { passive: true });
+    addEventListener('resize',     schedule);
 
-      const onEnd = (e) => {
-        if (e.propertyName === 'height') {
-          menu.style.height = 'auto';
-          menu.removeEventListener('transitionend', onEnd);
-        }
-      };
-      menu.addEventListener('transitionend', onEnd);
+    window.__ScrollBus = {
+      subscribe(fn) { listeners.add(fn); fn({ y: window.scrollY||0, dy:0, dt:16, v:0, vSmoothed }); return () => listeners.delete(fn); }
+    };
+  })();
 
-      menuBtn.classList.add('active');
-      scrim.classList.add('show');
-      menu.setAttribute('aria-hidden', 'false');
-      menuBtn.setAttribute('aria-expanded', 'true');
-      lockScroll(true);
+  /* =========================================================
+    MOBILE MENU
+    ========================================================= */
+  const menuBtn = document.getElementById('menuBtn');
+  const menu    = document.getElementById('menu');
+  const scrim   = document.getElementById('nav-scrim');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // focus first link for a11y
-      const firstLink = menu.querySelector('.link');
-      firstLink && firstLink.focus({ preventScroll: true });
-    }
+  // init closed
+  menu.style.display = 'none';
+  menu.setAttribute('aria-hidden', 'true');
+  menuBtn.setAttribute('aria-expanded', 'false');
 
-    function closeMenu() {
-      // if currently 'auto', freeze current px height then animate back to 0
-      const current = getComputedStyle(menu).height;
-      if (!prefersReduced) {
-        menu.style.height = current;
-        // next frame → collapse
-        requestAnimationFrame(() => {
-          menu.style.height = '0px';
-          menu.style.opacity = '0';
-          menu.style.transform = 'translateY(-4px)';
-        });
-      }
-
-      const finish = () => {
-        menu.style.display = 'none';
-        menu.removeEventListener('transitionend', finish);
-      };
-      prefersReduced ? finish() : menu.addEventListener('transitionend', finish);
-
-      menuBtn.classList.remove('active');
-      scrim.classList.remove('show');
-      menu.setAttribute('aria-hidden', 'true');
-      menuBtn.setAttribute('aria-expanded', 'false');
-      lockScroll(false);
-      // return focus to the toggle
-      menuBtn.focus({ preventScroll: true });
-    }
-
-    function isOpen() {
-      return menuBtn.getAttribute('aria-expanded') === 'true';
-    }
-
-    menuBtn.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()));
-    scrim.addEventListener('click', closeMenu);
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) closeMenu(); });
-
-    // Close on nav link click (mobile only)
-    document.querySelectorAll('#menu .link').forEach(a => {
-      a.addEventListener('click', () => {
-        if (window.matchMedia('(max-width: 899px)').matches) closeMenu();
-      });
+  function lockScroll(lock) {
+    document.body.classList.toggle('menu-open', lock);
+    document.body.style.overflow = lock ? 'hidden' : '';
+  }
+  function openMenu() {
+    menu.style.display = 'block';
+    menu.style.height = 'auto';
+    const target = menu.scrollHeight + 'px';
+    menu.style.height = '0px';
+    requestAnimationFrame(() => {
+      if (prefersReduced) { menu.style.height = 'auto'; menu.style.opacity = '1'; menu.style.transform = 'none'; }
+      else                { menu.style.height = target; menu.style.opacity = '1'; menu.style.transform = 'translateY(0)'; }
     });
+    const onEnd = (e) => { if (e.propertyName === 'height') { menu.style.height = 'auto'; menu.removeEventListener('transitionend', onEnd); } };
+    menu.addEventListener('transitionend', onEnd);
 
-    // Reset state when switching to desktop size
-    const mql = window.matchMedia('(min-width: 1100px)');
-    mql.addEventListener('change', (e) => {
-      if (e.matches) { // desktop
-        menu.style.display = '';
-        menu.style.height = '';
-        menu.style.opacity = '';
-        menu.style.transform = '';
-        scrim.classList.remove('show');
-        menu.setAttribute('aria-hidden', 'false');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('menu-open');
-        document.body.style.overflow = '';
-      } else { // mobile
-        menu.style.display = 'none';
+    menuBtn.classList.add('active');
+    scrim.classList.add('show');
+    menu.setAttribute('aria-hidden', 'false');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    lockScroll(true);
+
+    const firstLink = menu.querySelector('.link');
+    firstLink && firstLink.focus({ preventScroll: true });
+  }
+  function closeMenu() {
+    const current = getComputedStyle(menu).height;
+    if (!prefersReduced) {
+      menu.style.height = current;
+      requestAnimationFrame(() => {
         menu.style.height = '0px';
         menu.style.opacity = '0';
         menu.style.transform = 'translateY(-4px)';
-        menu.setAttribute('aria-hidden', 'true');
-      }
+      });
+    }
+    const finish = () => { menu.style.display = 'none'; menu.removeEventListener('transitionend', finish); };
+    prefersReduced ? finish() : menu.addEventListener('transitionend', finish);
+
+    menuBtn.classList.remove('active');
+    scrim.classList.remove('show');
+    menu.setAttribute('aria-hidden', 'true');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    lockScroll(false);
+    menuBtn.focus({ preventScroll: true });
+  }
+  function isOpen() { return menuBtn.getAttribute('aria-expanded') === 'true'; }
+
+  menuBtn.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()));
+  scrim.addEventListener('click', closeMenu);
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) closeMenu(); });
+
+  // Close on nav link click (mobile only)
+  document.querySelectorAll('#menu .link').forEach(a => {
+    a.addEventListener('click', () => { if (window.matchMedia('(max-width: 899px)').matches) closeMenu(); });
+  });
+
+  // Reset state when switching to desktop size
+  const mql = window.matchMedia('(min-width: 1100px)');
+  mql.addEventListener('change', (e) => {
+    if (e.matches) { // desktop
+      menu.style.display = '';
+      menu.style.height = '';
+      menu.style.opacity = '';
+      menu.style.transform = '';
+      scrim.classList.remove('show');
+      menu.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    } else { // mobile
+      menu.style.display = 'none';
+      menu.style.height = '0px';
+      menu.style.opacity = '0';
+      menu.style.transform = 'translateY(-4px)';
+      menu.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  /* =========================================================
+    ERO IMAGE SLIDER
+    ========================================================= */
+  (function initHeroSlider() {
+    const slider = document.querySelector('.hero-slider');
+    if (!slider) return;
+
+    const slides = [...slider.querySelectorAll('.slide')];
+    const dots   = [...slider.querySelectorAll('.dot')];
+    const prevBtn = slider.querySelector('.slide-btn.prev');
+    const nextBtn = slider.querySelector('.slide-btn.next');
+
+    let index = slides.findIndex(s => s.classList.contains('is-active'));
+    if (index < 0) index = 0;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const AUTOPLAY_MS = 5000; 
+    let autoplayId = null;
+    let paused = false;
+
+    async function ensureDecoded(img) {
+      if (img && 'decode' in img) { try { await img.decode(); } catch {} }
+    }
+    async function show(i) {
+      slides[index].classList.remove('is-active');
+      dots[index]?.classList.remove('is-active');
+      dots[index]?.setAttribute('aria-selected', 'false');
+
+      index = (i + slides.length) % slides.length;
+
+      await ensureDecoded(slides[index]);
+      slides[index].classList.add('is-active');
+      dots[index]?.classList.add('is-active');
+      dots[index]?.setAttribute('aria-selected', 'true');
+    }
+    function next() { show(index + 1); }
+    function prev() { show(index - 1); }
+
+    nextBtn?.addEventListener('click', () => { next(); restartAutoplay(); });
+    prevBtn?.addEventListener('click', () => { prev(); restartAutoplay(); });
+    dots.forEach((d, i) => {
+      d.addEventListener('click', () => { show(i); restartAutoplay(); });
+      d.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); restartAutoplay(); }
+      });
     });
 
-    // ----------------------------------------
-    // Hero Image Slider (autoplay + controls)
-    // ----------------------------------------
-    (function initHeroSlider() {
-      const slider = document.querySelector('.hero-slider');
-      if (!slider) return;
+    slider.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { next(); restartAutoplay(); }
+      if (e.key === 'ArrowLeft')  { prev(); restartAutoplay(); }
+    });
+    slider.addEventListener('mouseenter', () => { paused = true; stopAutoplay(); });
+    slider.addEventListener('mouseleave', () => { paused = false; restartAutoplay(); });
+    slider.addEventListener('focusin',  () => { paused = true; stopAutoplay(); });
+    slider.addEventListener('focusout', () => { paused = false; restartAutoplay(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stopAutoplay(); else if (!paused) restartAutoplay(); });
 
-      const slides = [...slider.querySelectorAll('.slide')];
-      const dots   = [...slider.querySelectorAll('.dot')];
-      const prevBtn = slider.querySelector('.slide-btn.prev');
-      const nextBtn = slider.querySelector('.slide-btn.next');
+    function startAutoplay() { if (prefersReduced || slides.length <= 1) return; stopAutoplay(); autoplayId = setInterval(next, AUTOPLAY_MS); }
+    function stopAutoplay()  { if (autoplayId) clearInterval(autoplayId); autoplayId = null; }
+    function restartAutoplay(){ if (paused || prefersReduced) return; startAutoplay(); }
 
-      let index = slides.findIndex(s => s.classList.contains('is-active'));
-      if (index < 0) index = 0;
+    startAutoplay();
+  })();
 
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const AUTOPLAY_MS = 5000; 
-      let autoplayId = null;
-      let paused = false;
+  /* =========================================================
+    ACTIVE LINK HIGHLIGHTING ON SCROLL
+    ========================================================= */
+  const links = [...document.querySelectorAll('.nav a.link')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const setActive = (id) => { links.forEach(l => l.setAttribute('aria-current', l.getAttribute('href') === '#' + id)); };
+  const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }); }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+  sections.forEach(s => io.observe(s));
 
-      function show(i) {
-        slides[index].classList.remove('is-active');
-        dots[index]?.classList.remove('is-active');
-        dots[index]?.setAttribute('aria-selected', 'false');
+  /* =========================================================
+    REVEAL-ON-SCROLL
+    ========================================================= */
+  const revealEls = document.querySelectorAll('.reveal');
+  const ro = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); ro.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => ro.observe(el));
 
-        index = (i + slides.length) % slides.length;
+  /* =========================================================
+    SKILLS SECTION
+    ========================================================= */
+  (function initSkills() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const grid = document.getElementById('skill-grid');
+    const tabs = [...document.querySelectorAll('.seg-btn')];
 
-        slides[index].classList.add('is-active');
-        dots[index]?.classList.add('is-active');
-        dots[index]?.setAttribute('aria-selected', 'true');
-      }
-
-      function next() { show(index + 1); }
-      function prev() { show(index - 1); }
-
-      // Controls
-      nextBtn?.addEventListener('click', () => { next(); restartAutoplay(); });
-      prevBtn?.addEventListener('click', () => { prev(); restartAutoplay(); });
-      dots.forEach((d, i) => {
-        d.addEventListener('click', () => { show(i); restartAutoplay(); });
-        d.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); restartAutoplay(); }
-        });
-      });
-
-      // Keyboard 
-      slider.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') { next(); restartAutoplay(); }
-        if (e.key === 'ArrowLeft')  { prev(); restartAutoplay(); }
-      });
-
-      // Pause on hover/focus
-      slider.addEventListener('mouseenter', () => { paused = true; stopAutoplay(); });
-      slider.addEventListener('mouseleave', () => { paused = false; restartAutoplay(); });
-      slider.addEventListener('focusin', () => { paused = true; stopAutoplay(); });
-      slider.addEventListener('focusout', () => { paused = false; restartAutoplay(); });
-
-      // Visibility change
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stopAutoplay();
-        else if (!paused) restartAutoplay();
-      });
-
-      function startAutoplay() {
-        if (prefersReduced || slides.length <= 1) return;
-        stopAutoplay();
-        autoplayId = setInterval(next, AUTOPLAY_MS);
-      }
-      function stopAutoplay() {
-        if (autoplayId) clearInterval(autoplayId);
-        autoplayId = null;
-      }
-      function restartAutoplay() {
-        if (paused || prefersReduced) return;
-        startAutoplay();
-      }
-
-      startAutoplay();
-    })();
-
-    // ----------------------------------------
-    // Active link highlighting on scroll
-    // ----------------------------------------
-    const links = [...document.querySelectorAll('.nav a.link')];
-    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const setActive = (id) => {
-      links.forEach(l => l.setAttribute('aria-current', l.getAttribute('href') === '#' + id));
+    const data = {
+      languages: [
+        { name:'Java', val: 90, tags:['OOP','Backend'] },
+        { name:'Python', val: 80, tags:['Scripting','Data'] },
+        { name:'TypeScript', val: 55, tags:['Web','Types'] },
+        { name:'JavaScript', val: 90, tags:['Web','Frontend'] },
+        { name:'Swift', val: 65, tags:['iOS'] },
+        { name:'Dart', val: 80, tags:['Flutter'] },
+        { name:'SQL', val: 75, tags:['DB'] },
+        { name:'C#', val: 50, tags:['.NET'] }
+      ],
+      frameworks: [
+        { name:'React', val: 90, tags:['SPA','Hooks'] },
+        { name:'React Native', val: 85, tags:['Mobile'] },
+        { name:'Node', val: 50, tags:['API'] },
+        { name:'Flutter', val: 80, tags:['Cross-platform'] },
+        { name:'.NET', val: 50, tags:['Server'] },
+        { name:'Bootstrap', val: 80, tags:['UI'] },
+        { name:'Tailwind', val: 70, tags:['UI'] },
+        { name:'Angular', val: 40, tags:['SPA'] }
+      ],
+      tools: [
+        { name:'Xcode', val: 75, tags:['IDE'] },
+        { name:'Android Studio', val: 75, tags:['IDE'] },
+        { name:'Firebase', val: 75, tags:['Auth','DB'] },
+        { name:'MongoDB', val: 45, tags:['NoSQL'] },
+        { name:'MySQL', val: 80, tags:['RDBMS'] },
+        { name:'GitHub', val: 90, tags:['CI/CD'] },
+        { name:'Figma', val: 90, tags:['UX'] }
+      ]
     };
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
-    sections.forEach(s => io.observe(s));
 
-    // ----------------------------------------
-    // Reveal-on-scroll animations
-    // ----------------------------------------
-    const revealEls = document.querySelectorAll('.reveal');
-    const ro = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); ro.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    revealEls.forEach(el => ro.observe(el));
+    let cat = 'languages';
 
-    // ----------------------------------------
-    // Skills Section
-    // ----------------------------------------
-    (function initSkills() {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const grid = document.getElementById('skill-grid');
-      const tabs = [...document.querySelectorAll('.seg-btn')];
-
-      // SkillData
-      const data = {
-        languages: [
-          { name:'Java', val: 90, tags:['OOP','Backend'] },
-          { name:'Python', val: 80, tags:['Scripting','Data'] },
-          { name:'TypeScript', val: 55, tags:['Web','Types'] },
-          { name:'JavaScript', val: 90, tags:['Web','Frontend'] },
-          { name:'Swift', val: 65, tags:['iOS'] },
-          { name:'Dart', val: 80, tags:['Flutter'] },
-          { name:'SQL', val: 75, tags:['DB'] },
-          { name:'C#', val: 50, tags:['.NET'] }
-        ],
-        frameworks: [
-          { name:'React', val: 90, tags:['SPA','Hooks'] },
-          { name:'React Native', val: 85, tags:['Mobile'] },
-          { name:'Node', val: 50, tags:['API'] },
-          { name:'Flutter', val: 80, tags:['Cross-platform'] },
-          { name:'.NET', val: 50, tags:['Server'] },
-          { name:'Bootstrap', val: 80, tags:['UI'] },
-          { name:'Tailwind', val: 70, tags:['UI'] },
-          { name:'Angular', val: 40, tags:['SPA'] }
-        ],
-        tools: [
-          { name:'Xcode', val: 75, tags:['IDE'] },
-          { name:'Android Studio', val: 75, tags:['IDE'] },
-          { name:'Firebase', val: 75, tags:['Auth','DB'] },
-          { name:'MongoDB', val: 45, tags:['NoSQL'] },
-          { name:'MySQL', val: 80, tags:['RDBMS'] },
-          { name:'GitHub', val: 90, tags:['CI/CD'] },
-          { name:'Figma', val: 90, tags:['UX'] }
-        ]
-      };
-
-      let cat = 'languages';
-
-      // Tabs (with hover handled in CSS)
-      tabs.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabs.forEach(b => b.classList.toggle('is-active', b === btn));
-          tabs.forEach(b => b.setAttribute('aria-selected', b === btn ? 'true' : 'false'));
-          cat = btn.dataset.cat;
-          render();
-          grid.setAttribute('aria-labelledby', btn.id);
-        });
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
-        });
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.toggle('is-active', b === btn));
+        tabs.forEach(b => b.setAttribute('aria-selected', b === btn ? 'true' : 'false'));
+        cat = btn.dataset.cat;
+        render();
+        grid.setAttribute('aria-labelledby', btn.id);
       });
-
-      // Always sort high -> low
-      function sortDesc(items) {
-        return items.slice().sort((a,b)=>b.val - a.val);
-      }
-
-      // “Abyss” gradient that darkens as val rises
-      // val=0 → shallow (lighter); val=100 → deep (darker, bluer)
-      function abyssStops(val) {
-        // Map 0..100 to lightness/depth
-        const t = Math.max(0, Math.min(100, val)) / 100;
-        // interpolate hues/sat/light for two stops
-        const h1 = 195;                 // surface blue
-        const h2 = 210;                 // deep blue
-        const s1 = 80 - t*10;           // slight drop in saturation with depth
-        const s2 = 70 - t*20;
-        const l1 = 70 - t*30;           // gets darker
-        const l2 = 50 - t*32;           // much darker
-        return {
-          c1: `hsl(${h1} ${s1}% ${l1}%)`,
-          c2: `hsl(${h2} ${s2}% ${l2}%)`
-        };
-      }
-
-      function ringSVG(val, idBase) {
-        const r = 38, c = 2 * Math.PI * r;
-        const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
-        const uid = `${idBase}-${Math.random().toString(36).slice(2)}`;
-        const { c1, c2 } = abyssStops(val);
-
-        return `
-          <svg viewBox="0 0 100 100" aria-hidden="true">
-            <defs>
-              <linearGradient id="grad-${uid}" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%"  stop-color="${c1}"/>
-                <stop offset="100%" stop-color="${c2}"/>
-              </linearGradient>
-            </defs>
-            <circle class="bg" cx="50" cy="50" r="${r}" />
-            <circle class="fg" cx="50" cy="50" r="${r}"
-              style="stroke-dasharray:${(2*Math.PI*r).toFixed(2)}; stroke-dashoffset:${prefersReduced?off.toFixed(2):(2*Math.PI*r).toFixed(2)}; stroke:url(#grad-${uid}); transform: rotate(-90deg); transform-origin: 50% 50%;" />
-          </svg>
-          <div class="center">${val}%</div>
-        `;
-      }
-
-      // Animate rings on view
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            const fg = e.target.querySelector('.fg');
-            const r = 38, c = 2*Math.PI*r;
-            const val = parseInt(e.target.dataset.val || '0', 10);
-            const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
-            if (!prefersReduced && fg) {
-              requestAnimationFrame(() => { fg.style.strokeDashoffset = off.toFixed(2); });
-            } else if (fg) {
-              fg.style.strokeDashoffset = off.toFixed(2);
-            }
-            io.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.4 });
-
-      function cardHTML(item) {
-        const tagHTML = (item.tags||[]).map(t => `<span class="skill-tag">${t}</span>`).join('');
-        const level =
-          item.val >= 80 ? 'Advanced' :
-          item.val >= 60 ? 'Proficient' : 'Familiar';
-
-        return `
-          <article class="skill-card" tabindex="0" aria-label="${item.name}, ${level}, ${item.val} percent">
-            <div class="ring" data-val="${item.val}">
-              ${ringSVG(item.val, item.name.toLowerCase().replace(/\s+/g,'-'))}
-            </div>
-            <div class="skill-meta">
-              <h3>${item.name}</h3>
-              <p>${level} · Focus: ${(item.tags||[]).join(', ') || '—'}</p>
-              <div class="skill-tags">${tagHTML}</div>
-            </div>
-          </article>
-        `;
-      }
-
-      function render() {
-        const items = sortDesc(data[cat] || []);
-        grid.innerHTML = items.map(cardHTML).join('');
-        grid.querySelectorAll('.ring').forEach(r => io.observe(r));
-      }
-
-      render();
-    })();
-
-    // ----------------------------------------
-    // Copy-to-clipboard buttons
-    // ----------------------------------------
-    document.querySelectorAll('.copy').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        try { 
-          await navigator.clipboard.writeText(btn.dataset.copy); 
-          btn.textContent = 'Copied'; 
-          setTimeout(() => btn.textContent = 'Copy', 1200); 
-        } catch {}
-      })
+      btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
     });
 
-    // ----------------------------------------
-    // Footer metadata
-    // ----------------------------------------
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const updated = new Date(document.lastModified);
-    document.getElementById('updated').textContent = updated.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric'});
+    function sortDesc(items) { return items.slice().sort((a,b)=>b.val - a.val); }
+    function abyssStops(val) {
+      const t = Math.max(0, Math.min(100, val)) / 100;
+      const h1 = 195, h2 = 210;
+      const s1 = 80 - t*10, s2 = 70 - t*20;
+      const l1 = 70 - t*30, l2 = 50 - t*32;
+      return { c1: `hsl(${h1} ${s1}% ${l1}%)`, c2: `hsl(${h2} ${s2}% ${l2}%)` };
+    }
+    function ringSVG(val, idBase) {
+      const r = 38, c = 2 * Math.PI * r;
+      const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
+      const uid = `${idBase}-${Math.random().toString(36).slice(2)}`;
+      const { c1, c2 } = abyssStops(val);
+      return `
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <defs><linearGradient id="grad-${uid}" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0%"  stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/>
+          </linearGradient></defs>
+          <circle class="bg" cx="50" cy="50" r="${r}" />
+          <circle class="fg" cx="50" cy="50" r="${r}"
+            style="stroke-dasharray:${(2*Math.PI*r).toFixed(2)}; stroke-dashoffset:${prefersReduced?off.toFixed(2):(2*Math.PI*r).toFixed(2)}; stroke:url(#grad-${uid}); transform: rotate(-90deg); transform-origin: 50% 50%;" />
+        </svg>
+        <div class="center">${val}%</div>
+      `;
+    }
+    const ringIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const fg = e.target.querySelector('.fg');
+          const r = 38, c = 2*Math.PI*r;
+          const val = parseInt(e.target.dataset.val || '0', 10);
+          const off = c * (1 - Math.max(0, Math.min(100, val)) / 100);
+          if (fg) fg.style.strokeDashoffset = off.toFixed(2);
+          ringIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
 
-    // ----------------------------------------
-    // Ocean Background (canvas) with depth-based particles
-    // ----------------------------------------
-    (function initOcean() {
-      const canvas = document.getElementById('ocean-canvas');
-      if (!canvas) return;
+    function cardHTML(item) {
+      const tagHTML = (item.tags||[]).map(t => `<span class="skill-tag">${t}</span>`).join('');
+      const level = item.val >= 80 ? 'Advanced' : item.val >= 60 ? 'Proficient' : 'Familiar';
+      return `
+        <article class="skill-card" tabindex="0" aria-label="${item.name}, ${level}, ${item.val} percent">
+          <div class="ring" data-val="${item.val}">${ringSVG(item.val, item.name.toLowerCase().replace(/\s+/g,'-'))}</div>
+          <div class="skill-meta">
+            <h3>${item.name}</h3>
+            <p>${level} · Focus: ${(item.tags||[]).join(', ') || '—'}</p>
+            <div class="skill-tags">${tagHTML}</div>
+          </div>
+        </article>
+      `;
+    }
+    function render() {
+      const items = sortDesc(data[cat] || []);
+      grid.innerHTML = items.map(cardHTML).join('');
+      grid.querySelectorAll('.ring').forEach(r => ringIO.observe(r));
+    }
+    render();
+  })();
 
-      const ctx = canvas.getContext('2d', { alpha: true });
-      let w = 0, h = 0, dpr = Math.max(1, window.devicePixelRatio || 1);
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* =========================================================
+    COPY-TO-CLIPBOARD
+    ========================================================= */
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(btn.dataset.copy); btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy', 1200); } catch {}
+    })
+  });
 
-      // Particles
-      const MAX_BUBBLES = 50;
-      const MAX_PLANK   = 180;
-      const MAX_SNOW    = 240;
+  /* =========================================================
+    FOOTER METADATA
+    ========================================================= */
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const updated = new Date(document.lastModified);
+  document.getElementById('updated').textContent = updated.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric'});
 
-      const bubbles = [];
-      const plankton = [];
-      const snow = [];
+  /* =========================================================
+    OCEAN BACKGROUND
+    ========================================================= */
+  (function initOcean() {
+    const canvas = document.getElementById('ocean-canvas');
+    if (!canvas) return;
 
-      // after resize() or inside it:
-      function resize() {
-        w = canvas.clientWidth = window.innerWidth;
-        h = canvas.clientHeight = window.innerHeight;
-        canvas.width  = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let w = 0, h = 0;
+    const isMobile = matchMedia('(max-width: 820px)').matches;
+    const rawDpr = Math.max(1, devicePixelRatio || 1);
+    const dpr = isMobile ? Math.min(1.25, rawDpr) : Math.min(1.75, rawDpr);
 
-        // keep CSS background in sync
-        paintBackground(depthFactor());
+    // Scaled on mobile
+    const SCALE = isMobile ? 0.5 : 1;
+    const MAX_BUBBLES = Math.floor(50 * SCALE);
+    const MAX_PLANK   = Math.floor(180 * SCALE);
+    const MAX_SNOW    = Math.floor(240 * SCALE);
+
+    const bubbles = [], plankton = [], snow = [];
+
+    function resize() {
+      w = canvas.clientWidth = innerWidth;
+      h = canvas.clientHeight = innerHeight;
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function rand(a, b){ return a + Math.random()*(b-a); }
+    function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
+    function lerp(a, b, t){ return a + (b - a) * t; }
+
+    function lerpHsl(hslA, hslB, t){
+      const p = s => s.replace(/[^\d.\s]/g,'').trim().split(/\s+/).map(Number);
+      const [h1,s1,l1] = p(hslA), [h2,s2,l2] = p(hslB);
+      return `hsl(${lerp(h1,h2,t)} ${lerp(s1,s2,t)}% ${lerp(l1,l2,t)}%)`;
+    }
+    function depthFactor() {
+      const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const raw = window.scrollY || 0;
+      const clamped = Math.min(max, Math.max(0, raw));
+      return clamped / max;
+    }
+
+    function seedParticles() {
+      bubbles.length = 0; plankton.length = 0; snow.length = 0;
+      for (let i=0;i<MAX_BUBBLES;i++) {
+        bubbles.push({ x: rand(0,w), y: rand(h*0.5, h), r: rand(1, 3.5), vy: rand(-28, -10), wob: rand(0.4, 1.5), a: rand(0.2, 0.9) });
       }
-
-      window.addEventListener('load', () => paintBackground(depthFactor()));
-      window.addEventListener('resize', () => paintBackground(depthFactor()));
-
-      function rand(a, b){ return a + Math.random()*(b-a); }
-      function clamp(v, a, b){ return Math.min(b, Math.max(a, v)); }
-      function lerp(a, b, t){ return a + (b - a) * t; }
-
-      // Depth factor
-      function depthFactor() {
-        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const raw = window.scrollY || window.pageYOffset || 0;
-        const clamped = Math.min(max, Math.max(0, raw));
-        return clamped / max;
+      for (let i=0;i<MAX_PLANK;i++) {
+        plankton.push({ x: rand(0,w), y: rand(0, h), r: rand(0.7, 1.8), vx: rand(-8, 8), vy: rand(-6, 6), tw: rand(2,5), a: rand(0.15, 0.45) });
       }
-
-      function lerpHsl(hslA, hslB, t){
-        const p = s => s.replace(/[^\d.\s]/g,'').trim().split(/\s+/).map(Number); // crude parse "hsl(H S% L%)"
-        const [h1,s1,l1] = p(hslA);
-        const [h2,s2,l2] = p(hslB);
-        const h = lerp(h1, h2, t), s = lerp(s1, s2, t), l = lerp(l1, l2, t);
-        return `hsl(${h} ${s}% ${l}%)`;
+      for (let i=0;i<MAX_SNOW;i++) {
+        snow.push({ x: rand(0,w), y: rand(0, h), r: rand(0.6, 1.4), vy: rand(6, 18), drift: rand(-4, 4), a: rand(0.12, 0.35) });
       }
+    }
 
-      function paintBackground(t) {
-        // read CSS custom props once
-        const rs = getComputedStyle(document.documentElement);
-
-        const top = lerpHsl(
-          rs.getPropertyValue('--ocean-surface'),
-          rs.getPropertyValue('--ocean-mid'),
-          clamp(Math.pow(t, 0.6), 0, 1)
-        );
-
-        const bottom = lerpHsl(
-          rs.getPropertyValue('--ocean-mid'),
-          rs.getPropertyValue('--ocean-deep'),
-          clamp(Math.pow(t, 1.5), 0, 1)
-        );
-
-        // build a CSS gradient and apply it to the page background
-        const gradient = `linear-gradient(180deg, ${top} 0%, ${bottom} 100%)`;
-
-        // Put the gradient on <html> so iOS Safari samples it behind the URL bar
+    let lastBG = '';
+    function paintBackground(t) {
+      const rs = getComputedStyle(document.documentElement);
+      const top = lerpHsl(rs.getPropertyValue('--ocean-surface'), rs.getPropertyValue('--ocean-mid'), clamp(Math.pow(t, 0.6), 0, 1));
+      const bottom = lerpHsl(rs.getPropertyValue('--ocean-mid'), rs.getPropertyValue('--ocean-deep'), clamp(Math.pow(t, 1.5), 0, 1));
+      const gradient = `linear-gradient(180deg, ${top} 0%, ${bottom} 100%)`;
+      if (gradient !== lastBG) {
         document.documentElement.style.background = gradient;
         document.documentElement.style.minHeight = '100dvh';
-
-        // Keep <body> transparent so the html background shows through
         document.body.style.background = 'transparent';
+        lastBG = gradient;
+      }
+    }
+
+    function drawParticles(t) {
+      const bubblesPct = 1 - t;             
+      const plankPct   = 1 - Math.abs(t-0.45)*2;
+      const snowPct    = t;                  
+      const bubbleN = Math.floor(MAX_BUBBLES * bubblesPct);
+      const plankN  = Math.floor(MAX_PLANK * clamp(plankPct, 0, 1));
+      const snowN   = Math.floor(MAX_SNOW * snowPct);
+      const surfaceY = document.getElementById("ocean-top").offsetHeight; 
+
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-bubble').trim() || 'rgba(240,250,255,.9)';
+      for (let i = 0; i < bubbleN; i++) {
+        const b = bubbles[i];
+        b.y += b.vy * 0.016;
+        b.x += Math.sin((performance.now() / 1000 + i) * b.wob) * 0.6;
+        if (b.y < surfaceY + 50) { b.y = h + rand(0, 60); b.x = rand(0, w); }
+        const drawY = Math.max(b.y, surfaceY);
+        ctx.globalAlpha = b.a; ctx.beginPath(); ctx.arc(b.x, drawY, b.r, 0, Math.PI * 2); ctx.fill();
       }
 
-      function seedParticles() {
-        bubbles.length = 0; plankton.length = 0; snow.length = 0;
-        for (let i=0;i<MAX_BUBBLES;i++) {
-          bubbles.push({
-            x: rand(0,w), y: rand(h*0.5, h), r: rand(1, 3.5), vy: rand(-28, -10), wob: rand(0.4, 1.5), a: rand(0.2, 0.9)
-          });
-        }
-        for (let i=0;i<MAX_PLANK;i++) {
-          plankton.push({
-            x: rand(0,w), y: rand(0, h), r: rand(0.7, 1.8), vx: rand(-8, 8), vy: rand(-6, 6), tw: rand(2,5), a: rand(0.15, 0.45)
-          });
-        }
-        for (let i=0;i<MAX_SNOW;i++) {
-          snow.push({
-            x: rand(0,w), y: rand(0, h), r: rand(0.6, 1.4), vy: rand(6, 18), drift: rand(-4, 4), a: rand(0.12, 0.35)
-          });
-        }
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-plank').trim() || 'rgba(120,255,180,.35)';
+      for (let i=0;i<plankN;i++){
+        const p = plankton[i];
+        const tw = p.tw;
+        p.x += (p.vx + Math.sin((performance.now()/600)+i)*tw) * 0.016;
+        p.y += (p.vy + Math.cos((performance.now()/700)+i)*tw) * 0.016;
+        if (p.x < -10) p.x = w+10; if (p.x > w+10) p.x = -10;
+        if (p.y < -10) p.y = h+10; if (p.y > h+10) p.y = -10;
+        ctx.globalAlpha = p.a; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
       }
 
-      // Bubbles
-      function drawParticles(t) {
-
-        const bubblesPct = 1 - t;             
-        const plankPct   = 1 - Math.abs(t-0.45)*2;
-        const snowPct    = t;                  
-
-        const bubbleN = Math.floor(MAX_BUBBLES * bubblesPct);
-        const plankN  = Math.floor(MAX_PLANK * clamp(plankPct, 0, 1));
-        const snowN   = Math.floor(MAX_SNOW * snowPct);
-
-        const surfaceY = document.getElementById("ocean-top").offsetHeight; 
-
-        ctx.fillStyle = getComputedStyle(document.documentElement)
-          .getPropertyValue('--ocean-bubble').trim() || 'rgba(240,250,255,.9)';
-
-        for (let i = 0; i < bubbleN; i++) {
-          const b = bubbles[i];
-          b.y += b.vy * 0.016;
-          b.x += Math.sin((performance.now() / 1000 + i) * b.wob) * 0.6;
-
-          if (b.y < surfaceY + 50) {
-            b.y = h + rand(0, 60);
-            b.x = rand(0, w);
-          }
-
-          const drawY = Math.max(b.y, surfaceY);
-
-          ctx.globalAlpha = b.a;
-          ctx.beginPath();
-          ctx.arc(b.x, drawY, b.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // Plankton 
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-plank').trim() || 'rgba(120,255,180,.35)';
-        for (let i=0;i<plankN;i++){
-          const p = plankton[i];
-          const tw = p.tw;
-          p.x += (p.vx + Math.sin((performance.now()/600)+i)*tw) * 0.016;
-          p.y += (p.vy + Math.cos((performance.now()/700)+i)*tw) * 0.016;
-          if (p.x < -10) p.x = w+10; if (p.x > w+10) p.x = -10;
-          if (p.y < -10) p.y = h+10; if (p.y > h+10) p.y = -10;
-          ctx.globalAlpha = p.a;
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
-        }
-
-        // Marine snow
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-snow').trim() || 'rgba(200,220,230,.6)';
-        for (let i=0;i<snowN;i++){
-          const s = snow[i];
-          s.y += s.vy * 0.016; s.x += s.drift * 0.008;
-          if (s.y > h+6) { s.y = -6; s.x = rand(0,w); }
-          ctx.globalAlpha = s.a;
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
-        }
-
-        ctx.globalAlpha = 1;
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ocean-snow').trim() || 'rgba(200,220,230,.6)';
+      for (let i=0;i<snowN;i++){
+        const s = snow[i];
+        s.y += s.vy * 0.016; s.x += s.drift * 0.008;
+        if (s.y > h+6) { s.y = -6; s.x = rand(0,w); }
+        ctx.globalAlpha = s.a; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
       }
+      ctx.globalAlpha = 1;
+    }
 
-      let raf = null;
-      function frame(){
-        if (prefersReduced) return;
-        const t = depthFactor();
+    let raf = null, stopTimer = null;
+    function frame() {
+      raf = null;
+      const t = depthFactor();
+      paintBackground(t);
+      ctx.clearRect(0, 0, w, h);
+      drawParticles(t);
+      if (stopTimer) clearTimeout(stopTimer);
+      stopTimer = setTimeout(() => { /* stop until next scroll */ }, 250);
+      raf = requestAnimationFrame(frame);
+    }
 
-        // don't paint the canvas background anymore
-        ctx.clearRect(0, 0, w, h);
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 
-        // update the page background via CSS
-        paintBackground(t);
+    resize(); seedParticles(); paintBackground(depthFactor());
+    addEventListener('resize', () => { resize(); seedParticles(); paintBackground(depthFactor()); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
 
-        // keep particles on the canvas
-        drawParticles(t);
+    if (window.__ScrollBus) window.__ScrollBus.subscribe(kick);
+  })();
 
-        raf = requestAnimationFrame(frame);
+  /* =========================================================
+    FISHING HOOK + LINE
+    ========================================================= */
+  (function patchHookLine(){
+    const boat = document.getElementById('boat-img');
+    const hookWrap = document.getElementById('hook-wrap');
+    const hookImg  = document.getElementById('hook-img');
+    const lineSvg  = document.getElementById('hook-line');
+    const linePath = document.getElementById('hook-path');
+    if (!boat || !hookWrap || !hookImg || !lineSvg || !linePath || !window.__ScrollBus) return;
+
+    const clamp = (n,a,b)=>Math.min(b,Math.max(a,n));
+
+    function getBoatAnchor() { const r = boat.getBoundingClientRect(); return { x: r.left + r.width * .99, y: r.top + r.height * .08 }; }
+    function getHookAttach() { const r = hookImg.getBoundingClientRect(); return { x: r.left + r.width * 0.85, y: r.top + r.height * 0.15 }; }
+
+    function update({ y }) {
+      const atTop = (y || 0) < 2;
+      hookWrap.classList.toggle('hidden', atTop);
+      lineSvg.classList.toggle('hidden', atTop);
+
+      const extra = clamp(y * 0.07, 0, 350);
+      hookWrap.style.transform = `translateY(${extra}px) translateZ(0)`;
+
+      lineSvg.setAttribute('viewBox', `0 0 ${innerWidth} ${innerHeight}`);
+      const A = getBoatAnchor();
+      const B = getHookAttach();
+      const sag = 5 + (extra * 0.012);
+      const drift = Math.sin((performance.now()/1200)) * Math.min(24, 6 + extra * 0.02);
+      const cp1 = { x: A.x + 10 + drift, y: A.y + Math.max(18, sag * 0.5) };
+      const midY = (A.y + B.y) / 2 + sag;
+      const cp2 = { x: B.x + drift * 0.4, y: midY };
+      linePath.setAttribute('d', `M ${A.x},${A.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${B.x},${B.y}`);
+    }
+
+    window.__ScrollBus.subscribe(update);
+  })();
+
+  /* =========================================================
+    DEPTH POINTS
+    ========================================================= */
+  const DEPTH_POINTS = [
+    { id: 'home',       depth: 0    },
+    { id: 'projects',   depth: 100  },
+    { id: 'experience', depth: 600  },
+    { id: 'skills',     depth: 2500 },
+    { id: 'education',  depth: 5000 },
+    { id: 'contact',    depth: 8500 }
+  ];
+  let depthAnchors = [];
+
+  function headerPx() {
+    const h = getComputedStyle(document.documentElement).getPropertyValue('--header-h').trim();
+    const n = parseFloat(h);
+    return Number.isFinite(n) ? n : 64;
+  }
+  function sectionTitleTop(id) {
+    const section = document.getElementById(id);
+    if (!section) return 0;
+    const title = section.querySelector('.zone-title');
+    const el = title || section;
+    const rect = el.getBoundingClientRect();
+    return rect.top + window.scrollY;
+  }
+  function rebuildDepthAnchors() {
+    depthAnchors = DEPTH_POINTS.map(p => ({ y: sectionTitleTop(p.id), depth: p.depth })).sort((a, b) => a.y - b.y);
+  }
+  function depthAtViewport() {
+    if (!depthAnchors.length) rebuildDepthAnchors();
+    if ((window.scrollY || 0) <= 0) return 0;
+    const refY = window.scrollY + (window.innerHeight / 2) - headerPx() / 2;
+    if (refY <= depthAnchors[0].y) return depthAnchors[0].depth;
+    const slowdown = window.innerHeight / 800;
+    for (let i = 0; i < depthAnchors.length - 1; i++) {
+      const a = depthAnchors[i], b = depthAnchors[i + 1];
+      if (refY >= a.y && refY < b.y) {
+        const t = (refY - a.y) / Math.max(1, (b.y - a.y) * slowdown);
+        const d = a.depth + (b.depth - a.depth) * Math.min(1, t);
+        return Math.round(d / 10) * 10;
       }
+    }
+    return depthAnchors[depthAnchors.length - 1].depth;
+  }
+  function deepestDepth() {
+    if (!depthAnchors.length) rebuildDepthAnchors();
+    return depthAnchors[depthAnchors.length - 1].depth;
+  }
 
-      resize();
-      seedParticles();
-      if (!prefersReduced) frame();
+  const resizeObs = new ResizeObserver(() => rebuildDepthAnchors());
+  resizeObs.observe(document.documentElement);
+  window.addEventListener('load', rebuildDepthAnchors);
+  window.addEventListener('resize', rebuildDepthAnchors);
+  document.addEventListener('DOMContentLoaded', rebuildDepthAnchors);
+  window.addEventListener('load', () => {
+    document.querySelectorAll('img').forEach(img => {
+      if (!img.complete) img.addEventListener('load', rebuildDepthAnchors, { once: true });
+    });
+  });
 
-      window.addEventListener('resize', () => { resize(); });
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { if (raf) cancelAnimationFrame(raf), raf = null; }
-        else if (!prefersReduced && !raf) { frame(); }
-      });
-    })();
+  /* =========================================================
+    DEPTH METER
+    ========================================================= */
+  (function initScrollDepth(){
+    const HIDE_MS = 600;
 
-    // ----------------------------------------
-    // Fishing line and hook
-    // ----------------------------------------
-    (function initHook() {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const boat      = document.getElementById('boat-img');
-      const hookWrap  = document.getElementById('hook-wrap');
-      const hookImg   = document.getElementById('hook-img');
-      const lineSvg   = document.getElementById('hook-line');
-      const linePath  = document.getElementById('hook-path');
-      const WATERLINE = 2; // px of scroll before hook/line appear
+    let meter = document.getElementById('depth-meter');
+    if (!meter) {
+      meter = document.createElement('div');
+      meter.id = 'depth-meter';
+      meter.innerHTML = '<span class="depth-value">0</span> m';
+      document.body.appendChild(meter);
+    }
+    const valueEl = meter.querySelector('.depth-value') || meter;
 
-      if (!boat || !hookWrap || !hookImg || !lineSvg || !linePath) return;
+    let hideTimer = null;
+    function showMeter() {
+      meter.classList.add('is-visible');
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => meter.classList.remove('is-visible'), HIDE_MS);
+    }
+    function updateDepth() {
+      const d = depthAtViewport();
+      valueEl.textContent = String(d);
+      showMeter();
+    }
 
-      // helpers
-      const clamp = (n,a,b)=>Math.min(b,Math.max(a,n));
-      const maxScrollable = () =>
-        Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    updateDepth();
+    if (window.__ScrollBus) window.__ScrollBus.subscribe(updateDepth);
+  })();
 
-      function getBoatAnchor() {
-        const r = boat.getBoundingClientRect();
-        return { x: r.left + r.width * .99, y: r.top + r.height * .08 };
-      }
-      function getHookAttach() {
-        const r = hookImg.getBoundingClientRect();
-        return { x: r.left + r.width * 0.85, y: r.top + r.height * 0.15 };
-      }
-
-      // visibility control
-      function updateHookVisibility() {
-        const atTop = (window.scrollY || window.pageYOffset || 0) < WATERLINE;
-        hookWrap.classList.toggle('hidden', atTop);
-        lineSvg.classList.toggle('hidden', atTop);
-      }
-
-      // draw / update line path
-      let raf = null;
-      function updateLine() {
-        raf = null;
-        const extra = clamp(window.scrollY * 0.07, 0, Math.min(350, maxScrollable()));
-        hookWrap.style.transform = `translateY(${extra}px)`;
-
-        lineSvg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
-
-        const A = getBoatAnchor();
-        const B = getHookAttach();
-        const sag = 5 + (extra * 0.012);
-        const drift = Math.sin((performance.now() / 1200)) *
-                      Math.min(24, 6 + extra * 0.02);
-
-        const cp1 = { x: A.x + 10 + drift, y: A.y + Math.max(18, sag * 0.5) };
-        const midY = (A.y + B.y) / 2 + sag;
-        const cp2 = { x: B.x + drift * 0.4, y: midY };
-
-        linePath.setAttribute('d',
-          `M ${A.x},${A.y} C ${cp1.x},${cp1.y} ${cp2.x},${cp2.y} ${B.x},${B.y}`);
-      }
-
-      function scheduleUpdate() {
-        if (!prefersReduced) {
-          if (raf) cancelAnimationFrame(raf);
-          raf = requestAnimationFrame(updateLine);
-        }
-      }
-
-      // combined scroll/resize handler
-      const onScrollLike = () => {
-        updateHookVisibility();
-        scheduleUpdate();
-      };
-
-      window.addEventListener('scroll', onScrollLike, { passive: true });
-      window.addEventListener('resize', onScrollLike);
-      window.addEventListener('wheel', onScrollLike, { passive: true });
-      window.addEventListener('touchmove', onScrollLike, { passive: true });
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) onScrollLike();
-      });
-
-      // initialize once
-      updateHookVisibility();
-      scheduleUpdate();
-    })();
-
-    // ----------------------------------------
-    // Depth Points
-    // ----------------------------------------
-    const DEPTH_POINTS = [
-      { id: 'home',       depth: 0    },  // The Surface
-      { id: 'projects',   depth: 100  },  // Sunlight Zone
-      { id: 'experience', depth: 600  },  // Twilight Zone
-      { id: 'skills',     depth: 2500 },  // Midnight Zone
-      { id: 'education',  depth: 5000 },  // The Abyss
-      { id: 'contact',    depth: 8500 }   // The Trench
+  /* =========================================================
+    FISHING GAME
+    ========================================================= */
+  (function fishingGame() {
+    const fishOptions = [
+      'assets/img/skate.png',
+      'assets/img/fluke.png',
+      'assets/img/seaBass.png',
+      'assets/img/blueFish.png',
+      'assets/img/blueFin.png',
+      'assets/img/stripedBass.png'
     ];
-    let depthAnchors = [];
+    const LEGENDARY_FISH_SRC = 'assets/img/mahi.png';
+    const LEGENDARY_CHANCE = 0.01;
+    const MAX_TILT_DEG = 15;
+    const LEGENDARY_FILTER = 'drop-shadow(0 0 6px rgba(50,205,50,.9)) drop-shadow(0 0 12px rgba(0,255,255,.75))';
 
-    function headerPx() {
-      const h = getComputedStyle(document.documentElement).getPropertyValue('--header-h').trim();
-      const n = parseFloat(h);
-      return Number.isFinite(n) ? n : 64;
+    const boatWrap  = document.getElementById('boat-wrap');
+    const hookWrap  = document.getElementById('hook-wrap');
+    const boatCatch = document.getElementById('boat-catch');
+
+    if (!boatWrap || !hookWrap || !boatCatch || !window.__ScrollBus) return;
+
+    function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function randomTilt()    { return (Math.random() * MAX_TILT_DEG * 2) - MAX_TILT_DEG; }
+
+    function generateCatch() {
+      const legendary = LEGENDARY_FISH_SRC && Math.random() < LEGENDARY_CHANCE;
+      const src = legendary ? LEGENDARY_FISH_SRC : randomFrom(fishOptions);
+      const tilt = randomTilt();
+      return { src, tilt, legendary };
     }
 
-    function sectionTitleTop(id) {
-      const section = document.getElementById(id);
-      if (!section) return 0;
-      const title = section.querySelector('.zone-title');
-      const el = title || section;
-      const rect = el.getBoundingClientRect();
-      return rect.top + window.scrollY;
-    }
+    let carrying = false;
+    let currentCatch = null;
 
-    function rebuildDepthAnchors() {
-      depthAnchors = DEPTH_POINTS
-        .map(p => ({ y: sectionTitleTop(p.id), depth: p.depth }))
-        .sort((a, b) => a.y - b.y);
-    }
+    function spawnSwimmingFish() {
+      if (carrying) return;
+      currentCatch = generateCatch();
 
-    function depthAtViewport() {
-      if (!depthAnchors.length) rebuildDepthAnchors();
-      if ((window.scrollY || 0) <= 0) return 0;
+      const swim = document.createElement('img');
+      swim.src = currentCatch.src;
+      swim.alt = 'Swimming fish';
+      swim.className = 'fish-swim';
+      if (currentCatch.legendary) swim.style.filter = LEGENDARY_FILTER;
+      document.body.appendChild(swim);
 
-      const refY = window.scrollY + (window.innerHeight / 2) - headerPx() / 2;
-      if (refY <= depthAnchors[0].y) return depthAnchors[0].depth;
+      let x = -200;
+      let y = window.innerHeight * 0.5;
+      let frame = 0;
 
-      const slowdown = window.innerHeight / 800;
+      function animate() {
+        const hookRect = hookWrap.getBoundingClientRect();
+        const targetX = hookRect.left + hookRect.width * 0.5 - 100;
+        const targetY = hookRect.top;
 
-      for (let i = 0; i < depthAnchors.length - 1; i++) {
-        const a = depthAnchors[i], b = depthAnchors[i + 1];
-        if (refY >= a.y && refY < b.y) {
-          const t = (refY - a.y) / Math.max(1, (b.y - a.y) * slowdown);
-          const d = a.depth + (b.depth - a.depth) * Math.min(1, t);
-          return Math.round(d / 10) * 10;
-        }
+        const dx = targetX - x;
+        const dy = targetY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 40) { swim.remove(); hookFish(); return; }
+
+        const step = 15;
+        x += (dx / dist) * step;
+        y += (dy / dist) * step;
+
+        const wiggle = Math.sin(frame / 8) * 15;
+        swim.style.left = (x + wiggle) + 'px';
+        swim.style.top  = y + 'px';
+
+        frame++;
+        requestAnimationFrame(animate);
       }
-      return depthAnchors[depthAnchors.length - 1].depth;
+      animate();
     }
 
+    function hookFish() {
+      if (carrying || !currentCatch) return;
 
-    function deepestDepth() {
-      if (!depthAnchors.length) rebuildDepthAnchors();
-      return depthAnchors[depthAnchors.length - 1].depth;
+      const wrap = document.createElement('div');
+      wrap.className = 'on-hook-rot';
+      wrap.style.willChange = 'transform';
+      wrap.style.transform = 'translateZ(0)';
+
+      const img = document.createElement('img');
+      img.src = currentCatch.src;
+      img.alt = 'Fish on hook';
+      img.className = 'fish on-hook';
+      if (currentCatch.legendary) img.style.filter = LEGENDARY_FILTER;
+
+      wrap.appendChild(img);
+      hookWrap.appendChild(wrap);
+      carrying = true;
     }
 
-    const resize = new ResizeObserver(() => rebuildDepthAnchors());
-    resize.observe(document.documentElement);
+    function landFish() {
+      if (!carrying || !currentCatch) return;
 
-    window.addEventListener('load', rebuildDepthAnchors);
-    window.addEventListener('resize', rebuildDepthAnchors);
-    document.addEventListener('DOMContentLoaded', rebuildDepthAnchors);
+      const rotWrap = hookWrap.querySelector('.on-hook-rot');
+      if (rotWrap) { rotWrap.style.transform = 'none'; rotWrap.remove(); }
 
-    window.addEventListener('load', () => {
-      document.querySelectorAll('img').forEach(img => {
-        if (!img.complete) img.addEventListener('load', rebuildDepthAnchors, { once: true });
-      });
+      const stack = document.createElement('img');
+      stack.src = currentCatch.src;
+      stack.alt = 'Caught fish';
+      stack.className = 'fish stack';
+      stack.style.setProperty('--tilt', `${currentCatch.tilt.toFixed(1)}deg`);
+      stack.style.setProperty('--i', boatCatch.children.length);
+      if (currentCatch.legendary) stack.style.filter = LEGENDARY_FILTER;
+
+      boatCatch.appendChild(stack);
+      boatCatch.setAttribute('aria-label', `Caught fish: ${boatCatch.children.length}`);
+
+      carrying = false;
+      currentCatch = null;
+    }
+
+    let lastDepth = -1;
+    function onScrollUpdate() {
+      const d = depthAtViewport();
+      if (d !== lastDepth) {
+        if (d >= deepestDepth() && !carrying) { spawnSwimmingFish(); }
+        if (d <= 0 && carrying) { landFish(); }
+        lastDepth = d;
+      }
+    }
+
+    // Hooked fish rotation driven by smoothed scroll velocity
+    function rotateHookedFish(vSmoothed) {
+      const rotWrap = hookWrap.querySelector('.on-hook-rot');
+      if (!rotWrap) return;
+      const angle = Math.max(-70, Math.min(70, vSmoothed * 70 * 16)); // scale px/ms to deg
+      rotWrap.style.transform = `rotate(${angle.toFixed(1)}deg) translateZ(0)`;
+    }
+
+    window.__ScrollBus.subscribe(({ vSmoothed }) => {
+      rotateHookedFish(vSmoothed);
+      onScrollUpdate();
     });
 
-    // ----------------------------------------
-    // Depth meter
-    // ----------------------------------------
-    (function initScrollDepth(){
-      const HIDE_MS = 600;
-
-      let meter = document.getElementById('depth-meter');
-      if (!meter) {
-        meter = document.createElement('div');
-        meter.id = 'depth-meter';
-        meter.innerHTML = '<span class="depth-value">0</span> m';
-        document.body.appendChild(meter);
-      }
-      const valueEl = meter.querySelector('.depth-value') || meter;
-
-      let raf = null;
-      let hideTimer = null;
-
-      function showMeter() {
-        meter.classList.add('is-visible');
-        if (hideTimer) clearTimeout(hideTimer);
-        hideTimer = setTimeout(() => meter.classList.remove('is-visible'), HIDE_MS);
-      }
-
-      function updateDepth() {
-        raf = null;
-        const d = depthAtViewport();
-        valueEl.textContent = String(d);
-      }
-
-      function schedule() {
-        if (raf == null) raf = requestAnimationFrame(updateDepth);
-        showMeter();
-      }
-
-      window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', schedule);
-      window.addEventListener('load', schedule);
-      schedule();
-    })();
-
-    // ----------------------------------------
-    // Fishing Game
-    // ----------------------------------------
-    (function fishingGame() {
-      const fishOptions = [
-        'assets/img/skate.png',
-        'assets/img/fluke.png',
-        'assets/img/seaBass.png',
-        'assets/img/blueFish.png',
-        'assets/img/blueFin.png',
-        'assets/img/stripedBass.png'
-      ]
-
-      const LEGENDARY_FISH_SRC = 'assets/img/mahi.png'
-      const LEGENDARY_CHANCE = 0.01
-      const MAX_TILT_DEG = 15
-      const LEGENDARY_FILTER = 'drop-shadow(0 0 6px rgba(50,205,50,.9)) drop-shadow(0 0 12px rgba(0,255,255,.75))'
-
-      const boatWrap = document.getElementById('boat-wrap')
-      const hookWrap = document.getElementById('hook-wrap')
-      const boatCatch = document.getElementById('boat-catch')
-
-      if (!boatWrap || !hookWrap || !boatCatch) return
-
-      function randomFrom(arr) {
-        return arr[Math.floor(Math.random() * arr.length)]
-      }
-
-      function randomTilt() {
-        return (Math.random() * MAX_TILT_DEG * 2) - MAX_TILT_DEG
-      }
-
-      function generateCatch() {
-        const legendary = LEGENDARY_FISH_SRC && Math.random() < LEGENDARY_CHANCE
-        const src = legendary ? LEGENDARY_FISH_SRC : randomFrom(fishOptions)
-        const tilt = randomTilt()
-        return { src, tilt, legendary }
-      }
-
-      let carrying = false
-      let currentCatch = null
-
-      function spawnSwimmingFish() {
-        if (carrying) return
-        currentCatch = generateCatch()
-
-        const swim = document.createElement('img')
-        swim.src = currentCatch.src
-        swim.alt = 'Swimming fish'
-        swim.className = 'fish-swim'
-        if (currentCatch.legendary) swim.style.filter = LEGENDARY_FILTER
-        document.body.appendChild(swim)
-
-        let x = -200
-        let y = window.innerHeight * 0.5
-        let frame = 0
-
-        function animate() {
-          const hookRect = hookWrap.getBoundingClientRect()
-          const targetX = hookRect.left + hookRect.width * 0.5 - 100
-          const targetY = hookRect.top
-
-          const dx = targetX - x
-          const dy = targetY - y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-
-          if (dist < 40) {
-            swim.remove()
-            hookFish()
-            return
-          }
-
-          const step = 15 // fish swimming speed
-          x += (dx / dist) * step
-          y += (dy / dist) * step
-
-          const wiggle = Math.sin(frame / 8) * 15
-          swim.style.left = x + wiggle + 'px'
-          swim.style.top = y + 'px'
-
-          frame++
-          requestAnimationFrame(animate)
-        }
-
-        animate()
-      }
-
-      function hookFish() {
-        if (carrying || !currentCatch) return
-
-        const wrap = document.createElement('div')
-        wrap.className = 'on-hook-rot'
-
-        const img = document.createElement('img')
-        img.src = currentCatch.src
-        img.alt = 'Fish on hook'
-        img.className = 'fish on-hook'
-        if (currentCatch.legendary) img.style.filter = LEGENDARY_FILTER
-
-        wrap.appendChild(img)
-        hookWrap.appendChild(wrap)
-        carrying = true
-      }
-
-      function landFish() {
-        if (!carrying || !currentCatch) return
-
-        const rotWrap = hookWrap.querySelector('.on-hook-rot')
-        if (rotWrap) rotWrap.remove()
-
-        const stack = document.createElement('img')
-        stack.src = currentCatch.src
-        stack.alt = 'Caught fish'
-        stack.className = 'fish stack'
-        stack.style.setProperty('--tilt', `${currentCatch.tilt.toFixed(1)}deg`)
-        stack.style.setProperty('--i', boatCatch.children.length)
-        if (currentCatch.legendary) stack.style.filter = LEGENDARY_FILTER
-
-        boatCatch.appendChild(stack)
-        boatCatch.setAttribute('aria-label', `Caught fish: ${boatCatch.children.length}`)
-
-        carrying = false
-        currentCatch = null
-      }
-
-      let lastDepth = -1
-      let lastScrollY = window.scrollY
-
-      function updateFishRotation() {
-        const rotWrap = hookWrap.querySelector('.on-hook-rot')
-        if (!rotWrap) return
-
-        const y = window.scrollY
-        const dy = y - lastScrollY
-        lastScrollY = y
-
-        const speed = Math.max(-60, Math.min(60, dy))
-        const angle = (speed / 60) * 70
-
-        rotWrap.style.transform = `rotate(${angle.toFixed(1)}deg)`
-      }
-
-      function onScrollLike() {
-        const d = depthAtViewport()
-        if (d !== lastDepth) {
-          if (d >= deepestDepth() && !carrying) {
-            spawnSwimmingFish()
-          }
-          if (d <= 0 && carrying) {
-            landFish()
-          }
-          lastDepth = d
-        }
-        updateFishRotation()
-      }
-
-      window.addEventListener('scroll', onScrollLike, { passive: true })
-      window.addEventListener('resize', onScrollLike)
-      window.addEventListener('load', onScrollLike)
-
-      onScrollLike()
-    })()
-
+    // Initial pass
+    onScrollUpdate();
+  })();
   </script>
+
 </body>
 </html>
 
