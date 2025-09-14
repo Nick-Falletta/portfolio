@@ -328,6 +328,7 @@
     .ring .fg{fill:none;stroke-linecap:round;stroke-width:12;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));transition:stroke-dashoffset .9s ease,filter .3s ease;}
     @media (prefers-reduced-motion:reduce){.ring .fg{transition:none;}}
     .ring .center{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:.95rem;color:var(--text);}
+    .skill-meta{height: 100%; display: flex;flex-direction: column;justify-content: space-between;}
     .skill-meta h3{margin:0 0 .2rem;font-size:1.05rem;}
     .skill-meta p{margin:0;color:var(--muted);font-size:.95rem;}
     .skill-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem;}
@@ -431,7 +432,7 @@
         <li><a class="link" href="#education">Education</a></li>
         <li><a class="link" href="#contact">Contact</a></li>
         <li class="nav-cta-mobile">
-          <a class="btn ghost" href="assets/resume/FallettaResume.pdf" target="_blank" rel="noopener">Résumé</a>
+          <a class="btn ghost" href="assets/resume/Falletta_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
         </li>
         <li class="nav-cta-mobile">
           <a class="btn" href="mailto:nickfalletta29@outlook.com">Contact me</a>
@@ -758,6 +759,22 @@
           <p>Where light fades, responsibility grows, and skills deepen.</p>
         </div>
         <div class="timeline">
+
+          <article class="t-item reveal">
+            <div class="t-head">
+              <h3 style="margin:0">RGTN Corporation B.V.</h3>
+              <span class="t-role">Software Engineer Intern</span>
+              <span class="t-meta">Aug 2025 — Present · New York, NY</span>
+            </div>
+            <ul>
+              <li>Migrated a legacy Perl-based payment module to a containerized Python microservice using Docker, gRPC, Flask, & Helm.</li>
+              <li>Implemented webhook handling, signature verification, & transaction processing using a Stripe API.</li>
+              <li>Integrated comprehensive unit & integration tests into the CI/CD pipeline via GitHub Actions, enabling automated test execution on pull requests.</li>
+              <li>Collaborated with external RGTN partners to align on API specifications and streamline integration efforts.</li>
+              <li>Maintained confidentiality of proprietary systems and partner data under a signed non-disclosure agreement.</li>
+            </ul>
+          </article>
+
           <article class="t-item reveal">
             <div class="t-head">
               <h3 style="margin:0">Fundamentals of Computing Association</h3>
@@ -765,8 +782,9 @@
               <span class="t-meta">Aug 2023 — May 2025 · State College, PA</span>
             </div>
             <ul>
-              <li>Guided students through semester-long builds (React, full-stack, GitHub, UI/UX), including a personality-driven AI chatbot.</li>
-              <li>Organized weekly bootcamps; fostered collaboration and ownership.</li>
+              <li>Cultivated leadership & mentorship skills by guiding students through semester-long technical projects, including a personality-based AI chatbot that modifies a website’s visual appearance.</li>
+              <li>Fostered a collaborative & inclusive learning environment by organizing & leading weekly technical boot camps covering skills such as React.js, Full Stack development, GitHub workflows, & UI/UX principles.</li>
+              <li>Inspired growth in peers by emphasizing problem-solving, creativity, & ownership in all projects, helping students apply classroom knowledge to impactful real-world solutions.</li>
             </ul>
           </article>
 
@@ -777,8 +795,11 @@
               <span class="t-meta">May — Dec 2024 · State College, PA</span>
             </div>
             <ul>
-              <li>Developed <strong>NaviGPT</strong> — iOS app using LiDAR and OpenAI; collaborated with visually-impaired users and faculty.</li>
-              <li>Ran research-driven iterations; integrated Apple Maps; shipped haptics & on-device guidance.</li>
+              <li>Developed a strong foundation in accessibility-focused design & user-centered research through collaboration with visually impaired users & academic professors.</li>
+              <li>Honed problem-solving & team collaboration skills by working in weekly meetings with PhD students & professors to troubleshoot, refine, & iterate on each other's projects.</li>
+              <li>Led the development of NaviGPT, an iOS application using Swift & OpenAI's API to help visually impaired users navigate safely.</li>
+              <li>Researched & implemented best practices in AI & navigation by studying academic literature, ensuring the app effectively addressed real-world challenges in accessibility.</li>
+            
             </ul>
           </article>
 
@@ -789,8 +810,10 @@
               <span class="t-meta">Dec 2022 — Apr 2023 · Mineola, NY</span>
             </div>
             <ul>
-              <li>Built <strong>Title Tracker</strong> (Flutter + Firebase): secure auth, realtime data, iOS & Android release.</li>
-              <li>Partnered with stakeholders; translated workflow needs into app features.</li>
+              <li>Strengthened project management & communication skills by collaborating closely with staff to align development with business needs.</li>
+              <li>Gained hands-on experience refining company software & building scalable internal tools to enhance operational efficiency.</li>
+              <li>Led the development of Title Tracker, a cross-platform mobile app built with Flutter & Firebase to streamline company workflow management & securely store company data in the cloud.</li>
+              <li>Conducted interviews with employees to tailor the app’s design & functionality, effectively translating real-world needs into technical solutions.</li>            
             </ul>
           </article>
         </div>
@@ -1130,32 +1153,30 @@
     const data = {
       languages: [
         { name:'Java', val: 90, tags:['OOP','Backend'] },
-        { name:'Python', val: 80, tags:['Scripting','Data'] },
-        { name:'TypeScript', val: 55, tags:['Web','Types'] },
+        { name:'Python', val: 80, tags:['Scripting','Data', 'LLM'] },
+        { name:'TypeScript', val: 70, tags:['Web'] },
         { name:'JavaScript', val: 90, tags:['Web','Frontend'] },
-        { name:'Swift', val: 65, tags:['iOS'] },
+        { name:'Swift', val: 60, tags:['iOS Dev'] },
         { name:'Dart', val: 80, tags:['Flutter'] },
-        { name:'SQL', val: 75, tags:['DB'] },
-        { name:'C#', val: 50, tags:['.NET'] }
+        { name:'MySQL', val: 75, tags:['DB'] },
       ],
       frameworks: [
-        { name:'React', val: 90, tags:['SPA','Hooks'] },
-        { name:'React Native', val: 85, tags:['Mobile'] },
-        { name:'Node.js', val: 50, tags:['API'] },
-        { name:'Next.js', val: 80, tags:['Web'] },
-        { name:'Flutter', val: 80, tags:['Cross-platform'] },
-        { name:'.NET', val: 50, tags:['Server'] },
+        { name:'React', val: 90, tags:['Web Dev'] },
+        { name:'React Native', val: 85, tags:['Mobile Dev'] },
+        { name:'Node.js', val: 50, tags:['Backend, APIs'] },
+        { name:'Next.js', val: 80, tags:['Web Dev'] },
+        { name:'Flutter', val: 80, tags:['Cross-platform Dev'] },
         { name:'Bootstrap', val: 80, tags:['UI'] },
         { name:'Tailwind', val: 70, tags:['UI'] },
-        { name:'Angular', val: 40, tags:['SPA'] }
+        { name:'Angular', val: 40, tags:['Frontend'] }
       ],
       tools: [
-        { name:'Xcode', val: 75, tags:['IDE'] },
-        { name:'Android Studio', val: 75, tags:['IDE'] },
-        { name:'Firebase', val: 75, tags:['Auth','DB'] },
+        { name:'Xcode', val: 75, tags:['iOS Dev'] },
+        { name:'Android Studio', val: 75, tags:['Android Dev'] },
+        { name:'Firebase', val: 75, tags:['Auth','DB', 'Backend'] },
         { name:'MongoDB', val: 45, tags:['NoSQL'] },
-        { name:'MySQL', val: 80, tags:['RDBMS'] },
-        { name:'GitHub', val: 90, tags:['CI/CD'] },
+        { name:'MySQL', val: 80, tags:['DB'] },
+        { name:'GitHub', val: 90, tags:['Code Hosting'] },
         { name:'Figma', val: 90, tags:['UX'] }
       ]
     };
@@ -1219,7 +1240,6 @@
           <div class="ring" data-val="${item.val}">${ringSVG(item.val, item.name.toLowerCase().replace(/\s+/g,'-'))}</div>
           <div class="skill-meta">
             <h3>${item.name}</h3>
-            <p>${level} · Focus: ${(item.tags||[]).join(', ') || '—'}</p>
             <div class="skill-tags">${tagHTML}</div>
           </div>
         </article>
