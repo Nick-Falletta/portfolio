@@ -2,78 +2,66 @@
 
 I am a **Human Centered Design and Development Graduate** from **The Pennsylvania State University**. My work bridges **product design and engineering**, with a focus on **intuitive user experiences, accessibility-first development, and scalable solutions**.
 
-I’ve built and shipped applications across **iOS, Android, and Web**, leveraging modern frameworks and tools such as **React.js, React Native, Flutter, Swift, Java, and Python**. With many year of professional experience and multiple research collaborations, I bring both **technical depth** and **product sense** to the teams I work with.
+I’ve built and shipped applications across **iOS, Android, and Web**, leveraging modern frameworks and tools such as **React.js, React Native, Flutter, Swift, Java, and Python**. With several years of professional experience, multiple research collaborations, and industry internships, I bring both **technical depth** and **product sense** to the teams I work with.
 
 ---
 
-## Featured Projects
+## My Best Work
 
-* **[NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/)** · *Swift · LiDAR · OpenAI*
-  Accessibility-focused navigation assistant for visually impaired users. Integrates LiDAR object detection, haptics, and AI guidance.
+* **[Portfolio ChatBot](https://github.com/Nick-Falletta/chat-with-nick)** · *Python · MongoDB · OpenAI API*  
+  An interactive LLM chatbot that answers questions about my education, experience, and projects by retrieving context from MongoDB.
 
+* **[NaviGPT](https://github.com/PSU-IST-CIL/NaviGPT/)** · *Swift · LiDAR · OpenAI*  
+  Accessibility-focused navigation assistant for visually impaired users. Integrates LiDAR object detection, haptics, and AI guidance.  
   * Published [research paper](https://arxiv.org/pdf/2410.04005) and GitHub release.
 
-* **[Title Tracker](https://apps.apple.com/us/app/title-tracker/id6504823785)** · *Flutter · Firebase*
-  Workflow management system for Comm-Res Exams Corp. Deployed on iOS and Android with secure auth and real-time data.
-
-* **[Kaizen](https://www.figma.com/proto/iZQ0xGy7zTffsi4Gv1Yi7W/TherAI?node-id=0-1)** · *React · Gemini · Python*
-  Transforms therapy session transcripts into concise, organized notes. Prototype in Figma with export functionality.
-
-* **[Jarvis](https://github.com/Nick-Falletta/jarvis)** · *React · OpenAI*
+* **[Jarvis](https://github.com/Nick-Falletta/jarvis)** · *React · OpenAI*  
   A customizable AI chatbot with voice input, CSS live-editing, context retention, and personality presets.
-
-* **[Multiple-Choice Builder](https://github.com/Nick-Falletta/taggingQuestion)** · *React · JSON*
-  JSON-driven quiz authoring tool with instant feedback and image support, designed for self-study and workshops.
 
 ---
 
-## Experience
+## Most Recent Experience
 
-**Software Developer Intern — Penn State** *(2024)*
+**AI Agent Builder Intern — NeuralSeek** *(Oct 2025 – Present · Remote)*  
+* Building no-code AI agents with a focus on **ethical design, explainability, and retrieval-augmented generation**.  
+* Collaborating with a global cohort on the AI product lifecycle, delivering a **capstone project**.
 
-* Developed *NaviGPT*, an iOS navigation assistant, collaborating with visually impaired users and faculty.
-* Integrated LiDAR, Apple Maps, haptics, and on-device guidance through iterative, research-driven design.
-
-**Software Developer Intern — Comm-Res Exams Corp.** *(2022–2023)*
-
-* Built *Title Tracker* with Flutter and Firebase, translating workflow needs into a cross-platform mobile app.
-
-**Project Manager — Fundamentals of Computing Association** *(2023–2025)*
-
-* Guided students through full-stack builds (React, GitHub, UI/UX).
-* Led workshops and bootcamps, fostering collaboration and ownership.
+**Software Engineer Intern — RGTN Corporation B.V.** *(Aug 2025 – Present · New York, NY)*  
+* Migrated legacy Perl software into a **containerized Python microservice** with Docker, gRPC, Flask, and Helm.  
+* Built secure payment workflows with Stripe, cryptographic verification, and webhook handling.  
+* Designed an **AI-powered assistant** using Microsoft Azure OpenAI, RAG, and Blob Storage.  
+* Partnered with external teams on **API contracts**, reducing integration overhead.
 
 ---
 
 ## Skills
 
-* **Languages:** Java, Python, TypeScript, JavaScript, Swift, Dart, SQL, C#
-* **Frameworks:** React, React Native, Node.js, Flutter, .NET, Bootstrap, Angular
-* **Tools & Platforms:** iOS, Android Studio, Xcode, Firebase, MongoDB, MySQL, GitHub, Figma
+* **Languages:** Java, Python, JavaScript, HTML/CSS, mySQL, TypeScript
+* **Frameworks:** React, React Native, Node.js, Flutter, Tailwind, Bootstrap, Angular  
+* **Tools:** MongoDB, FireBase, MySQL, Git, Figma, Docker, Microsoft Azure  
 
 ---
 
 ## Education
 
-**B.S. Human-Centered Design & Development** — Penn State University *(Expected Spring 2025)*
+**B.S. Human-Centered Design & Development** — Penn State University *(Expected Spring 2025)*  
+* Built full-stack apps with React, Java, and Python.  
+* Designed and prototyped interfaces in Figma with a **UI/UX focus**.  
+* Implemented relational and NoSQL databases with SQL and MongoDB.
 
-* Focused on full-stack application development, UI/UX design, and accessible software.
-
-**Smeal College of Business — Business Fundamentals Certificate**
-
-* Coursework in financial reporting, managerial finance, and data-driven decision making.
+**Smeal College of Business — Business Fundamentals Certificate**  
+* Coursework in **financial reporting, managerial finance, and data-driven decision making**.
 
 ---
 
 ## Connect
 
-* **Email:** [nickfalletta29@outlook.com](mailto:nickfalletta29@outlook.com)
-* **GitHub:** [Nick-Falletta](https://github.com/Nick-Falletta)
-* **LinkedIn:** [nick-falletta](https://www.linkedin.com/in/nick-falletta)
-* **Portfolio:** [nick-falletta.dev](https://nick-falletta.dev)
+* **Email:** [nickfalletta29@outlook.com](mailto:nickfalletta29@outlook.com)  
+* **Phone:** [+1 (631) 637-5632](tel:+16316375632) 
+* **GitHub:** [Falletta-GitHub](https://github.com/Nick-Falletta)  
+* **LinkedIn:** [Falletta-LinkedIn](https://www.linkedin.com/in/nick-falletta)  
+* **Portfolio:** [Falletta-Portfolio](nick-falletta.github.io/portfolio)
 
 ---
 
-**Fun fact:** When I’m not coding, I enjoy **rock climbing**, **fishing**, **camping**, **and hiking!**
-
----
+**Fun fact:** When I’m not coding, I enjoy **rock climbing**, **fishing**, **camping**, and **hiking**!  
